@@ -33,7 +33,8 @@ local function getGameState()
                 love.graphics.setColor(255, 255, 255)
             elseif entity.drawType == 'image' then
 
-                love.graphics.draw(entity.image, entity.position.x, entity.position.x)
+                local positionX, positionY = entity.fixture:getBody():getPosition()
+                love.graphics.draw(entity.image, positionX, positionY)
             end
         end
     end
