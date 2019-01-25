@@ -1,5 +1,6 @@
 local getPlayer = require("entity/player")
 local getMissile = require("entity/missile")
+local getExplosion = require("entity/explosion")
 local getGround = require("entity/ground")
 
 
@@ -32,6 +33,11 @@ local function getGameState()
             print("spawning missile at ", randomspawn.x, 0)
             table.insert(state.entities, new_missile)
             spawncounter = 0
+
+            -- spawning explosion
+            print("spawning explosion")
+            local new_exp = getExplosion(randomspawn.x, randomspawn.y)
+            table.insert(state.entities, new_exp)
         else
             spawncounter = spawncounter + dt
         end
