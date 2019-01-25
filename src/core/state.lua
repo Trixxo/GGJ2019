@@ -1,4 +1,4 @@
-function getState()
+local function getState()
     state = {}
 
     state.renderBelow = false
@@ -13,3 +13,5 @@ function getState()
 
     return state
 end
+
+return getState

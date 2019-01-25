@@ -1,4 +1,4 @@
-function getResources()
+local function getResources()
     resources = {}
         
     resources.imageQueue = {}
@@ -52,3 +52,5 @@ function getResources()
 
     return resources
 end
+
+return getResources

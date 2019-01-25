@@ -1,25 +1,22 @@
-require("core/resources")
-require("core/stackhelper")
-require("entity/player")
+local getResources = require("core/resources")
+local getStackHelper = require("core/statestack")
+local getGameState = require("states/gamestate")
 
-entities = {}
 world = love.physics.newWorld(10, 5, true)
+stateStack = getStackHelper()
+resources = getResources()
 
 function love.load()
-    resources = getResources()
     resources:load()
 
-    stack = getStackHelper()
-
-    player = getPlayer()
-    table.insert(entities, player)
+    local gameState = getGameState()
+    stateStack:push(gameState)
 end
 
 function love.update(dt)
+    stateStack:current():draw()
 end
 
 function love.draw()
-    for i, entity in pairs(entities) do
-        entity:draw()
-    end
+    stateStack:current():draw()
 end

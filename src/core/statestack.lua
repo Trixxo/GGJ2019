@@ -1,12 +1,12 @@
-function getStackHelper()
+local function getStateStack()
 
-    stackHelper = {}
+    stateStack = {}
 
-    stackHelper.states = {}
-    stackHelper.backCounter = 0
+    stateStack.states = {}
+    stateStack.backCounter = 0
 
 
-    function stackHelper:current()
+    function stateStack:current()
         if self.states == 0 then return nil
         
         elseif #self.states > 0 then
@@ -15,19 +15,19 @@ function getStackHelper()
     end
 
 
-    function stackHelper:push(element)
+    function stateStack:push(element)
         table.insert(self.states, element)
         self:current():load()   
     end
 
 
-    function stackHelper:pop()
+    function stateStack:pop()
         if self:current() then 
             table.remove(self.states, #self.states)
         end
     end
 
-    function stackHelper:popload()
+    function stateStack:popload()
         if self:current() then
             table.remove(self.states, #self.states)
         end
@@ -35,7 +35,7 @@ function getStackHelper()
     end
      
 
-    function stackHelper:draw()
+    function stateStack:draw()
         for i = 0, #self.states-1 , 1 do
             if self.states[#self.states-i].renderBelow == false then
                 break
@@ -49,9 +49,11 @@ function getStackHelper()
     end
 
 
-    function stackHelper:update(dt)
+    function stateStack:update(dt)
         if self:current() then self:current():update(dt) end
     end
 
-    return stackHelper
+    return stateStack
 end
+
+return getStateStack
