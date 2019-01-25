@@ -21,7 +21,7 @@ local function getGameState()
 
     function state:draw()
         for index, entity in pairs(self.entities) do
-            local positionX, positionY = entity.fixture:getBody():getPosition()
+            local positionX, positionY = entity.body:getPosition()
             if entity.drawType == 'rectangle' then 
                 love.graphics.setColor(255, 0, 0, 1)
                 love.graphics.rectangle(
@@ -40,7 +40,13 @@ local function getGameState()
     end
 
     function state:shutdown() end
-    function state:keypressed(key, scancode, isrepeat) end
+    function state:keypressed(key, scancode, isrepeat) 
+        for index, entity in pairs(self.entities) do
+            if entity.keypressed ~= nil then
+                entity:keypressed(key, scancode, isrepeat)
+            end 
+        end
+    end
     function state:keyreleased(key, scancode) end
     function state:mousepressed(x, y, key) end
     function state:load() end

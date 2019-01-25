@@ -1,17 +1,23 @@
 local function getPlayer()
     player = {}
 
-    player.position = {x = 100, y = 100}
     player.dimension = {width = 50, height = 50}
-    local body = love.physics.newBody(world)
-    body:setMass(50)
+    player.body = love.physics.newBody(world)
+    player.body:setMass(50)
+    player.body:setPosition(100,100)
     local shape = love.physics.newRectangleShape(player.dimension.width, player.dimension.height)
-    player.fixture = love.physics.newFixture(body, shape, 1)
+    player.fixture = love.physics.newFixture(player.body, shape, 1)
     player.drawType = 'rectangle'
 
     function player:update(dt)
     end
-    
+
+    function player:keypressed(key, scancode, isrepeat)
+        if scancode == "w" then
+            self.body:applyForce(50,50)
+        end
+    end
+
     return player
 end
 
