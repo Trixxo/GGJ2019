@@ -12,7 +12,7 @@ local function getGameState()
     player = getPlayer()
     table.insert(state.entities, player)
     -- Constructor End
-    missile = getMissile() 
+    missile = getMissile(40,60) 
     table.insert(state.entities, missile)
     
     function state:update(dt)

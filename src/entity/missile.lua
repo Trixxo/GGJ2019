@@ -1,6 +1,7 @@
-local function getMissile()
+local function getMissile(x, y)
     missile = {}
 
+    missile.position = {x = x, y = y}
     missile.dimension = {width = 50, height = 50}
     missile.image = resources.images.missile
     local body = love.physics.newBody(world)
