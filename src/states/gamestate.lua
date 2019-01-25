@@ -51,13 +51,20 @@ local function getGameState()
                 love.graphics.rectangle(
                     'fill',
                     positionX-entity.dimension.width/2,
-                    positionY,
+                    positionY-entity.dimension.height/2,
                     entity.dimension.width,
                     entity.dimension.height
                 )
-                love.graphics.setColor(255, 255, 255)
+            love.graphics.setColor(255, 255, 255)
             elseif entity.drawType == 'image' then
-                love.graphics.draw(entity.image, positionX, positionY, entity.dimension.width / entity.image:getWidth(), entity.dimension.height / entity.image:getWidth())
+                love.graphics.draw(
+                    entity.image,
+                    positionX - entity.image:getWidth() / 2,
+                    positionY - entity.image:getHeight() / 2,
+                    angle
+                    --entity.dimension.width / entity.image:getWidth(),
+                    --entity.dimension.height / entity.image:getWidth()
+                )
             end
         end
     end
