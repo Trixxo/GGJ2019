@@ -3,11 +3,12 @@ local getStackHelper = require("core/statestack")
 local getGameState = require("states/gamestate")
 
 world = love.physics.newWorld(0, 981, true)
+particleSystem = love.graphics.newParticleSystem
 resources = getResources()
 stack = getStackHelper()
 
 function love.load()
-	resources:addImage("missile", "data/missile.png")
+    resources:addImage("missile", "data/missile.png")
     resources:load()
 
     local gameState = getGameState()
@@ -24,9 +25,9 @@ function love.draw()
 end
 
 function love.keypressed(key, scancode, isrepeat)
-	stack:current():keypressed(key, scancode, isrepeat)
+    stack:current():keypressed(key, scancode, isrepeat)
 end
 
 function love.keyreleased(key, scancode)
-	stack:current():keyreleased(key, scancode)
+    stack:current():keyreleased(key, scancode)
 end
