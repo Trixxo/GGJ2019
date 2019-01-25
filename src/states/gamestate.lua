@@ -5,6 +5,9 @@ local getMissile = require("entity/missile")
 local function getGameState()
     state = {}
 
+    spawntime = 5 
+    spawncounter = 0
+
     state.renderBelow = false
     state.entities = {}
 
@@ -16,6 +19,16 @@ local function getGameState()
     table.insert(state.entities, missile)
     
     function state:update(dt)
+
+        if spawncounter > spawntime then
+            randomspawn = {x = math.random() * love.graphics.getWidth(), y = math.random() * love.graphics.getHeight() }
+            new_missile = getMissile(randomspawn.x, randomspawn.y)
+            print("spawning missile at ", randomspawn.x, randomspawn.y)
+            table.insert(state.entities, new_missile)
+            spawncounter = 0
+        else
+            spawncounter = spawncounter + dt
+        end
 
     end
 
