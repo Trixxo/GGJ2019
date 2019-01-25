@@ -1,5 +1,6 @@
 local getPlayer = require("entity/player")
 local getMissile = require("entity/missile")
+local getExplosion = require("entity/explosion")
 local getGround = require("entity/ground")
 
 
@@ -32,6 +33,11 @@ local function getGameState()
             print("spawning missile at ", randomspawn.x, 0)
             table.insert(state.entities, new_missile)
             spawncounter = 0
+
+            -- spawning explosion
+            print("spawning explosion")
+            local new_exp = getExplosion(randomspawn.x, randomspawn.y)
+            table.insert(state.entities, new_exp)
         else
             spawncounter = spawncounter + dt
         end
@@ -58,11 +64,13 @@ local function getGameState()
             elseif entity.drawType == 'image' then
                 love.graphics.draw(
                     entity.image,
-                    positionX - entity.image:getWidth() / 2,
-                    positionY - entity.image:getHeight() / 2,
-                    angle
-                    --entity.dimension.width / entity.image:getWidth(),
-                    --entity.dimension.height / entity.image:getWidth()
+                    positionX,
+                    positionY,
+                    angle,
+                    entity.dimension.width / entity.image:getWidth(),
+                    entity.dimension.height / entity.image:getHeight(),
+                    entity.image:getWidth() / 2,
+                    entity.image:getHeight() / 2
                 )
             end
         end
