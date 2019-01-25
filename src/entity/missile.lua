@@ -3,7 +3,7 @@ local getVector = require("core/vector")
 local function getMissile(x, y)
     local missile = {}
 
-    missile.dimension = {width = 50, height = 50}
+    missile.dimension = {width = 100, height = 50}
     missile.image = resources.images.missile
     missile.shape = love.physics.newRectangleShape(missile.dimension.width, missile.dimension.height)
     missile.body = love.physics.newBody(world, x, y, "dynamic")

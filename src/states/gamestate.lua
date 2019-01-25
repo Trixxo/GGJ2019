@@ -25,8 +25,8 @@ local function getGameState()
     function state:update(dt)
         if spawncounter > spawntime then
             randomspawn = {
-              x = math.random() * love.graphics.getWidth(),
-              y = math.random() * love.graphics.getHeight()
+                x = math.random() * love.graphics.getWidth(),
+                y = math.random() * love.graphics.getHeight()
             }
             local new_missile = getMissile(randomspawn.x, 100)
             print("spawning missile at ", randomspawn.x, 0)
@@ -48,16 +48,22 @@ local function getGameState()
             local angle = entity.body:getAngle()
             if entity.drawType == 'rectangle' then
                 love.graphics.setColor(255, 0, 0, 1)
-                love.graphics.rectangle(
-                    'fill',
-                    positionX,
-                    positionY,
+                love.graphics.rectangle('fill',
+                    positionX-entity.dimension.width/2,
+                    positionY-entity.dimension.height/2,
                     entity.dimension.width,
                     entity.dimension.height
                 )
-                love.graphics.setColor(255, 255, 255)
+            love.graphics.setColor(255, 255, 255)
             elseif entity.drawType == 'image' then
-                love.graphics.draw(entity.image, positionX, positionY, entity.dimension.width / entity.image:getWidth(), entity.dimension.height / entity.image:getWidth())
+                love.graphics.draw(
+                    entity.image,
+                    positionX - entity.image:getWidth() / 2,
+                    positionY - entity.image:getHeight() / 2,
+                    angle
+                    --entity.dimension.width / entity.image:getWidth(),
+                    --entity.dimension.height / entity.image:getWidth()
+                )
             end
         end
     end
