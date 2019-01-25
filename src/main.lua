@@ -9,6 +9,7 @@ stack = getStackHelper()
 function love.load()
     resources:addImage("missile", "data/missile.png")
     resources:load()
+    world:setCallbacks(collide)
 
     local gameState = getGameState()
     stack:push(gameState)
@@ -29,4 +30,8 @@ end
 
 function love.keyreleased(key, scancode)
     stack:current():keyreleased(key, scancode)
+end
+
+function collide(fixtureA, fixtureB, collision)
+    stack:current():collide(fixtureA, fixtureB, collision)
 end

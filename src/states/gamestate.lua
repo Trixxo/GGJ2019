@@ -82,6 +82,13 @@ local function getGameState()
 
     function state:mousepressed(x, y, key) end
 
+    function state:collide(fixtureA, fixtureB, key)
+        objectA = fixtureA:getUserData()
+        objectB = fixtureB:getUserData()
+
+        -- print(objectA.name .. " colliding with " .. objectB.name)
+    end
+
     function state:load() end
 
     return state

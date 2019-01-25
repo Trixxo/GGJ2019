@@ -1,12 +1,16 @@
 local function getPlayer()
     player = {}
+    player.name = 'player'
+    player.drawType = 'rectangle'
 
     player.dimension = {width = 50, height = 50}
     player.shape = love.physics.newRectangleShape(player.dimension.width, player.dimension.height)
+
     player.body = love.physics.newBody(world, 100, 100, "dynamic")
     player.body:setMass(10)
+
     player.fixture = love.physics.newFixture(player.body, player.shape, 1)
-    player.drawType = 'rectangle'
+    player.fixture:setUserData(player)
 
     function player:update(dt)
         
