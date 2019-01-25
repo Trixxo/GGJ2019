@@ -7,6 +7,7 @@ resources = getResources()
 stack = getStackHelper()
 
 function love.load()
+	resources:addImage("missile", "data/missile.png")
     resources:load()
 
     local gameState = getGameState()

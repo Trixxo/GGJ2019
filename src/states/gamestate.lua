@@ -1,4 +1,6 @@
 local getPlayer = require("entity/player")
+local getMissile = require("entity/missile")
+
 
 local function getGameState()
     state = {}
@@ -10,6 +12,8 @@ local function getGameState()
     player = getPlayer()
     table.insert(state.entities, player)
     -- Constructor End
+    missile = getMissile() 
+    table.insert(state.entities, missile)
     
     function state:update(dt)
 
@@ -26,6 +30,10 @@ local function getGameState()
                     entity.dimension.width,
                     entity.dimension.height
                 )
+                love.graphics.setColor(255, 255, 255)
+            elseif entity.drawType == 'image' then
+
+                love.graphics.draw(entity.image, entity.position.x, entity.position.x)
             end
         end
     end

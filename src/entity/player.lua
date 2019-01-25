@@ -11,10 +11,7 @@ local function getPlayer()
 
     function player:update(dt)
     end
-
-    function player:draw()
-    end
-
+    
     return player
 end
 
