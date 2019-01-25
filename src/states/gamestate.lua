@@ -53,7 +53,7 @@ local function getGameState()
                 love.graphics.setColor(255, 255, 255)
             elseif entity.drawType == 'image' then
 
-                love.graphics.draw(entity.image, positionX, positionY, angle)
+                love.graphics.draw(entity.image, positionX, positionY, entity.dimension.width / entity.image:getWidth(), entity.dimension.height / entity.image:getWidth())
             end
         end
     end
