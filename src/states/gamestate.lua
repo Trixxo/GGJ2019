@@ -21,19 +21,19 @@ local function getGameState()
 
     function state:draw()
         for index, entity in pairs(self.entities) do
+            local positionX, positionY = entity.fixture:getBody():getPosition()
             if entity.drawType == 'rectangle' then 
                 love.graphics.setColor(255, 0, 0, 1)
                 love.graphics.rectangle(
                     'fill', 
-                    entity.position.x,
-                    entity.position.y,
+                    positionX,
+                    positionY,
                     entity.dimension.width,
                     entity.dimension.height
                 )
                 love.graphics.setColor(255, 255, 255)
             elseif entity.drawType == 'image' then
 
-                local positionX, positionY = entity.fixture:getBody():getPosition()
                 love.graphics.draw(entity.image, positionX, positionY)
             end
         end
