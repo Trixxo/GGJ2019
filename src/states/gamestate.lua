@@ -7,7 +7,7 @@ local function getGameState()
 
     math.randomseed(os.time())
 
-    spawntime = 5 
+    spawntime = 5
     spawncounter = 0
 
     state.renderBelow = false
@@ -17,7 +17,7 @@ local function getGameState()
     player = getPlayer()
     table.insert(state.entities, player)
     -- Constructor End
-    missile = getMissile(40, 60) 
+    missile = getMissile(40, 60)
     table.insert(state.entities, missile)
 
     function state:update(dt)
