@@ -27,10 +27,10 @@ local function getGameState()
         if spawncounter > spawntime then
             randomspawn = {
                 x = math.random() * love.graphics.getWidth(),
-                y = math.random() * love.graphics.getHeight()
+                y = 100
             }
-            local new_missile = getMissile(randomspawn.x, 100)
-            print("spawning missile at ", randomspawn.x, 0)
+            local new_missile = getMissile(randomspawn.x, randomspawn.y)
+            print("spawning missile at ", randomspawn.x, randomspawn.y)
             table.insert(state.entities, new_missile)
             spawncounter = 0
 

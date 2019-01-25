@@ -1,7 +1,7 @@
 local function getExplosion(x,y)
     local explosion = {} 
 
-    explosion.dimension = {width = 50, height = 50}
+    explosion.dimension = {width = 100, height = 100}
     explosion.image = resources.images.explosion
     explosion.body = love.physics.newBody(world, x, y)
     explosion.drawType = 'image'
