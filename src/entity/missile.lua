@@ -9,7 +9,9 @@ local function getMissile(x, y)
     missile.drawType = 'image'
 
     function missile:update(dt)
-        missile.body:applyLinearImpulse(2, -50)
+        missile.body:applyLinearImpulse(10, -40)
+        local angle = missile.body:getAngle()
+        missile.body:applyTorque()
     end
 
     return missile
