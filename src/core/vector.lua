@@ -103,6 +103,8 @@ local function getVector(x, y)
 
         return false
     end
+
+    return vector
 end
 
 return getVector

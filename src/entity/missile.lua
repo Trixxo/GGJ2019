@@ -1,3 +1,5 @@
+local getVector = require("core/vector")
+
 local function getMissile(x, y)
     missile = {}
 
@@ -7,10 +9,12 @@ local function getMissile(x, y)
     missile.body = love.physics.newBody(world, x, y, "dynamic")
     missile.fixture = love.physics.newFixture(missile.body, missile.shape, 1)
     missile.drawType = 'image'
+    missile.body:setAngle(-math.pi/2)
 
     function missile:update(dt)
-        missile.body:applyLinearImpulse(10, -40)
         local angle = missile.body:getAngle()
+        local acceleration = getVector(2700*dt, 0):rotate(angle)
+        missile.body:applyLinearImpulse(acceleration.x, acceleration.y)
         missile.body:applyTorque(70)
     end
 
