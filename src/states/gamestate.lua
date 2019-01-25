@@ -50,7 +50,7 @@ local function getGameState()
                 love.graphics.setColor(255, 0, 0, 1)
                 love.graphics.rectangle(
                     'fill',
-                    positionX,
+                    positionX-entity.dimension.width/2,
                     positionY,
                     entity.dimension.width,
                     entity.dimension.height
