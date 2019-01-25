@@ -11,7 +11,7 @@ local function getMissile(x, y)
     function missile:update(dt)
         missile.body:applyLinearImpulse(10, -40)
         local angle = missile.body:getAngle()
-        missile.body:applyTorque()
+        missile.body:applyTorque(70)
     end
 
     return missile
