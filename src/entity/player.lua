@@ -5,8 +5,8 @@ local function getPlayer()
     player.body = love.physics.newBody(world)
     player.body:setMass(50)
     player.body:setPosition(100,100)
-    local shape = love.physics.newRectangleShape(player.dimension.width, player.dimension.height)
-    player.fixture = love.physics.newFixture(player.body, shape, 1)
+    player.shape = love.physics.newRectangleShape(player.dimension.width, player.dimension.height)
+    player.fixture = love.physics.newFixture(player.body, player.shape, 1)
     player.drawType = 'rectangle'
 
     function player:update(dt)

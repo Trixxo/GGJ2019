@@ -22,6 +22,7 @@ local function getGameState()
     function state:draw()
         for index, entity in pairs(self.entities) do
             local positionX, positionY = entity.body:getPosition()
+            local angle = entity.body:getAngle()
             if entity.drawType == 'rectangle' then 
                 love.graphics.setColor(255, 0, 0, 1)
                 love.graphics.rectangle(
@@ -34,7 +35,7 @@ local function getGameState()
                 love.graphics.setColor(255, 255, 255)
             elseif entity.drawType == 'image' then
 
-                love.graphics.draw(entity.image, positionX, positionY)
+                love.graphics.draw(entity.image, positionX, positionY, angle)
             end
         end
     end
