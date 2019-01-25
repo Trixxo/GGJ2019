@@ -9,7 +9,3 @@ function equals(a, b)
     return equal
 end
 
-function relation()
-    local x = set.settings.resolution[1]/1920
-    return x
-end
