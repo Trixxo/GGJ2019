@@ -29,6 +29,9 @@ local function getGameState()
         else
             spawncounter = spawncounter + dt
         end
+        for index, entity in pairs(self.entities) do
+            entity:update(dt)
+        end
 
     end
 

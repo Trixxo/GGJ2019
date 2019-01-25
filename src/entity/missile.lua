@@ -9,6 +9,7 @@ local function getMissile(x, y)
     missile.drawType = 'image'
 
     function missile:update(dt)
+        missile.body:applyLinearImpulse(2, -50)
     end
 
     return missile
