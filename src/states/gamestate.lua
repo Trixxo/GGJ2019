@@ -1,5 +1,6 @@
 local getPlayer = require("entity/player")
 local getMissile = require("entity/missile")
+local getGround = require("entity/ground")
 
 
 local function getGameState()
@@ -16,9 +17,10 @@ local function getGameState()
     -- Constructor
     player = getPlayer()
     table.insert(state.entities, player)
+
+    ground = getGround()
+    table.insert(state.entities, ground)
     -- Constructor End
-    missile = getMissile(40,60) 
-    table.insert(state.entities, missile)
     
     function state:update(dt)
 
