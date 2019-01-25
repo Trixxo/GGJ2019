@@ -58,11 +58,13 @@ local function getGameState()
             elseif entity.drawType == 'image' then
                 love.graphics.draw(
                     entity.image,
-                    positionX - entity.image:getWidth() / 2,
-                    positionY - entity.image:getHeight() / 2,
-                    angle
-                    --entity.dimension.width / entity.image:getWidth(),
-                    --entity.dimension.height / entity.image:getWidth()
+                    positionX,
+                    positionY,
+                    angle,
+                    entity.dimension.width / entity.image:getWidth(),
+                    entity.dimension.height / entity.image:getHeight(),
+                    entity.image:getWidth() / 2,
+                    entity.image:getHeight() / 2
                 )
             end
         end
