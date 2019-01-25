@@ -3,8 +3,8 @@ local getStackHelper = require("core/statestack")
 local getGameState = require("states/gamestate")
 
 world = love.physics.newWorld(10, 5, true)
-stateStack = getStackHelper()
 resources = getResources()
+stack = getStackHelper()
 
 function love.load()
     resources:load()
@@ -14,9 +14,9 @@ function love.load()
 end
 
 function love.update(dt)
-    stateStack:current():draw()
+    stack:current():update(dt)
 end
 
 function love.draw()
-    stateStack:current():draw()
+    stack:current():draw()
 end
