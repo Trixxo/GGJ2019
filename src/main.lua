@@ -2,7 +2,7 @@ local getResources = require("core/resources")
 local getStackHelper = require("core/statestack")
 local getGameState = require("states/gamestate")
 
-world = love.physics.newWorld(10, 5, true)
+world = love.physics.newWorld(0, 981, true)
 resources = getResources()
 stack = getStackHelper()
 
@@ -15,6 +15,7 @@ function love.load()
 end
 
 function love.update(dt)
+    world:update(dt)
     stack:current():update(dt)
 end
 
