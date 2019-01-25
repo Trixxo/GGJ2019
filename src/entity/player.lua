@@ -9,6 +9,13 @@ local function getPlayer()
     player.drawType = 'rectangle'
 
     function player:update(dt)
+        
+        if love.keyboard.isDown("a") then
+            self.body:applyLinearImpulse(-50,0)
+        end
+        if love.keyboard.isDown("d") then
+            self.body:applyLinearImpulse(50,0)
+        end
     end
 
     function player:keypressed(key, scancode, isrepeat)
@@ -16,10 +23,6 @@ local function getPlayer()
             self.body:applyLinearImpulse(0,-2000)
         elseif scancode == "s" then
             self.body:applyLinearImpulse(0,2000)
-        elseif scancode == "a" then
-            self.body:applyLinearImpulse(-500,0)
-        elseif scancode== "d" then
-            self.body:applyLinearImpulse(500,0)
         end
     end
 
