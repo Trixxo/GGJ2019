@@ -7,7 +7,7 @@ local function getGameState()
 
     math.randomseed(os.time())
 
-    spawntime = 5
+    spawntime = 1
     spawncounter = 0
 
     state.renderBelow = false
@@ -22,8 +22,11 @@ local function getGameState()
 
     function state:update(dt)
         if spawncounter > spawntime then
-            randomspawn = {x = math.random() * love.graphics.getWidth(), y = math.random() * love.graphics.getHeight() }
-            new_missile = getMissile(randomspawn.x, 0)
+            randomspawn = {
+              x = math.random() * love.graphics.getWidth(),
+              y = math.random() * love.graphics.getHeight()
+            }
+            local new_missile = getMissile(randomspawn.x, 100)
             print("spawning missile at ", randomspawn.x, 0)
             table.insert(state.entities, new_missile)
             spawncounter = 0
@@ -50,13 +53,13 @@ local function getGameState()
                 )
                 love.graphics.setColor(255, 255, 255)
             elseif entity.drawType == 'image' then
-
                 love.graphics.draw(entity.image, positionX, positionY, angle)
             end
         end
     end
 
     function state:shutdown() end
+
     function state:keypressed(key, scancode, isrepeat)
         for index, entity in pairs(self.entities) do
             if entity.keypressed ~= nil then
@@ -64,8 +67,11 @@ local function getGameState()
             end
         end
     end
+
     function state:keyreleased(key, scancode) end
+
     function state:mousepressed(x, y, key) end
+
     function state:load() end
 
     return state

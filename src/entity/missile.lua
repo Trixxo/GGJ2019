@@ -1,7 +1,7 @@
 local getVector = require("core/vector")
 
 local function getMissile(x, y)
-    missile = {}
+    local missile = {}
 
     missile.dimension = {width = 50, height = 50}
     missile.image = resources.images.missile
@@ -14,8 +14,8 @@ local function getMissile(x, y)
     function missile:update(dt)
         local angle = missile.body:getAngle()
         local acceleration = getVector(2700*dt, 0):rotate(angle)
-        missile.body:applyLinearImpulse(acceleration.x, acceleration.y)
-        missile.body:applyTorque(70)
+        self.body:applyLinearImpulse(acceleration.x, acceleration.y)
+        self.body:applyTorque(70)
     end
 
     return missile
