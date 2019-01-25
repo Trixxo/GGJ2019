@@ -21,9 +21,8 @@ local function getGameState()
     ground = getGround()
     table.insert(state.entities, ground)
     -- Constructor End
-    
-    function state:update(dt)
 
+    function state:update(dt)
         if spawncounter > spawntime then
             randomspawn = {x = math.random() * love.graphics.getWidth(), y = math.random() * love.graphics.getHeight() }
             new_missile = getMissile(randomspawn.x, 0)
@@ -34,19 +33,20 @@ local function getGameState()
             spawncounter = spawncounter + dt
         end
         for index, entity in pairs(self.entities) do
-            entity:update(dt)
+            if entity.update ~= nil then 
+                entity:update(dt)
+            end
         end
-
     end
 
     function state:draw()
         for index, entity in pairs(self.entities) do
             local positionX, positionY = entity.body:getPosition()
             local angle = entity.body:getAngle()
-            if entity.drawType == 'rectangle' then 
+            if entity.drawType == 'rectangle' then
                 love.graphics.setColor(255, 0, 0, 1)
                 love.graphics.rectangle(
-                    'fill', 
+                    'fill',
                     positionX,
                     positionY,
                     entity.dimension.width,
@@ -61,11 +61,11 @@ local function getGameState()
     end
 
     function state:shutdown() end
-    function state:keypressed(key, scancode, isrepeat) 
+    function state:keypressed(key, scancode, isrepeat)
         for index, entity in pairs(self.entities) do
             if entity.keypressed ~= nil then
                 entity:keypressed(key, scancode, isrepeat)
-            end 
+            end
         end
     end
     function state:keyreleased(key, scancode) end
