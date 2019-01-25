@@ -10,7 +10,7 @@ function love.load()
     resources:load()
 
     local gameState = getGameState()
-    stateStack:push(gameState)
+    stack:push(gameState)
 end
 
 function love.update(dt)
@@ -19,4 +19,12 @@ end
 
 function love.draw()
     stack:current():draw()
+end
+
+function love.keypressed(key, scancode, isrepeat)
+	stack:current():keypressed(key, scancode, isrepeat)
+end
+
+function love.keyreleased(key, scancode)
+	stack:current():keyreleased(key, scancode)
 end

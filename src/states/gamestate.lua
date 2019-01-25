@@ -31,8 +31,8 @@ local function getGameState()
     end
 
     function state:shutdown() end
-    function state:keypressed(key, isrepeat) end
-    function state:keyreleased(key, isrepeat) end
+    function state:keypressed(key, scancode, isrepeat) end
+    function state:keyreleased(key, scancode) end
     function state:mousepressed(x, y, key) end
     function state:load() end
 
