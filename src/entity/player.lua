@@ -218,7 +218,6 @@ local function getPlayer()
                     self:removeJoint()
                 end
             end
->>>>>>> 21856ce841698399a720af55745e49cbd7d62754
         end
     end
 
