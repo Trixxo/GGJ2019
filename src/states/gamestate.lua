@@ -14,6 +14,10 @@ local missilePlayerCollision = require("collisions/missileplayer")
 local playerGroundCollision = require("collisions/playerground")
 
 world = nil
+mode = "normal"
+-- mode = "vim"
+-- mode = "worms"
+
 
 local function getGameState()
     local state = {}
