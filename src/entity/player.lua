@@ -60,15 +60,24 @@ local function getPlayer()
             music.queueEvent("jump")
         elseif scancode == "s" then
             self.body:applyLinearImpulse(0,2000)
+        elseif scancode == "space" and self.joint ~= nil then
+            self.joint:destroy()
+            self.joint = nil
         end
     end
 
     function player:connectToMissile(missile)
+        if self.joint ~= nil then
+            if not self.joint:isDestroyed() then
+                self.joint:destroy()
+            end
+        end
         local joint = love.physics.newDistanceJoint(self.body, missile.body, self.body:getX(), self.body:getY(), missile.body:getX(), missile.body:getY())
         joint:setLength(50)
         joint:setDampingRatio(2)
         joint:setFrequency(1)
         self.joint = joint
+
     end
 
     function player:mousepressed(x, y, button , istouch, presses)
