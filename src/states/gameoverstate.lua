@@ -1,12 +1,38 @@
+local getExplosion = require("entity/explosion")
+
 local function getGameOverState()
     local state = {}
     -- Constructor
 
     state.escapeHasBeenReleased = false
     state.canvas = love.graphics.newCanvas()
+    state.explosions = {}
+    state.explosionTimer = 0.2
     -- Constructor End
 
     function state:update(dt)
+        -- Create explosions
+        self.explosionTimer = self.explosionTimer - dt
+        if self.explosionTimer <= 0 then 
+            local x = math.random(0,settings.resolution.width)
+            local y = math.random(0, settings.resolution.height)
+            local newExplosion = getExplosion(x, y)
+            table.insert(self.explosions, newExplosion)
+            self.explosionTimer = 0.2
+        end
+
+        -- Remove destroyed Particle Systems 
+        for i = #self.explosions, 1, -1 do
+            if self.explosions[i].destroyed then
+                self.explosions[i].particleSystem:stop()
+                table.remove(self.explosions, i)
+            end
+        end
+
+        -- Update explosions
+        for index, explosion in pairs(self.explosions) do
+            explosion:update(dt)
+        end
     end
 
     function state:draw()
@@ -15,6 +41,12 @@ local function getGameOverState()
         local x = settings.resolution.width/2 - text:getWidth()/2
         local y = settings.resolution.height/2 - text:getHeight()/2
         love.graphics.draw(text, x, y)
+
+        -- Draw explosions
+        for index, explosion in pairs(self.explosions) do
+            local emitterX, emitterY = explosion:getEmitterPosition()
+            love.graphics.draw(explosion.particleSystem, emitterX, emitterY)
+        end
     end
 
     function state:shutdown() end

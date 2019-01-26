@@ -32,6 +32,7 @@ local function getPlayer()
     player.joint = nil
     player.missile = nil
     player.grapplingToMissile = false -- New missile we just connected to. Needed for drawing the grappling hook
+    player.jumpCd = 0
 
     function player:draw()
         self:drawGrapplingHook()
@@ -40,6 +41,7 @@ local function getPlayer()
 
     function player:update(dt)
         self:computeGrapplingHook(dt)
+        print (self.jumpCd)
 
         if self.missileToConnect ~= nil then
             self:connectToMissile(self.missileToConnect)
@@ -50,6 +52,12 @@ local function getPlayer()
         local mouseX, mouseY = love.mouse.getPosition()
         local lvx, lvy = self.body:getLinearVelocity()
         mouseX = mouseX + camera.x
+        if player.jumpCd <= 0 then
+            player.jumpCd = 0
+        end
+        if player.jumpCd > 1 then
+            player.jumpCd = player.jumpCd - dt * 0.2
+        end
         local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
             local entity = fixture:getUserData()
             if entity.name == "missile" and entity ~= self.missile then
@@ -173,6 +181,7 @@ local function getPlayer()
         joint:setFrequency(1)
         self.joint = joint
         self.missile = missile
+        self.jumpCd = 0
     end
 
     function player:removeJoint()
@@ -191,10 +200,13 @@ local function getPlayer()
     function player:keypressed(key, scancode, isrepeat)
         if mode == "normal" then
             if scancode == "w" or scancode == "space" then
+                if self.jumpCd <= 2 then
+                    xv, yv = self.body:getLinearVelocity()
+                    self.body:setLinearVelocity(xv, -600)
+                    player.jumpCd = player.jumpCd + 1
+                end
                 self:removeJoint()
 
-                xv, yv = self.body:getLinearVelocity()
-                self.body:setLinearVelocity(xv, -600)
                 music.queueEvent("jump")
             elseif scancode == "s" then
                 self.body:applyLinearImpulse(0,2000)
@@ -206,6 +218,7 @@ local function getPlayer()
                     self:removeJoint()
                 end
             end
+>>>>>>> 21856ce841698399a720af55745e49cbd7d62754
         end
     end
 
