@@ -22,7 +22,7 @@ local function getMissileSpawner()
             table.insert(state.entities, new_missile)
 
             self.missile_count = self.missile_count + 1
-            music.bpm = music.initial_bpm + self.missile_count
+            -- music.bpm = music.initial_bpm + self.missile_count
             self.spawncounter = 0
 
         else
