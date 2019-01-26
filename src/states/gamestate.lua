@@ -129,16 +129,36 @@ local function getGameState()
     function state:draw()
         -- Render everything to the canvas.
         love.graphics.setCanvas(state.canvas)
-        love.graphics.clear()
+        love.graphics.clear(0.0,0.0,0.0,1.0)
 
         -- Background
-        love.graphics.setColor(1.0,0.0,0.0)
-        self:renderParallaxBackground(resources.images.backgroundCity, 0.5, 0.5, 500)
-        love.graphics.setColor(0.0,1.0,0.0)
-        self:renderParallaxBackground(resources.images.backgroundCity, 0.9, 0.9, 0)
-        love.graphics.setColor(0.0,0.0,1.0)
-        self:renderParallaxBackground(resources.images.backgroundCity, 0.9, 0.9, 0)
-        love.graphics.setColor(1.0,1.0,1.0)
+        local posY, scale
+
+        local resource = resources.images.backgroundCity
+        local resourceHeight = resource:getPixelHeight()
+        local screenWidth = settings.resolution.width
+        local screenHeight = settings.resolution.height
+        local maxY = screenHeight - resourceHeight
+
+        scale = 0.4
+        love.graphics.setColor(0.1, 0.1, 0.1)
+        self:renderParallaxBackground(resource, scale, 0.8, maxY)
+        love.graphics.rectangle(
+            'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
+
+        scale = 0.65
+        love.graphics.setColor(0.3, 0.3, 0.3)
+        self:renderParallaxBackground(resource, scale, 0.4, maxY)
+        love.graphics.rectangle(
+            'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
+
+        scale = 1.0
+        love.graphics.setColor(0.5, 0.5, 0.5)
+        self:renderParallaxBackground(resource, scale, 0.0, maxY)
+        love.graphics.rectangle(
+            'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
+
+        love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
 
         local mouseX, mouseY = love.mouse.getPosition()
         mouseX = mouseX + camera.x
