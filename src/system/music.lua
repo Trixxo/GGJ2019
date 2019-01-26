@@ -21,19 +21,25 @@ function music.load()
         tick_1 = {
             beatFrequency = 2,
             soundData = love.sound.newSoundData("data/audio/crab_tick_single.wav"),
-            enabled = true
             },
         tick_2 = {
             beatFrequency = 1,
             offset = 1/2,
             soundData = love.sound.newSoundData("data/audio/crab_tick_double.wav"),
-            enabled = true
         },
         tick_3 = {
             beatFrequency = 4,
             offset = 1/2,
             soundData = love.sound.newSoundData("data/audio/crab_tick_double.wav"),
             enabled = true
+        },
+        tick_triple = {
+            beatFrequency = 1,
+            soundData = love.sound.newSoundData("data/audio/crab_tick_triple.wav"),
+        },
+        grappling = {
+            beatFrequency = 1/4,
+            soundData = love.sound.newSoundData("data/audio/grappling_sound.wav"),
         },
         hihat = {
             beatFrequency = 2,
