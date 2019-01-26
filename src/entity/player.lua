@@ -6,6 +6,7 @@ local function getPlayer()
     player.name = 'player'
     player.drawType = 'rectangle'
     player.destroyed = false
+    player.missileToConnect = nil
 
     player.dimension = {width = 50, height = 50}
     player.shape = love.physics.newRectangleShape(player.dimension.width, player.dimension.height)
@@ -21,6 +22,9 @@ local function getPlayer()
     player.joint = nil
 
     function player:update(dt)
+        if self.missileToConnect ~= nil then
+            self:connectToMissile(self.missileToConnect)
+        end
         local playerX, playerY = self.body:getPosition()
         local mouseX, mouseY = love.mouse.getPosition()
         local lvx, lvy = self.body:getLinearVelocity()
@@ -69,6 +73,9 @@ local function getPlayer()
     end
 
     function player:connectToMissile(missile)
+        if missile.fixture:isDestroyed() then
+            return
+        end
         if self.joint ~= nil then
             if not self.joint:isDestroyed() then
                 self.joint:destroy()
