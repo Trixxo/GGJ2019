@@ -3,12 +3,12 @@ local getStackHelper = require("core/statestack")
 local getGameState = require("states/gamestate")
 
 world = love.physics.newWorld(0, 981, true)
-particleSystem = love.graphics.newParticleSystem
 resources = getResources()
 stack = getStackHelper()
 
 function love.load()
     resources:addImage("missile", "data/missile.png")
+    resources:addImage("exhaust", "data/FIRE.png")
     resources:load()
 
     local gameState = getGameState()

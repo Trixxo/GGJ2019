@@ -36,7 +36,7 @@ local function getGameState()
             spawncounter = spawncounter + dt
         end
         for index, entity in pairs(self.entities) do
-            if entity.update ~= nil then 
+            if entity.update ~= nil then
                 entity:update(dt)
             end
         end
@@ -58,6 +58,10 @@ local function getGameState()
                 love.graphics.setColor(255, 255, 255)
             elseif entity.drawType == 'image' then
                 love.graphics.draw(entity.image, positionX, positionY, angle)
+            end
+
+            if entity.particleSystem then
+                love.graphics.draw(entity.particleSystem, positionX, positionY, angle)
             end
         end
     end
