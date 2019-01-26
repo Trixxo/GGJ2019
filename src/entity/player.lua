@@ -8,6 +8,7 @@ local function getPlayer()
     player.image = resources.images.player
     player.destroyed = false
     player.missileToConnect = nil
+    player.grapplingCooldown = 0
 
     player.dimension = {width = 50, height = 60}
     player.shape = love.physics.newCircleShape(player.dimension.width / 2)
@@ -40,6 +41,9 @@ local function getPlayer()
             self:connectToMissile(self.missileToConnect)
             self.missileToConnect = nil
         end
+
+        self.grapplingCooldown = self.grapplingCooldown - dt
+
         local playerX, playerY = self.body:getPosition()
         local mouseX, mouseY = love.mouse.getPosition()
         local lvx, lvy = self.body:getLinearVelocity()
@@ -48,20 +52,23 @@ local function getPlayer()
             local entity = fixture:getUserData()
             if entity.name == "missile" and entity ~= self.missile then
                 self:connectToMissile(entity)
+                self.grapplingCooldown = 2
                 return 0
             end
 
             return 1 -- Continues with ray cast through all shapes.
         end
 
-        if love.mouse.isDown(1) then
-            world:rayCast(
-                playerX,
-                playerY,
-                mouseX,
-                mouseY,
-                worldRayCastCallback
-            )
+        if self.grapplingCooldown <= 0 then
+            if love.mouse.isDown(1) then
+                world:rayCast(
+                    playerX,
+                    playerY,
+                    mouseX,
+                    mouseY,
+                    worldRayCastCallback
+                )
+            end
         end
 
         local maxSpeed = 500

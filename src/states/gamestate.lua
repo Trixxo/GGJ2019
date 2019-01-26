@@ -105,7 +105,7 @@ local function getGameState()
         end
         if isTargetSet and percent < 1 then
             percent = percent + dt * 5
-            print (percent)
+            -- print (percent)
         end
         if percent > 1 then
             percent = 0
