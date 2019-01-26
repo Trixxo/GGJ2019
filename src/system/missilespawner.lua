@@ -1,4 +1,5 @@
 local getMissile = require("entity/missile")
+local camera = require("core/camera")
 
 local function getMissileSpawner()
     missileSpawner = {}
@@ -11,8 +12,8 @@ local function getMissileSpawner()
         if self.spawncounter > self.spawntime then
             state = stack:current()
             local randomspawn = {
-                x = math.random() * love.graphics.getWidth(),
-                y = 100
+                x = camera.x - 100,
+                y = math.random() * 300
             }
             local new_missile = getMissile(randomspawn.x, randomspawn.y)
             -- print("Spawning missile at ", randomspawn.x, randomspawn.y)

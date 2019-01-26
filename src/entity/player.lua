@@ -21,6 +21,7 @@ local function getPlayer()
     function player:update(dt)
         local playerX, playerY = self.body:getPosition()
         local mouseX, mouseY = love.mouse.getPosition()
+        local lvx, lvy = self.body:getLinearVelocity()
         mouseX = mouseX + camera.x
         local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
             local entity = fixture:getUserData()
@@ -42,12 +43,15 @@ local function getPlayer()
             )
         end
 
-        if love.keyboard.isDown("a") then
-            self.body:applyLinearImpulse(-50,0)
+        if math.abs(lvx) < 100 then
+            if love.keyboard.isDown("a") then
+                self.body:applyLinearImpulse(-50,0)
+            end
+            if love.keyboard.isDown("d") then
+                self.body:applyLinearImpulse(50,0)
+            end
         end
-        if love.keyboard.isDown("d") then
-            self.body:applyLinearImpulse(50,0)
-        end
+
     end
 
     function player:keypressed(key, scancode, isrepeat)
@@ -61,7 +65,7 @@ local function getPlayer()
 
     function player:connectToMissile(missile)
         local joint = love.physics.newDistanceJoint(self.body, missile.body, self.body:getX(), self.body:getY(), missile.body:getX(), missile.body:getY())
-        joint:setLength(5)
+        joint:setLength(50)
         joint:setDampingRatio(2)
         joint:setFrequency(1)
         self.joint = joint

@@ -60,7 +60,7 @@ local function getGameState()
             end
         end
 
-        camera.x = playerX - 100
+        camera.x = playerX - 200
     end
 
     function state:draw()
