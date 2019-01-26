@@ -23,7 +23,7 @@ local function getBgParticle(x)
     end
 
     function smoke:getEmitterPosition()
-        return self.x, 900
+        return self.x, settings.resolution.height
     end
 
     return smoke
