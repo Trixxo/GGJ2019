@@ -40,26 +40,34 @@ local function getGameState()
             table.remove(self.entitiesToSpawn, index)
         end
 
-        -- Call update logic on entities
-        for index, entity in ipairs(self.entities) do
-            -- Remove all destroyed entities
-            if entity.destroyed then
+        -- Remove all destroyed entities
+        for i = #self.entities, 1, -1 do
+            if self.entities[i].destroyed then
                 -- print("Destroying " .. entity.name .. " with key " .. index)
-                if entity.body ~= nil then
-                    entity.body:destroy()
+                if self.entities[i].body ~= nil then
+                    self.entities[i].body:destroy()
                 end
-                table.remove(self.entities, index)
+                table.remove(self.entities, i)
+            end
+        end
 
-            -- Call update on all entities
-            else
-                if entity.update ~= nil then 
-                    entity:update(dt)
-                end
+        -- Call update on all entities
+        for index, entity in ipairs(self.entities) do
+            if entity.update ~= nil then 
+                entity:update(dt)
             end
         end
     end
 
     function state:draw()
+        local mouseX, mouseY = love.mouse.getPosition()
+        local playerX, playerY = player.body:getPosition()
+
+        if love.mouse.isDown(1) then
+            love.graphics.setColor(0, 255, 0, 1)
+            love.graphics.line(mouseX, mouseY, playerX, playerY)
+        end
+
         for index, entity in pairs(self.entities) do
             local positionX, positionY = entity.body:getPosition()
             local angle = entity.body:getAngle()
@@ -73,7 +81,8 @@ local function getGameState()
                     entity.dimension.width,
                     entity.dimension.height
                 )
-                love.graphics.setColor(255, 255, 255)
+            love.graphics.setColor(255, 255, 255)
+
 
             -- Draw all entities with images
             elseif entity.drawType == 'image' then
@@ -108,7 +117,6 @@ local function getGameState()
 
     function state:collide(fixtureA, fixtureB, key)
         missileGroundCollision(fixtureA, fixtureB, key)
-
     end
 
     function state:load() end

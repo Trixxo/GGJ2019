@@ -13,8 +13,31 @@ local function getPlayer()
     player.fixture = love.physics.newFixture(player.body, player.shape, 1)
     player.fixture:setUserData(player)
 
+    player.joint = nil
+
     function player:update(dt)
-        
+        local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
+            local entity = fixture:getUserData()
+            if entity.name == "missile" then
+                player.body:applyLinearImpulse(0, -150)
+                return 0
+            end
+            
+            return 1 -- Continues with ray cast through all shapes.
+        end
+        local playerX, playerY = self.body:getPosition()
+        local mouseX, mouseY = love.mouse.getPosition()
+
+        if love.mouse.isDown(1) then
+            world:rayCast(
+                playerX,
+                playerY,
+                mouseX,
+                mouseY,
+                worldRayCastCallback
+            )
+        end
+
         if love.keyboard.isDown("a") then
             self.body:applyLinearImpulse(-50,0)
         end
@@ -29,6 +52,14 @@ local function getPlayer()
         elseif scancode == "s" then
             self.body:applyLinearImpulse(0,2000)
         end
+    end
+
+    function player:connectToMissile(missile)
+        local joint = love.physics.newDistanceJoint(self.body, missile.body, self.body:getX(), self.body:getY(), missile.body:getX(), missile.body:getY())
+        joint:setLength(200)
+        joint:setDampingRatio(2)
+        joint:setFrequency(1)
+        self.joint = joint
     end
 
     return player
