@@ -13,6 +13,7 @@ function love.load()
     resources:addImage("explosion", "data/explosion.png")
 
     resources:addSound("kick", "data/audio/fantomenkick.wav")
+    resources:addSound("hihat", "data/audio/hihat.wav")
     resources:load()
     world:setCallbacks(collide)
 

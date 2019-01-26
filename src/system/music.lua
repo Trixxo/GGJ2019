@@ -16,6 +16,11 @@ function music.load()
             beatFrequency = 1,
             source = resources.sounds.kick,
             alwaysOn = true
+        },
+        hihat = {
+            beatFrequency = 2,
+            source = resources.sounds.hihat,
+            alwaysOn = true
         }
     }
 
@@ -37,7 +42,6 @@ end
 function music.update(dt)
     timeSinceLastTick = timeSinceLastTick + dt
     if timeSinceLastTick >= beatLength / tickFraction then
-        currentTick = currentTick + 1
         timeSinceLastTick = 0
 
         music.tick()
@@ -51,24 +55,21 @@ end
 function music.tick()
     local soundsPlayed = {}
     local newSounds = {}
+
+    currentTick = currentTick + 1
+
     for queueIndex, sound in ipairs(eventQueue) do
         if shouldSoundPlay(currentTick, sound.beatFrequency) then
             love.audio.play(sound.source)
 
-            if sound.alwaysOn then
-                table.insert(newSounds, "kick")
+            if not sound.alwaysOn then
+                table.insert(soundsPlayed, queueIndex)
             end
-
-            table.insert(soundsPlayed, queueIndex)
         end
     end
 
     for _, queueIndex in ipairs(soundsPlayed) do
         table.remove(eventQueue, queueIndex)
-    end
-
-    for _, name in ipairs(newSounds) do
-        music.queueEvent(name)
     end
 end
 
