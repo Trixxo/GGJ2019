@@ -34,6 +34,11 @@ function love.load()
     for i = 1, leadSamples, 1 do
         resources:addSound("lead" .. i, "data/audio/lead_" .. i .. ".wav")
     end
+
+    leadSamples = 2
+    for i = 1, leadSamples, 1 do
+      resources:addSound("bass" .. i, "data/audio/bass_" .. i .. ".wav")
+    end
     resources:load()
 
     local gameState = getGameState()

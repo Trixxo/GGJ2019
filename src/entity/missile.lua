@@ -9,9 +9,9 @@ local function getMissile(x, y)
     missile.categoryTimer = 2
     missile.resetCategory = false
     missile.destroyed = false
-    missile.flightTime = math.random(7,10)
+    missile.flightTime = math.random(7, 10)
 
-    missile.dimension = {width = 70, height = 20}
+    missile.dimension = {width = 70, height = 24}
     missile.image = resources.images.missile
     missile.shape = love.physics.newRectangleShape(missile.dimension.width, missile.dimension.height)
 
@@ -28,31 +28,29 @@ local function getMissile(x, y)
 
     -- Particle emitter settings.
     missile.particleSystem = love.graphics.newParticleSystem(resources.images.exhaust)
-    missile.particleSystem:setSizes(0.06, 0.1)
+    missile.particleSystem:setSizes(0.08, 0.12)
     missile.particleSystem:setSizeVariation(0.5)
     missile.particleSystem:setRotation(math.pi / 2)
     missile.particleSystem:setColors(1, 0.7, 0.5, 0.9,
                                      0.5, 0.2, 0.2, 0)
 
-    missile.particleSystem:setParticleLifetime(0.5, 0.7)
+    missile.particleSystem:setParticleLifetime(0.4, 0.5)
     missile.particleSystem:setEmissionRate(15)
 
-    missile.particleSystem:setEmissionArea('normal', 2, 2)
-
     missile.particleSystem:setDirection(math.pi)
-    missile.particleSystem:setSpeed(150, 250)
-    missile.particleSystem:setSpread(math.pi / 6)
+    missile.particleSystem:setSpeed(100, 150)
+    missile.particleSystem:setSpread(math.pi / 12)
 
     missile.particleSystem:start()
 
     function missile:getEmitterPosition()
         local positionX, positionY = self.body:getPosition()
-        local angle = self.body:getAngle()
-        local directionX = math.cos(angle)
-        local directionY = math.sin(angle)
-        local offsetX = positionX - 0.6 * directionX * self.dimension.width
-        local offsetY = positionY - 0.5 * directionY * self.dimension.width
-        return offsetX, offsetY
+        local offset = getVector(self.dimension.width * 0.7, -1)
+            :rotate(self.body:getAngle())
+        local particlePos = getVector(positionX, positionY)
+            :subtract(offset)
+
+        return particlePos.x, particlePos.y
     end
 
     function missile:update(dt)

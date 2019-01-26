@@ -49,7 +49,6 @@ local function getGameState()
     state.pausedOnCurrentPress = false
     local distX, distY = player.body:getPosition()
     local dist = 0
-    local isTargetSet = false
     local targetX, targetY = nil, nil
     local percent = 0
 
@@ -96,21 +95,6 @@ local function getGameState()
 
         local previousX = camera.x
         camera.x = math.max(playerX - 500, previousX)
-
-        if love.mouse.isDown(1) and not isTargetSet then
-            targetX, targetY = love.mouse.getPosition()
-            targetX = targetX + camera.x
-            targetY = targetY + camera.y
-            isTargetSet = true
-        end
-        if isTargetSet and percent < 1 then
-            percent = percent + dt * 5
-            -- print (percent)
-        end
-        if percent > 1 then
-            percent = 0
-            isTargetSet = false
-        end
     end
 
     function state:renderParallaxBackground(resource, scale, parallaxScale, posY)
@@ -164,14 +148,6 @@ local function getGameState()
         mouseX = mouseX + camera.x
 
         local playerX, playerY = player.body:getPosition()
-
-        if isTargetSet then
-            love.graphics.setColor(0.9, 0.3, 0.1, 1)
-            love.graphics.setLineWidth(3)
-            local distX , distY = targetX - playerX, targetY - playerY
-            love.graphics.line(playerX, playerY, playerX + percent * distX , playerY + percent * distY)
-            love.graphics.setColor(1, 1, 1, 1)
-        end
 
         for _, entity in ipairs(self.bgEntities) do
             local emitterX, emitterY = entity:getEmitterPosition()

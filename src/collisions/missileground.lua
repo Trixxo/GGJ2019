@@ -22,7 +22,10 @@ local function missileGroundCollision(fixtureA, fixtureB, key)
         table.insert(stack:current().entitiesToSpawn, explosion)
 
         stack:current():addExplosionDistortion(positionX, positionY)
-        music.queueEvent("explosion")
+        if positionX > camera.x - 100 and
+            positionX < camera.x + settings.resolution.width + 100 then
+            music.queueEvent("explosion")
+        end
     end
 end
 
