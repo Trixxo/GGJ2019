@@ -48,6 +48,9 @@ function love.draw()
 end
 
 function love.keypressed(key, scancode, isrepeat)
+    if key == "q" then
+        love.event.quit()
+    end
     stack:current():keypressed(key, scancode, isrepeat)
 end
 
