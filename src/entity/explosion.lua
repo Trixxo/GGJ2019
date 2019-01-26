@@ -10,6 +10,7 @@ local function getExplosion(x, y)
     explosion.particleSystem:setSizes(0.2, 0.7, 1.0)
     explosion.particleSystem:setSizeVariation(0.5)
     explosion.particleSystem:setSpread(math.pi*2)
+    explosion.particleSystem:setRotation(0, 2 * math.pi)
     explosion.particleSystem:setEmissionArea("uniform", 1, 1)
 
     explosion.particleSystem:setColors(1, 0.8, 0.45, 0.0,
