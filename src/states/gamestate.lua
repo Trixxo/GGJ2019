@@ -47,6 +47,11 @@ local function getGameState()
     table.insert(state.entities, ground)
 
     state.pausedOnCurrentPress = false
+    local distX, distY = player.body:getPosition()
+    local dist = 0
+    local isTargetSet = false
+    local targetX, targetY = nil, nil
+    local percent = 0
 
     -- Constructor End
 
@@ -54,6 +59,7 @@ local function getGameState()
         world:update(dt)
 
         local playerX, playerY = player.body:getPosition()
+        local mouseX, mouseY = love.mouse:getPosition()
 
         self.missileSpawner:update(dt)
         self.bgSpawner:update(dt)
@@ -89,6 +95,20 @@ local function getGameState()
         end
 
         camera.x = playerX - 200
+        if love.mouse.isDown(1) and not isTargetSet then
+            targetX, targetY = love.mouse.getPosition()
+            targetX = targetX + camera.x
+            targetY = targetY + camera.y
+            isTargetSet = true
+        end
+        if isTargetSet and percent < 1 then
+            percent = percent + dt * 5
+            print (percent)
+        end
+        if percent > 1 then
+            percent = 0
+            isTargetSet = false
+        end
     end
 
     function state:draw()
@@ -101,12 +121,15 @@ local function getGameState()
 
         local mouseX, mouseY = love.mouse.getPosition()
         mouseX = mouseX + camera.x
+
         local playerX, playerY = player.body:getPosition()
 
-        if love.mouse.isDown(1) then
+        if isTargetSet then
             love.graphics.setColor(0.9, 0.3, 0.1, 1)
             love.graphics.setLineWidth(3)
-            love.graphics.line(mouseX, mouseY, playerX, playerY)
+            local distX , distY = targetX - playerX, targetY - playerY
+            love.graphics.line(playerX, playerY, playerX + percent * distX , playerY + percent * distY) 
+            print (playerX, playerY, playerX + percent * distX , playerY + percent * distY) 
             love.graphics.setColor(1, 1, 1, 1)
         end
 
