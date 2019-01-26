@@ -100,8 +100,12 @@ local function getVector(x, y)
         if vector.isVector then
             return vector.x == self.x and vector.y == self.y
         end
-
+    
         return false
+    end
+
+    function vector:print()
+        print(self.x, self.y)
     end
 
     return vector

@@ -1,5 +1,8 @@
+local getVector = require("core/vector")
+
 local function getPlayer()
     local player = {}
+    local camera = require("core/camera")
     player.name = 'player'
     player.drawType = 'rectangle'
     player.destroyed = false
@@ -18,6 +21,7 @@ local function getPlayer()
     function player:update(dt)
         local playerX, playerY = self.body:getPosition()
         local mouseX, mouseY = love.mouse.getPosition()
+        mouseX = mouseX + camera.x
         local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
             local entity = fixture:getUserData()
             if entity.name == "missile" then
@@ -61,6 +65,19 @@ local function getPlayer()
         joint:setDampingRatio(2)
         joint:setFrequency(1)
         self.joint = joint
+    end
+
+    function player:mousepressed(x, y, button , istouch, presses)
+        if button == 1 then
+            local mouseVector = getVector(x, y)
+            local playerX, playerY = self.body:getPosition()
+            local playerVector = getVector(playerX, playerY)
+            local playerToMouseVector = mouseVector:subtract(playerVector)
+            local unitVector = playerToMouseVector:getUnit()
+            local impulseVector = getVector(1000, 1000)
+            impulseVector = unitVector:multiply(impulseVector)
+            self.body:applyLinearImpulse(impulseVector.x, impulseVector.y)
+        end
     end
 
     return player

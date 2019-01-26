@@ -1,5 +1,6 @@
 local getPlayer = require("entity/player")
 local getGround = require("entity/ground")
+local camera = require("core/camera")
 
 -- Game logic
 local getMissileSpawner = require("system/missilespawner")
@@ -29,6 +30,7 @@ local function getGameState()
     -- Constructor End
 
     function state:update(dt)
+        local playerX, playerY = player.body:getPosition()
 
         self.missileSpawner:update(dt)
 
@@ -57,10 +59,13 @@ local function getGameState()
                 entity:update(dt)
             end
         end
+
+        camera.x = playerX - 100
     end
 
     function state:draw()
         local mouseX, mouseY = love.mouse.getPosition()
+        mouseX = mouseX + camera.x
         local playerX, playerY = player.body:getPosition()
 
         if love.mouse.isDown(1) then
@@ -118,7 +123,13 @@ local function getGameState()
 
     function state:keyreleased(key, scancode) end
 
-    function state:mousepressed(x, y, key) end
+    function state:mousepressed(x, y, button, istouch, presses) 
+        for index, entity in pairs(self.entities) do
+            if entity.mousepressed ~= nil then
+                entity:mousepressed(x, y, button, istouch, presses)
+            end
+        end
+    end
 
     function state:collide(fixtureA, fixtureB, key)
         missileGroundCollision(fixtureA, fixtureB, key)
