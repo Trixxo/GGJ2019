@@ -50,10 +50,14 @@ local function getPlayer()
             )
         end
 
-        if lvx < 500 or lvx > 500 then
+        local maxSpeed = 500
+        if lvx > -maxSpeed then
             if love.keyboard.isDown("a") then
                 self.body:applyLinearImpulse(-50,0)
             end
+        end
+
+        if lvx < maxSpeed then
             if love.keyboard.isDown("d") then
                 self.body:applyLinearImpulse(50,0)
             end
