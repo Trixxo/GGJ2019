@@ -13,6 +13,8 @@ local function getPlayer()
     player.fixture = love.physics.newFixture(player.body, player.shape, 1)
     player.fixture:setUserData(player)
 
+    player.joint = nil
+
     function player:update(dt)
         local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
             local entity = fixture:getUserData()
@@ -50,6 +52,14 @@ local function getPlayer()
         elseif scancode == "s" then
             self.body:applyLinearImpulse(0,2000)
         end
+    end
+
+    function player:connectToMissile(missile)
+        local joint = love.physics.newDistanceJoint(self.body, missile.body, self.body:getX(), self.body:getY(), missile.body:getX(), missile.body:getY())
+        joint:setLength(200)
+        joint:setDampingRatio(2)
+        joint:setFrequency(1)
+        self.joint = joint
     end
 
     return player
