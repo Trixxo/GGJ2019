@@ -1,6 +1,7 @@
 local getPauseState = require("states/pausestate")
 local getPlayer = require("entity/player")
 local getGround = require("entity/ground")
+local getMissile = require("entity/missile")
 camera = require("core/camera")
 
 -- Game logic
@@ -54,6 +55,11 @@ local function getGameState()
     table.insert(state.entities, player)
     local ground = getGround()
     table.insert(state.entities, ground)
+
+    local missile = getMissile()
+    state.textGrapplingSystem:registerMissile(missile)
+    table.insert(state.entities, missile)
+    player:connectToMissile(missile)
 
     state.pausedOnCurrentPress = false
     local distX, distY = player.body:getPosition()

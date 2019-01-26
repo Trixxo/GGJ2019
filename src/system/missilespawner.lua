@@ -13,14 +13,14 @@ local function getMissileSpawner()
         if self.spawncounter > self.spawntime then
             state = stack:current()
             local randomspawn = {
-                x = camera.x + math.random(settings.resolution.width/5, settings.resolution.width - settings.resolution.width/5),
+                x = camera.x + math.random(settings.resolution.width/4, settings.resolution.width * 2),
                 y = math.random(-30, -10)
             }
             local new_missile = getMissile(randomspawn.x, randomspawn.y)
             -- print("Spawning missile at ", randomspawn.x, randomspawn.y)
             state.textGrapplingSystem:registerMissile(new_missile)
             table.insert(state.entities, new_missile)
-            
+
             self.missile_count = self.missile_count + 1
             music.bpm = music.initial_bpm + self.missile_count
             self.spawncounter = 0
