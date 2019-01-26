@@ -122,7 +122,13 @@ local function getGameState()
 
     function state:keyreleased(key, scancode) end
 
-    function state:mousepressed(x, y, key) end
+    function state:mousepressed(x, y, button, istouch, presses) 
+        for index, entity in pairs(self.entities) do
+            if entity.mousepressed ~= nil then
+                entity:mousepressed(x, y, button, istouch, presses)
+            end
+        end
+    end
 
     function state:collide(fixtureA, fixtureB, key)
         missileGroundCollision(fixtureA, fixtureB, key)

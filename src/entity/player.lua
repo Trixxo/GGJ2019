@@ -1,3 +1,5 @@
+local getVector = require("core/vector")
+
 local function getPlayer()
     local player = {}
     player.name = 'player'
@@ -61,6 +63,20 @@ local function getPlayer()
         joint:setDampingRatio(2)
         joint:setFrequency(1)
         self.joint = joint
+    end
+
+    function player:mousepressed(x, y, button , istouch, presses)
+        if button == 1 then
+            local mouseVector = getVector(x, y)
+            local playerX, playerY = self.body:getPosition()
+            local playerVector = getVector(playerX, playerY)
+            local playerToMouseVector = mouseVector:subtract(playerVector)
+            local unitVector = playerToMouseVector:getUnit()
+            local impulseVector = getVector(1000, 1000)
+            impulseVector = unitVector:multiply(impulseVector)
+            print(impulseVector:length())
+            self.body:applyLinearImpulse(impulseVector.x, impulseVector.y)
+        end
     end
 
     return player
