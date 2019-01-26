@@ -9,6 +9,8 @@ local function getPlayer()
     player.destroyed = false
     player.missileToConnect = nil
     player.grapplingCooldown = 0
+    player.grapplingTimeout = 2
+    player.grapp_ui_size = {x = 200, y = 10}
 
     player.dimension = {width = 50, height = 60}
     player.shape = love.physics.newCircleShape(player.dimension.width / 2)
@@ -33,6 +35,8 @@ local function getPlayer()
 
     function player:draw()
         self:drawGrapplingHook()
+
+        self:drawGrapplingUI()
     end
 
     function player:update(dt)
@@ -52,7 +56,7 @@ local function getPlayer()
             if entity.name == "missile" and entity ~= self.missile then
                 self.grapplingToMissile = true
                 self:connectToMissile(entity)
-                self.grapplingCooldown = 2
+                self.grapplingCooldown = self.grapplingTimeout
                 return 0
             end
 
@@ -142,6 +146,15 @@ local function getPlayer()
                 love.graphics.line(playerX, playerY, missileX, missileY)
             end
         end
+    end
+    
+    function player:drawGrapplingUI()
+        love.graphics.rectangle("line", camera.x+100, camera.y+100, 
+            self.grapp_ui_size.x, self.grapp_ui_size.y)
+        love.graphics.print("grappling hook", camera.x+100, camera.y+80)
+        love.graphics.rectangle("fill", camera.x+100, camera.y+100, 
+            self.grapp_ui_size.x*(1 - self.grapplingCooldown/self.grapplingTimeout), 
+            self.grapp_ui_size.y)
     end
 
     ----- Missiles and Joints-----
