@@ -1,4 +1,5 @@
-math.randomseed(os.time())
+startTime = os.clock()
+math.randomseed(startTime)
 local getResources = require("core/resources")
 local getStackHelper = require("core/statestack")
 local getGameState = require("states/gamestate")

@@ -7,7 +7,7 @@ local function missileGroundCollision(fixtureA, fixtureB, key)
     print(objectA.name .. " colliding with " .. objectB.name)
     if objectA.name == "missile" and objectB.name == "ground" or
         objectB.name == "missile" and objectA.name == "ground" then
-        local missile 
+        local missile
         if objectA.name == 'missile' then
             missile = objectA
         else
@@ -20,6 +20,8 @@ local function missileGroundCollision(fixtureA, fixtureB, key)
         -- Spawning explosion
         local explosion = getExplosion(positionX, positionY)
         table.insert(stack:current().entitiesToSpawn, explosion)
+
+        stack:current():add_explosion_distortion(positionX, positionY)
     end
 end
 
