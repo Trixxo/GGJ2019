@@ -21,6 +21,7 @@ local function getPlayer()
     function player:update(dt)
         local playerX, playerY = self.body:getPosition()
         local mouseX, mouseY = love.mouse.getPosition()
+        local lvx, lvy = self.body:getLinearVelocity()
         mouseX = mouseX + camera.x
         local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
             local entity = fixture:getUserData()
@@ -42,14 +43,15 @@ local function getPlayer()
             )
         end
 
-        if self.body:getLinearVelocity() < 100 then
+        if math.abs(lvx) < 100 then
             if love.keyboard.isDown("a") then
                 self.body:applyLinearImpulse(-50,0)
             end
+            if love.keyboard.isDown("d") then
+                self.body:applyLinearImpulse(50,0)
+            end
         end
-        if love.keyboard.isDown("d") then
-            self.body:applyLinearImpulse(50,0)
-        end
+
     end
 
     function player:keypressed(key, scancode, isrepeat)
