@@ -76,7 +76,6 @@ local function getPlayer()
             local unitVector = playerToMouseVector:getUnit()
             local impulseVector = getVector(1000, 1000)
             impulseVector = unitVector:multiply(impulseVector)
-            print(impulseVector:length())
             self.body:applyLinearImpulse(impulseVector.x, impulseVector.y)
         end
     end
