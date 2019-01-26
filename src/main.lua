@@ -54,3 +54,7 @@ end
 function collide(fixtureA, fixtureB, collision)
     stack:current():collide(fixtureA, fixtureB, collision)
 end
+
+function love.mousepressed(x, y, button, istouch, presses)
+    stack:current():mousepressed(x, y, button, istouch, presses)
+end
