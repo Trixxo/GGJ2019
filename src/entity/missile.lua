@@ -26,15 +26,15 @@ local function getMissile(x, y)
     missile.particleSystem = love.graphics.newParticleSystem(resources.images.exhaust)
     missile.particleSystem:setSizes(0.04, 0.04, 0.03, 0.03, 0.03, 0.02)
     missile.particleSystem:setRotation(math.pi / 2)
-    missile.particleSystem:setColors(1, 1, 1, 1, 1, 1, 1, 0)
+    missile.particleSystem:setColors(1, 1, 1, 0.2, 1, 1, 1, 1, 1, 1, 1, 0)
 
     missile.particleSystem:setParticleLifetime(0.3, 0.5)
     missile.particleSystem:setEmissionRate(20)
 
-    missile.particleSystem:setEmissionArea('normal', 2, 3)
+    missile.particleSystem:setEmissionArea('normal', 2, 2)
 
     missile.particleSystem:setDirection(math.pi)
-    missile.particleSystem:setSpeed(50, 100)
+    missile.particleSystem:setSpeed(70, 150)
     missile.particleSystem:setSpread(math.pi / 6)
 
     missile.particleSystem:start()
@@ -44,7 +44,7 @@ local function getMissile(x, y)
         local angle = self.body:getAngle()
         local directionX = math.cos(angle)
         local directionY = math.sin(angle)
-        local offsetX = positionX - 0.5 * directionX * self.dimension.width
+        local offsetX = positionX - 0.6 * directionX * self.dimension.width
         local offsetY = positionY - 0.5 * directionY * self.dimension.width
         return offsetX, offsetY
     end
