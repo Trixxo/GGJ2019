@@ -6,6 +6,7 @@ local function getMissileSpawner()
 
     missileSpawner.spawntime = 1
     missileSpawner.spawncounter = 0
+    missileSpawner.missile_count = 0
 
     function missileSpawner:update(dt)
         -- Spawn random missiles (lets move this to a seperate file
@@ -18,6 +19,9 @@ local function getMissileSpawner()
             local new_missile = getMissile(randomspawn.x, randomspawn.y)
             -- print("Spawning missile at ", randomspawn.x, randomspawn.y)
             table.insert(state.entities, new_missile)
+            
+            self.missile_count = self.missile_count + 1
+            music.bpm = music.initial_bpm + self.missile_count
             self.spawncounter = 0
 
         else

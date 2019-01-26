@@ -4,22 +4,23 @@ local sounds = {}
 
 local eventQueue = {}
 
-local bpm = 128
-local beatLength = 60 / bpm
-local tickFraction = 16
-local timeSinceLastTick = 0
-local currentTick = 0
+music.initial_bpm = 128
+music.bpm = music.initial_bpm
+music.beatLength = 60 / music.bpm
+music.tickFraction = 4
+music.timeSinceLastTick = 0
+music.currentTick = 0
 
 function music.load()
     sounds = {
         kick = {
             beatFrequency = 1,
-            source = resources.sounds.kick,
+            soundData = love.sound.newSoundData("data/audio/fantomenkick.wav"),
             enabled = true
         },
         hihat = {
             beatFrequency = 2,
-            source = resources.sounds.hihat,
+            soundData = love.sound.newSoundData("data/audio/hihat.wav"),
             enabled = true
         },
         jump = {
@@ -34,11 +35,11 @@ function music.load()
             beatFrequency = 1
         },
         moveLeft = {
-            source = resources.sounds.bass1,
+            soundData = love.sound.newSoundData("data/audio/bass_1.wav"),
             beatFrequency = 1 / 2
         },
         moveRight = {
-            source = resources.sounds.bass2,
+            soundData = love.sound.newSoundData("data/audio/bass_2.wav"),
             beatFrequency = 1 / 2
         }
     }
@@ -69,16 +70,18 @@ function music.disableSound(name)
 end
 
 function music.update(dt)
-    timeSinceLastTick = timeSinceLastTick + dt
-    if timeSinceLastTick >= beatLength / tickFraction then
-        timeSinceLastTick = 0
+    print("current bpm ", music.bpm)
+    music.beatLength = 60 / music.bpm
+    music.timeSinceLastTick = music.timeSinceLastTick + dt
+    if music.timeSinceLastTick >= music.beatLength / music.tickFraction then
+        music.timeSinceLastTick = 0
 
         music.tick()
     end
 end
 
 local function shouldSoundPlay(currentTick, frequency)
-    return currentTick % (frequency * tickFraction) == 0
+    return currentTick % (frequency * music.tickFraction) == 0
 end
 
 local function sourceForSound(sound)
@@ -96,16 +99,16 @@ function music.tick()
     local soundsPlayed = {}
     local newSounds = {}
 
-    currentTick = currentTick + 1
+    music.currentTick = music.currentTick + 1
 
     for _, sound in pairs(sounds) do
-        if sound.enabled and shouldSoundPlay(currentTick, sound.beatFrequency) then
+        if sound.enabled and shouldSoundPlay(music.currentTick, sound.beatFrequency) then
             love.audio.play(sourceForSound(sound))
         end
     end
 
     for queueIndex, sound in ipairs(eventQueue) do
-        if shouldSoundPlay(currentTick, sound.beatFrequency) then
+        if shouldSoundPlay(music.currentTick, sound.beatFrequency) then
             love.audio.play(sourceForSound(sound))
 
             table.insert(soundsPlayed, queueIndex)
