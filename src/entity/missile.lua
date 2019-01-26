@@ -6,7 +6,7 @@ local function getMissile(x, y)
 
     missile.name = 'missile'
     missile.drawType = 'image'
-    missile.categoryTimer = false
+    missile.categoryTimer = 2
     missile.resetCategory = false
     missile.destroyed = false
     missile.flightTime = math.random(7,10)
@@ -94,6 +94,7 @@ local function getMissile(x, y)
             if self.resetCategoryTimer <= 0 then
                 self.resetCategory = false
                 self.fixture:setCategory(3)
+                self.resetCategoryTimer = 2
                 missile.fixture:setMask(3, 4)
             end
         end
