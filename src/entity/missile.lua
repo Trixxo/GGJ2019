@@ -28,17 +28,19 @@ local function getMissile(x, y)
 
     -- Particle emitter settings.
     missile.particleSystem = love.graphics.newParticleSystem(resources.images.exhaust)
-    missile.particleSystem:setSizes(0.04, 0.04, 0.03, 0.03, 0.03, 0.02)
+    missile.particleSystem:setSizes(0.06, 0.1)
+    missile.particleSystem:setSizeVariation(0.5)
     missile.particleSystem:setRotation(math.pi / 2)
-    missile.particleSystem:setColors(1, 1, 1, 0.2, 1, 1, 1, 1, 1, 1, 1, 0)
+    missile.particleSystem:setColors(1, 0.7, 0.5, 0.9,
+                                     0.5, 0.2, 0.2, 0)
 
-    missile.particleSystem:setParticleLifetime(0.3, 0.5)
-    missile.particleSystem:setEmissionRate(20)
+    missile.particleSystem:setParticleLifetime(0.5, 0.7)
+    missile.particleSystem:setEmissionRate(15)
 
     missile.particleSystem:setEmissionArea('normal', 2, 2)
 
     missile.particleSystem:setDirection(math.pi)
-    missile.particleSystem:setSpeed(70, 150)
+    missile.particleSystem:setSpeed(150, 250)
     missile.particleSystem:setSpread(math.pi / 6)
 
     missile.particleSystem:start()
