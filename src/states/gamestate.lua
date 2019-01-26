@@ -1,3 +1,4 @@
+local getPauseState = require("states/pausestate")
 local getPlayer = require("entity/player")
 local getGround = require("entity/ground")
 local camera = require("core/camera")
@@ -9,10 +10,12 @@ local getBgSpawner = require("system/bgspawner")
 -- Collisions
 local missileGroundCollision = require("collisions/missileground")
 
+world = love.physics.newWorld(0, 981, true)
 
 local function getGameState()
     local state = {}
     -- Constructor
+    world:setCallbacks(collide)
 
     state.canvas = love.graphics.newCanvas()
 
@@ -42,9 +45,13 @@ local function getGameState()
     local ground = getGround()
     table.insert(state.entities, ground)
 
+    state.pausedOnCurrentPress = false
+
     -- Constructor End
 
     function state:update(dt)
+        world:update(dt)
+
         local playerX, playerY = player.body:getPosition()
 
         self.missileSpawner:update(dt)
@@ -170,6 +177,12 @@ local function getGameState()
 
     -- Handle keypresses and send the event to all entities with a keypressed function
     function state:keypressed(key, scancode, isrepeat)
+        if key == "escape" and not self.pausedOnCurrentPress then
+            self.pausedOnCurrentPress = true
+            local pauseState = getPauseState()
+            stack:push(pauseState)
+        end
+
         for index, entity in pairs(self.entities) do
             if entity.keypressed ~= nil then
                 entity:keypressed(key, scancode, isrepeat)
@@ -177,7 +190,11 @@ local function getGameState()
         end
     end
 
-    function state:keyreleased(key, scancode) end
+    function state:keyreleased(key, scancode)
+        if key == "escape" then
+            self.pausedOnCurrentPress = false
+        end
+    end
 
     function state:mousepressed(x, y, button, istouch, presses)
         for index, entity in pairs(self.entities) do
