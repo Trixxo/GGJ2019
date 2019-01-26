@@ -96,6 +96,9 @@ local function getGameState()
         love.graphics.setCanvas(state.canvas)
         love.graphics.clear()
 
+        -- Background
+        love.graphics.draw(resources.images.backgroundCity)
+
         local mouseX, mouseY = love.mouse.getPosition()
         mouseX = mouseX + camera.x
         local playerX, playerY = player.body:getPosition()
