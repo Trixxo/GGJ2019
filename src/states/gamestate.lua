@@ -10,12 +10,14 @@ local getBgSpawner = require("system/bgspawner")
 -- Collisions
 local missileGroundCollision = require("collisions/missileground")
 local missilePlayerCollision = require("collisions/missileplayer")
+local playerGroundCollision = require("collisions/playerground")
 
-world = love.physics.newWorld(0, 981, true)
+world = nil
 
 local function getGameState()
     local state = {}
     -- Constructor
+    world = love.physics.newWorld(0, 981, true)
     world:setCallbacks(collide)
 
     state.canvas = love.graphics.newCanvas()
@@ -257,6 +259,7 @@ local function getGameState()
     function state:collide(fixtureA, fixtureB, key)
         missileGroundCollision(fixtureA, fixtureB, key)
         missilePlayerCollision(fixtureA, fixtureB, key)
+        playerGroundCollision(fixtureA, fixtureB, key)
     end
 
     function state:load()

@@ -30,6 +30,8 @@ function love.load()
     resources:addSound("hihat", "data/audio/hihat.wav")
     resources:addSound("cymbalCrash", "data/audio/cymbal_crash.wav")
 
+    resources:addFont('swanky', "data/fonts/SwankyandMooMoo.ttf", 100)
+
     leadSamples = 6
     for i = 1, leadSamples, 1 do
         resources:addSound("lead" .. i, "data/audio/lead_" .. i .. ".wav")
