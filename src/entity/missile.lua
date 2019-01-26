@@ -1,6 +1,6 @@
 local getVector = require("core/vector")
 
-local function getMissile(x, y)
+local function getMissile(x, y, text)
     local missile = {}
     local missileVel = math.random(200, 500)
 
@@ -10,6 +10,7 @@ local function getMissile(x, y)
     missile.resetCategory = false
     missile.destroyed = false
     missile.flightTime = math.random(7, 10)
+    missile.text = text
 
     missile.dimension = {width = 70, height = 24}
     missile.image = resources.images.missile
@@ -105,6 +106,23 @@ local function getMissile(x, y)
                 missile.fixture:setMask(3, 4)
             end
         end
+    end
+
+    function missile:draw()
+        local x, y = self.body:getPosition()
+        love.graphics.print(self.text,
+                            x,
+                            y - self.dimension.height * 1.5,
+                            0,
+                            1.5,
+                            1.5
+        )
+    end
+
+    function missile:isOnScreen()
+        local x, y = self.body:getPosition()
+        return x > camera.x and x < camera.x + settings.resolution.width and
+            y > 0 and y < settings.resolution.height
     end
 
     return missile

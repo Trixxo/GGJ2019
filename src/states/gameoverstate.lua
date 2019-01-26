@@ -10,6 +10,7 @@ local function getGameOverState()
     state.explosionTimer = 0.2
     -- Constructor End
 
+
     function state:update(dt)
         -- Create explosions
         self.explosionTimer = self.explosionTimer - dt
@@ -37,7 +38,7 @@ local function getGameOverState()
 
     function state:draw()
         local font = resources.fonts.swanky
-        local text = love.graphics.newText(font, "You play like crab!!!!!")
+        local text = love.graphics.newText(font, "You play like crab!")
         local x = settings.resolution.width/2 - text:getWidth()/2
         local y = settings.resolution.height/2 - text:getHeight()/2
         love.graphics.draw(text, x, y)
@@ -66,7 +67,9 @@ local function getGameOverState()
     function state:keyreleased(key, scancode) end
     function state:mousepressed(x, y, button, istouch, presses) end
 
-    function state:load() end
+    function state:load()
+        camera.x = 0
+    end
 
     return state
 end

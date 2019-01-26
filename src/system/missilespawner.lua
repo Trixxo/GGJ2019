@@ -18,6 +18,7 @@ local function getMissileSpawner()
             }
             local new_missile = getMissile(randomspawn.x, randomspawn.y)
             -- print("Spawning missile at ", randomspawn.x, randomspawn.y)
+            state.textGrapplingSystem:registerMissile(new_missile)
             table.insert(state.entities, new_missile)
             
             self.missile_count = self.missile_count + 1

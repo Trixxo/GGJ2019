@@ -24,6 +24,7 @@ local function getPlayer()
     player.fixture:setMask(4)
 
     player.body:setMass(2)
+    player.body:setAngularVelocity(math.random(-10, 10))
 
     player.isGrappling = false
     player.grapplingPercent = 0
