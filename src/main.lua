@@ -16,6 +16,10 @@ function love.load()
     resources:addSound("kick", "data/audio/fantomenkick.wav")
     resources:addSound("hihat", "data/audio/hihat.wav")
 
+    leadSamples = 6
+    for i = 1, leadSamples, 1 do
+        resources:addSound("lead" .. i, "data/audio/lead_" .. i .. ".wav")
+    end
     resources:load()
     world:setCallbacks(collide)
 

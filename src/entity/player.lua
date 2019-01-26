@@ -24,7 +24,7 @@ local function getPlayer()
                 self:connectToMissile(entity)
                 return 0
             end
-            
+
             return 1 -- Continues with ray cast through all shapes.
         end
 
@@ -49,6 +49,7 @@ local function getPlayer()
     function player:keypressed(key, scancode, isrepeat)
         if scancode == "w" then
             self.body:applyLinearImpulse(0,-2000)
+            music.queueEvent("jump")
         elseif scancode == "s" then
             self.body:applyLinearImpulse(0,2000)
         end
