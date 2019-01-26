@@ -2,6 +2,8 @@ local getVector = require("core/vector")
 
 local function getMissile(x, y)
     local missile = {}
+    local missileVel = math.random(200, 500)
+
     missile.name = 'missile'
     missile.drawType = 'image'
     missile.destroyed = false
@@ -11,7 +13,6 @@ local function getMissile(x, y)
     missile.shape = love.physics.newRectangleShape(missile.dimension.width, missile.dimension.height)
 
     missile.body = love.physics.newBody(world, x, y, "kinematic")
-    --missile.body:setAngle(-math.pi/2)
     missile.body:setMass(10000)
     missile.body:setInertia(1000)
     missile.body:setLinearDamping(0.3)
@@ -33,6 +34,7 @@ local function getMissile(x, y)
     missile.particleSystem:setDirection(math.pi)
     missile.particleSystem:setSpeed(500, 1000)
     missile.particleSystem:setSpread(math.pi / 6)
+
 
 
     -- missile.particleSystem:setRadialAcceleration(10, 1000)
@@ -59,7 +61,7 @@ local function getMissile(x, y)
         --self.body:applyLinearImpulse(acceleration.x, acceleration.y)
         --self.body:applyTorque(700)
         --self.body:setPosition(missileX + acceleration.x, missileY)
-        self.body:setLinearVelocity(500, 0)
+        self.body:setLinearVelocity(missileVel, 0)
         --self.body:setAngle(math.pi)
 
     end

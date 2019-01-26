@@ -60,6 +60,9 @@ local function getPlayer()
             music.queueEvent("jump")
         elseif scancode == "s" then
             self.body:applyLinearImpulse(0,2000)
+        elseif scancode == "space" and self.joint ~= nil then
+            self.joint:destroy()
+            self.joint = nil
         end
     end
 
