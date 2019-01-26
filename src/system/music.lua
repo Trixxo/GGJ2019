@@ -21,6 +21,13 @@ function music.load()
             beatFrequency = 2,
             source = resources.sounds.hihat,
             alwaysOn = true
+        },
+        jump = {
+            sources = {
+                base = "lead",
+                count = 6
+            },
+            beatFrequency = 1 / 4
         }
     }
 
@@ -52,6 +59,15 @@ local function shouldSoundPlay(currentTick, frequency)
     return currentTick % (frequency * tickFraction) == 0
 end
 
+local function sourceForSound(sound)
+    if sound.source then
+        return sound.source
+    else
+        local i = math.random(1, sound.sources.count)
+        return resources.sounds[sound.sources.base .. i]
+    end
+end
+
 function music.tick()
     local soundsPlayed = {}
     local newSounds = {}
@@ -60,7 +76,7 @@ function music.tick()
 
     for queueIndex, sound in ipairs(eventQueue) do
         if shouldSoundPlay(currentTick, sound.beatFrequency) then
-            love.audio.play(sound.source)
+            love.audio.play(sourceForSound(sound))
 
             if not sound.alwaysOn then
                 table.insert(soundsPlayed, queueIndex)

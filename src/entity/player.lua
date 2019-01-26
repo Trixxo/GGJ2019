@@ -22,7 +22,7 @@ local function getPlayer()
                 player.body:applyLinearImpulse(0, -150)
                 return 0
             end
-            
+
             return 1 -- Continues with ray cast through all shapes.
         end
         local playerX, playerY = self.body:getPosition()
@@ -49,6 +49,7 @@ local function getPlayer()
     function player:keypressed(key, scancode, isrepeat)
         if scancode == "w" then
             self.body:applyLinearImpulse(0,-2000)
+            music.queueEvent("jump")
         elseif scancode == "s" then
             self.body:applyLinearImpulse(0,2000)
         end
