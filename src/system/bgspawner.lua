@@ -3,17 +3,27 @@ local getBgParticle = require("entity/bgParticle")
 local function getBgSpawner()
     bgSpawner = {}
 
-    bgSpawner.lastSpawnedX = -200
+    bgSpawner.lastMovedIndex = 0
+    bgSpawner.lastMovedX = 0
+
+    local spawnerCount = 5
+
+    function bgSpawner:load()
+        for i = 0, spawnerCount - 1, 1 do
+            local entity = getBgParticle(i * 400)
+
+            table.insert(stack:current().bgEntities, entity)
+        end
+    end
 
     function bgSpawner:update(dt)
-        if camera.x + 4000 > self.lastSpawnedX + 400 then
-            local newX = self.lastSpawnedX + 400
-            print("bg at ", newX)
-            local entity = getBgParticle(newX)
+        if camera.x > self.lastMovedX + 400 then
+            self.lastMovedIndex = (self.lastMovedIndex % #stack:current().bgEntities) + 1
 
-            table.insert(stack:current().entities, entity)
+            local particle = stack:current().bgEntities[self.lastMovedIndex]
+            particle.x = particle.x + (spawnerCount * 400)
 
-            self.lastSpawnedX = newX
+            self.lastMovedX = self.lastMovedX + 400
         end
     end
 

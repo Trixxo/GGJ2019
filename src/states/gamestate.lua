@@ -29,6 +29,7 @@ local function getGameState()
     state.renderBelow = false
 
     state.entities = {} -- Contains all entities
+    state.bgEntities = {}
     state.entitiesToSpawn = {} -- Add entities into this list that can't be instantly added (E.g. during collisions)
 
     -- Create game logic systems
@@ -75,6 +76,10 @@ local function getGameState()
             end
         end
 
+        for _, entity in ipairs(self.bgEntities) do
+            entity:update(dt)
+        end
+
         camera.x = playerX - 200
     end
 
@@ -90,6 +95,11 @@ local function getGameState()
         if love.mouse.isDown(1) then
             love.graphics.setColor(0, 255, 0, 1)
             love.graphics.line(mouseX, mouseY, playerX, playerY)
+        end
+
+        for _, entity in ipairs(self.bgEntities) do
+            local emitterX, emitterY = entity:getEmitterPosition()
+            love.graphics.draw(entity.particleSystem, emitterX, emitterY)
         end
 
         for index, entity in pairs(self.entities) do
@@ -152,7 +162,6 @@ local function getGameState()
     end
 
     function state:add_explosion_distortion(posX, posY)
-        print(posX, posY)
         state.impactTime[state.nextImpactIndex] = os.clock()
         state.impactCoords[state.nextImpactIndex] = {posX, posY}
         state.nextImpactIndex = state.nextImpactIndex % 4 + 1
@@ -183,7 +192,9 @@ local function getGameState()
         missileGroundCollision(fixtureA, fixtureB, key)
     end
 
-    function state:load() end
+    function state:load()
+        self.bgSpawner:load()
+    end
 
     return state
 end
