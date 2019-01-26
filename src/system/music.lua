@@ -15,12 +15,12 @@ function music.load()
         kick = {
             beatFrequency = 1,
             source = resources.sounds.kick,
-            alwaysOn = true
+            enabled = true
         },
         hihat = {
             beatFrequency = 2,
             source = resources.sounds.hihat,
-            alwaysOn = true
+            enabled = true
         },
         jump = {
             sources = {
@@ -32,14 +32,16 @@ function music.load()
         explosion = {
             soundData = love.sound.newSoundData("data/audio/cymbal_crash.wav"),
             beatFrequency = 1
+        },
+        moveLeft = {
+            source = resources.sounds.bass1,
+            beatFrequency = 1 / 2
+        },
+        moveRight = {
+            source = resources.sounds.bass2,
+            beatFrequency = 1 / 2
         }
     }
-
-    for name, sound in pairs(sounds) do
-        if sound.alwaysOn then
-            music.queueEvent(name)
-        end
-    end
 end
 
 function music.queueEvent(name)
@@ -48,6 +50,22 @@ function music.queueEvent(name)
     end
 
     table.insert(eventQueue, sounds[name])
+end
+
+function music.enableSound(name)
+    if sounds[name] == nil then
+        print("ERROR: trying to queue unknown music event", name)
+    end
+
+    sounds[name].enabled = true
+end
+
+function music.disableSound(name)
+    if sounds[name] == nil then
+        print("ERROR: trying to queue unknown music event", name)
+    end
+
+    sounds[name].enabled = false
 end
 
 function music.update(dt)
@@ -80,13 +98,17 @@ function music.tick()
 
     currentTick = currentTick + 1
 
+    for _, sound in pairs(sounds) do
+        if sound.enabled and shouldSoundPlay(currentTick, sound.beatFrequency) then
+            love.audio.play(sourceForSound(sound))
+        end
+    end
+
     for queueIndex, sound in ipairs(eventQueue) do
         if shouldSoundPlay(currentTick, sound.beatFrequency) then
             love.audio.play(sourceForSound(sound))
 
-            if not sound.alwaysOn then
-                table.insert(soundsPlayed, queueIndex)
-            end
+            table.insert(soundsPlayed, queueIndex)
         end
     end
 

@@ -78,12 +78,18 @@ local function getPlayer()
         if lvx > -maxSpeed then
             if love.keyboard.isDown("a") then
                 self.body:applyLinearImpulse(-100, 0)
+                music.enableSound("moveLeft")
+            else
+                music.disableSound("moveLeft")
             end
         end
 
         if lvx < maxSpeed then
             if love.keyboard.isDown("d") then
                 self.body:applyLinearImpulse(100, 0)
+                music.enableSound("moveRight")
+            else
+                music.disableSound("moveRight")
             end
         end
 
