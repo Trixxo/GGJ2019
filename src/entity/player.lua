@@ -121,7 +121,7 @@ local function getPlayer()
     end
 
     function player:mousepressed(x, y, button , istouch, presses)
-        if button == 1 then
+        if button == 2 then
             local mouseVector = getVector(x, y)
             local playerX, playerY = self.body:getPosition()
             local playerVector = getVector(playerX, playerY)

@@ -3,8 +3,8 @@ math.randomseed(startTime)
 
 settings = {
     resolution = {
-        width = 1680,
-        height = 1050,
+        width = 1600,
+        height = 900,
     },
     scale = 1,
 }
