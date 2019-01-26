@@ -13,7 +13,11 @@ local function getTextGrapplingSystem()
         "n",
         "m",
         "y",
-        "b"
+        "b",
+        "6",
+        "7",
+        "8",
+        "9",
     }
 
     system.missiles = {}

@@ -205,12 +205,12 @@ local function getPlayer()
     function player:keypressed(key, scancode, isrepeat)
         if mode == "normal" then
             if scancode == "w" or scancode == "space" then
+                self:removeJoint()
                 if self.jumpCd <= 1 then
                     xv, yv = self.body:getLinearVelocity()
-                    self.body:setLinearVelocity(xv, -600)
+                    self.body:setLinearVelocity(xv, math.min(-600, yv))
                     player.jumpCd = player.jumpCd + 1
                 end
-                self:removeJoint()
 
                 music.queueEvent("jump")
             elseif scancode == "s" then

@@ -110,6 +110,7 @@ local function getGameState()
 
         local previousX = camera.x
         camera.x = math.max(playerX - 500, previousX)
+        camera.y = math.min(playerY - 400, 0)
     end
 
     function state:renderParallaxBackground(resource, scale, parallaxScale, posY)

@@ -14,7 +14,7 @@ local function getMissileSpawner()
             state = stack:current()
             local randomspawn = {
                 x = camera.x + math.random(settings.resolution.width/4, settings.resolution.width * 2),
-                y = math.random(-30, -10)
+                y = camera.y + math.random(-30, -10)
             }
             local new_missile = getMissile(randomspawn.x, randomspawn.y)
             -- print("Spawning missile at ", randomspawn.x, randomspawn.y)
