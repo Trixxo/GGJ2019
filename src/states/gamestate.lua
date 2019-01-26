@@ -1,7 +1,7 @@
 local getPauseState = require("states/pausestate")
 local getPlayer = require("entity/player")
 local getGround = require("entity/ground")
-local camera = require("core/camera")
+camera = require("core/camera")
 
 -- Game logic
 local getMissileSpawner = require("system/missilespawner")
