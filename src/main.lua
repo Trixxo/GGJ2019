@@ -15,6 +15,7 @@ function love.load()
     resources:addImage("exhaust", "data/FIRE.png")
     resources:addImage("explosion", "data/explosion.png")
     resources:addImage("softCircle", "data/soft_circle.png")
+    resources:addImage("backgroundCity", "data/city_background_clean.png")
     resources:addImage("player", "data/player.png")
 
     resources:addSound("kick", "data/audio/fantomenkick.wav")

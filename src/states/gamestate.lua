@@ -96,6 +96,9 @@ local function getGameState()
         love.graphics.setCanvas(state.canvas)
         love.graphics.clear()
 
+        -- Background
+        love.graphics.draw(resources.images.backgroundCity)
+
         local mouseX, mouseY = love.mouse.getPosition()
         mouseX = mouseX + camera.x
         local playerX, playerY = player.body:getPosition()
@@ -170,7 +173,7 @@ local function getGameState()
         love.graphics.pop()
     end
 
-    function state:add_explosion_distortion(posX, posY)
+    function state:addExplosionDistortion(posX, posY)
         state.impactTime[state.nextImpactIndex] = os.clock()
         state.impactCoords[state.nextImpactIndex] = {posX, posY}
         state.nextImpactIndex = state.nextImpactIndex % 4 + 1
