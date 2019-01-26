@@ -4,17 +4,17 @@ local function getPlayer()
     local player = {}
     local camera = require("core/camera")
     player.name = 'player'
-    player.drawType = 'rectangle'
+    player.drawType = 'image'
+    player.image = resources.images.player
     player.destroyed = false
     player.missileToConnect = nil
 
-    player.dimension = {width = 50, height = 50}
-    player.shape = love.physics.newRectangleShape(player.dimension.width, player.dimension.height)
+    player.dimension = {width = 70, height = 70}
+    player.shape = love.physics.newCircleShape(player.dimension.width / 2)
 
     player.body = love.physics.newBody(world, 100, 100, "dynamic")
-    player.body:setMass(11)
 
-    player.fixture = love.physics.newFixture(player.body, player.shape, 1)
+    player.fixture = love.physics.newFixture(player.body, player.shape, 0.6)
     player.fixture:setUserData(player)
     player.fixture:setCategory(1)
     player.fixture:setMask(4)
@@ -50,10 +50,14 @@ local function getPlayer()
             )
         end
 
-        if lvx < 500 or lvx > 500 then
+        local maxSpeed = 500
+        if lvx > -maxSpeed then
             if love.keyboard.isDown("a") then
                 self.body:applyLinearImpulse(-50,0)
             end
+        end
+
+        if lvx < maxSpeed then
             if love.keyboard.isDown("d") then
                 self.body:applyLinearImpulse(50,0)
             end
@@ -62,13 +66,15 @@ local function getPlayer()
     end
 
     function player:keypressed(key, scancode, isrepeat)
-        if scancode == "w" then
+        if scancode == "w" or scancode == "space" then
+            if self.joint ~= nil then
+                self:removeJoint()
+            end
+
             self.body:applyLinearImpulse(0,-2000)
             music.queueEvent("jump")
         elseif scancode == "s" then
             self.body:applyLinearImpulse(0,2000)
-        elseif scancode == "space" and self.joint ~= nil then
-            self:removeJoint()
         end
     end
 

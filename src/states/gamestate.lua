@@ -173,7 +173,7 @@ local function getGameState()
         love.graphics.pop()
     end
 
-    function state:add_explosion_distortion(posX, posY)
+    function state:addExplosionDistortion(posX, posY)
         state.impactTime[state.nextImpactIndex] = os.clock()
         state.impactCoords[state.nextImpactIndex] = {posX, posY}
         state.nextImpactIndex = state.nextImpactIndex % 4 + 1
