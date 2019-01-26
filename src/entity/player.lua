@@ -68,7 +68,9 @@ local function getPlayer()
 
     function player:connectToMissile(missile)
         if self.joint ~= nil then
-            self.joint:destroy()
+            if not self.joint:isDestroyed() then
+                self.joint:destroy()
+            end
         end
         local joint = love.physics.newDistanceJoint(self.body, missile.body, self.body:getX(), self.body:getY(), missile.body:getX(), missile.body:getY())
         joint:setLength(50)

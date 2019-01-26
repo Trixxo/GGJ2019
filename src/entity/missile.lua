@@ -7,6 +7,7 @@ local function getMissile(x, y)
     missile.name = 'missile'
     missile.drawType = 'image'
     missile.destroyed = false
+    missile.flightTime = math.random(7,10)
 
     missile.dimension = {width = 70, height = 20}
     missile.image = resources.images.missile
@@ -14,7 +15,7 @@ local function getMissile(x, y)
 
     missile.body = love.physics.newBody(world, x, y, "kinematic")
     missile.body:setMass(10000)
-    missile.body:setInertia(1000)
+    --missile.body:setInertia(1000)
     missile.body:setLinearDamping(0.3)
 
 
@@ -55,15 +56,21 @@ local function getMissile(x, y)
     function missile:update(dt)
         local missileX, missileY = self.body:getPosition()
         self.particleSystem:update(dt)
+        self.flightTime = self.flightTime - dt
+        if self.flightTime <= 0 then
+            self.body:setType("dynamic")
+        else
 
         --local angle = missile.body:getAngle()
         --local acceleration = getVector(1000 * dt, 0):rotate(angle)
         --self.body:applyLinearImpulse(acceleration.x, acceleration.y)
         --self.body:applyTorque(700)
         --self.body:setPosition(missileX + acceleration.x, missileY)
-        self.body:setLinearVelocity(missileVel, 0)
-        --self.body:setAngle(math.pi)
 
+           self.body:setLinearVelocity(missileVel, 0)
+
+        --self.body:setAngle(math.pi)
+        end
     end
 
     return missile
