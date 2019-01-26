@@ -76,6 +76,8 @@ local function getMissile(x, y)
 
         if self.flightTime <= 0 then
             self.body:setType("dynamic")
+            self.fixture:setCategory(4)
+            self.fixture:setMask(1, 3, 4)
         else
 
         --local angle = missile.body:getAngle()
