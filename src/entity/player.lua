@@ -43,8 +43,6 @@ local function getPlayer()
             self.missileToConnect = nil
         end
 
-        self.grapplingCooldown = self.grapplingCooldown - dt
-
         local playerX, playerY = self.body:getPosition()
         local mouseX, mouseY = love.mouse.getPosition()
         local lvx, lvy = self.body:getLinearVelocity()
@@ -94,9 +92,11 @@ local function getPlayer()
     ----- GrapplingHook -----
 
     function player:computeGrapplingHook(dt)
-        if love.mouse.isDown(1) and not self.isGrappling then
+        self.grapplingCooldown = self.grapplingCooldown - dt
+
+        if love.mouse.isDown(1) and not self.isGrappling and self.grapplingCooldown <= 0 then
             local targetX, targetY 
-            if self.grapplingToMissile then
+            if self.grapplingToMissile and self.missile ~= nil then
                 targetX, targetY = self.missile.body:getPosition()
                 self.grapplingTargetX = targetX
                 self.grapplingTargetY = targetY
