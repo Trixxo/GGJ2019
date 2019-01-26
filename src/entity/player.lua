@@ -56,6 +56,8 @@ local function getPlayer()
         if player.jumpCd > 1 then
             player.jumpCd = player.jumpCd - dt * 0.2
         end
+
+        print (self.jumpCd)
         local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
             local entity = fixture:getUserData()
             if entity.name == "missile" and entity ~= self.missile then
@@ -155,6 +157,8 @@ local function getPlayer()
         missile.fixture:setCategory(4)
         missile.fixture:setMask(1, 3, 4)
 
+        music.queueEvent("jump")
+
         local joint = love.physics.newDistanceJoint(self.body, missile.body, self.body:getX(), self.body:getY(), missile.body:getX(), missile.body:getY())
         joint:setLength(50)
         joint:setDampingRatio(5)
@@ -183,11 +187,16 @@ local function getPlayer()
 
     function player:keypressed(key, scancode, isrepeat)
         if scancode == "w" or scancode == "space" then
-            if self.jumpCd <= 2 then
+            self:removeJoint()
+            if self.jumpCd <= 1 then
                 xv, yv = self.body:getLinearVelocity()
-                self.body:setLinearVelocity(xv, -600)
+                self.body:setLinearVelocity(xv, math.min(-600, yv))
                 player.jumpCd = player.jumpCd + 1
             end
+
+            music.queueEvent("jump")
+        elseif scancode == "s" then
+            self.body:applyLinearImpulse(0,2000)
             self:removeJoint()
 
             music.queueEvent("jump")
@@ -200,9 +209,6 @@ local function getPlayer()
                 self.grapplingPercent = 0.0
                 self.grapplingTarget = getVector(self.body:getPosition()):add(getVector(1000, -5000))
             end
-
-        elseif scancode == "s" then
-            self.body:applyLinearImpulse(0,2000)
         end
     end
 

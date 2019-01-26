@@ -2,7 +2,7 @@ local getVector = require("core/vector")
 
 local function getMissile(x, y, text)
     local missile = {}
-    local missileVel = math.random(200, 500)
+    missile.missileVel = math.random(200, 500)
 
     missile.name = 'missile'
     missile.drawType = 'image'
@@ -91,7 +91,10 @@ local function getMissile(x, y, text)
 
            self.body:setAngularVelocity(0.06)
            local angle = self.body:getAngle()
-           local velocity = getVector(missileVel, 0):rotate(angle)
+           local velocity = getVector(missile.missileVel, 0):rotate(angle)
+           if not self:isOnScreen() then
+               velocity = velocity:multiply(1.5)
+           end
            self.body:setLinearVelocity(velocity.x, velocity.y)
 
         --self.body:setAngle(math.pi)
@@ -122,7 +125,7 @@ local function getMissile(x, y, text)
     function missile:isOnScreen()
         local x, y = self.body:getPosition()
         return x > camera.x and x < camera.x + settings.resolution.width and
-            y > 0 and y < settings.resolution.height
+            y > camera.y and y < camera.y + settings.resolution.height
     end
 
     return missile

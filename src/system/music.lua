@@ -18,6 +18,23 @@ function music.load()
             soundData = love.sound.newSoundData("data/audio/fantomenkick.wav"),
             enabled = true
         },
+        tick_1 = {
+            beatFrequency = 2,
+            soundData = love.sound.newSoundData("data/audio/crab_tick_single.wav"),
+            enabled = true
+            },
+        tick_2 = {
+            beatFrequency = 1,
+            offset = 1/2,
+            soundData = love.sound.newSoundData("data/audio/crab_tick_double.wav"),
+            enabled = true
+        },
+        tick_3 = {
+            beatFrequency = 4,
+            offset = 1/2,
+            soundData = love.sound.newSoundData("data/audio/crab_tick_double.wav"),
+            enabled = true
+        },
         hihat = {
             beatFrequency = 2,
             soundData = love.sound.newSoundData("data/audio/hihat.wav"),
@@ -80,8 +97,9 @@ function music.update(dt)
     end
 end
 
-local function shouldSoundPlay(currentTick, frequency)
-    return currentTick % (frequency * music.tickFraction) == 0
+local function shouldSoundPlay(currentTick, frequency, sound)
+    local offset = sound.offset or 0
+    return (offset * music.tickFraction + currentTick) % ( frequency * music.tickFraction) == 0
 end
 
 local function sourceForSound(sound)
@@ -102,13 +120,13 @@ function music.tick()
     music.currentTick = music.currentTick + 1
 
     for _, sound in pairs(sounds) do
-        if sound.enabled and shouldSoundPlay(music.currentTick, sound.beatFrequency) then
+        if sound.enabled and shouldSoundPlay(music.currentTick, sound.beatFrequency, sound) then
             love.audio.play(sourceForSound(sound))
         end
     end
 
     for queueIndex, sound in ipairs(eventQueue) do
-        if shouldSoundPlay(music.currentTick, sound.beatFrequency) then
+        if shouldSoundPlay(music.currentTick, sound.beatFrequency, sound) then
             love.audio.play(sourceForSound(sound))
 
             table.insert(soundsPlayed, queueIndex)
