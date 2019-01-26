@@ -1,7 +1,7 @@
 local getPlayer = require("entity/player")
 local getGround = require("entity/ground")
 
--- Game logic 
+-- Game logic
 local getMissileSpawner = require("system/missilespawner")
 
 -- Collisions
@@ -53,7 +53,7 @@ local function getGameState()
 
         -- Call update on all entities
         for index, entity in ipairs(self.entities) do
-            if entity.update ~= nil then 
+            if entity.update ~= nil then
                 entity:update(dt)
             end
         end
@@ -96,6 +96,11 @@ local function getGameState()
                     entity.image:getWidth() / 2,
                     entity.image:getHeight() / 2
                 )
+            end
+
+            if entity.particleSystem then
+                local emitterX, emitterY = entity:getEmitterPosition()
+                love.graphics.draw(entity.particleSystem, emitterX, emitterY, angle)
             end
         end
     end

@@ -10,6 +10,7 @@ stack = getStackHelper()
 
 function love.load()
     resources:addImage("missile", "data/missile.png")
+    resources:addImage("exhaust", "data/FIRE.png")
     resources:addImage("explosion", "data/explosion.png")
 
     resources:addSound("kick", "data/audio/fantomenkick.wav")
