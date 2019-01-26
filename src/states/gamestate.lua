@@ -6,6 +6,7 @@ local camera = require("core/camera")
 -- Game logic
 local getMissileSpawner = require("system/missilespawner")
 local getBgSpawner = require("system/bgspawner")
+local getTextGrapplingSystem = require("system/textGrappling")
 
 -- Collisions
 local missileGroundCollision = require("collisions/missileground")
@@ -19,6 +20,7 @@ local function getGameState()
     -- Constructor
     world = love.physics.newWorld(0, 981, true)
     world:setCallbacks(collide)
+    camera.x = 0
 
     state.canvas = love.graphics.newCanvas()
 
@@ -41,6 +43,7 @@ local function getGameState()
     -- Create game logic systems
     state.missileSpawner = getMissileSpawner()
     state.bgSpawner = getBgSpawner()
+    state.textGrapplingSystem = getTextGrapplingSystem()
 
     -- Create new entities
     local player = getPlayer()
@@ -240,6 +243,8 @@ local function getGameState()
                 entity:keypressed(key, scancode, isrepeat)
             end
         end
+
+        self.textGrapplingSystem:keypressed(scancode, player)
     end
 
     function state:keyreleased(key, scancode)

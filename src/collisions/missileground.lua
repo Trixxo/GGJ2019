@@ -14,6 +14,7 @@ local function missileGroundCollision(fixtureA, fixtureB, key)
             missile = objectB
         end
         missile.destroyed = true
+        stack:current().textGrapplingSystem:removeMissile(missile)
 
         local positionX, positionY = missile.body:getPosition()
 
