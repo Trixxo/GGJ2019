@@ -70,8 +70,6 @@ local function getGameState()
     -- Constructor End
 
     function state:update(dt)
-        world:update(dt)
-
         local playerX, playerY = player.body:getPosition()
         local mouseX, mouseY = love.mouse:getPosition()
 
@@ -111,6 +109,8 @@ local function getGameState()
         local previousX = camera.x
         camera.x = math.max(playerX - 500, previousX)
         camera.y = math.min(playerY - 400, 0)
+
+        world:update(dt)
     end
 
     function state:renderParallaxBackground(resource, scale, parallaxScale, posY)
