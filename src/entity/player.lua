@@ -122,7 +122,8 @@ local function getPlayer()
 
         if self.isGrappling and self.grapplingPercent < 1 then
             if self.grapplingToMissile then
-                self.grapplingTarget = self.missile.body:getPosition()
+                local x, y = self.missile.body:getPosition()
+                self.grapplingTarget = getVector(x, y)
             end
 
             self.grapplingPercent = self.grapplingPercent + dt * 5
