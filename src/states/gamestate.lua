@@ -65,11 +65,12 @@ local function getGameState()
 
     function state:draw()
         local mouseX, mouseY = love.mouse.getPosition()
+        mouseX = mouseX + camera.x
         local playerX, playerY = player.body:getPosition()
 
         if love.mouse.isDown(1) then
             love.graphics.setColor(0, 255, 0, 1)
-            love.graphics.line(mouseX + camera.x, mouseY, playerX, playerY)
+            love.graphics.line(mouseX, mouseY, playerX, playerY)
         end
 
         for index, entity in pairs(self.entities) do

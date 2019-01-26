@@ -1,5 +1,6 @@
 local function getPlayer()
     local player = {}
+    local camera = require("core/camera")
     player.name = 'player'
     player.drawType = 'rectangle'
     player.destroyed = false
@@ -18,6 +19,7 @@ local function getPlayer()
     function player:update(dt)
         local playerX, playerY = self.body:getPosition()
         local mouseX, mouseY = love.mouse.getPosition()
+        mouseX = mouseX + camera.x
         local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
             local entity = fixture:getUserData()
             if entity.name == "missile" then
