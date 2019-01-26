@@ -12,6 +12,10 @@ local function getMissile(x, y)
 
     missile.body = love.physics.newBody(world, x, y, "dynamic")
     missile.body:setAngle(-math.pi/2)
+    missile.body:setMass(10000)
+    missile.body:setInertia(1000)
+    missile.body:setLinearDamping(0.3)
+
 
     missile.fixture = love.physics.newFixture(missile.body, missile.shape, 1)
     missile.fixture:setUserData(missile)

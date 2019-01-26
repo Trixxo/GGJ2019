@@ -8,7 +8,7 @@ local function getPlayer()
     player.shape = love.physics.newRectangleShape(player.dimension.width, player.dimension.height)
 
     player.body = love.physics.newBody(world, 100, 100, "dynamic")
-    player.body:setMass(10)
+    player.body:setMass(11)
 
     player.fixture = love.physics.newFixture(player.body, player.shape, 1)
     player.fixture:setUserData(player)
@@ -16,17 +16,17 @@ local function getPlayer()
     player.joint = nil
 
     function player:update(dt)
+        local playerX, playerY = self.body:getPosition()
+        local mouseX, mouseY = love.mouse.getPosition()
         local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
             local entity = fixture:getUserData()
             if entity.name == "missile" then
-                player.body:applyLinearImpulse(0, -150)
+                self:connectToMissile(entity)
                 return 0
             end
             
             return 1 -- Continues with ray cast through all shapes.
         end
-        local playerX, playerY = self.body:getPosition()
-        local mouseX, mouseY = love.mouse.getPosition()
 
         if love.mouse.isDown(1) then
             world:rayCast(
@@ -56,7 +56,7 @@ local function getPlayer()
 
     function player:connectToMissile(missile)
         local joint = love.physics.newDistanceJoint(self.body, missile.body, self.body:getX(), self.body:getY(), missile.body:getX(), missile.body:getY())
-        joint:setLength(200)
+        joint:setLength(5)
         joint:setDampingRatio(2)
         joint:setFrequency(1)
         self.joint = joint
