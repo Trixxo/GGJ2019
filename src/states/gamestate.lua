@@ -1,49 +1,69 @@
 local getPlayer = require("entity/player")
 local getMissile = require("entity/missile")
-local getExplosion = require("entity/explosion")
 local getGround = require("entity/ground")
+
+-- Collisions
+local missileGroundCollision = require("collisions/missileground")
 
 
 local function getGameState()
-    state = {}
+    local state = {}
 
     math.randomseed(os.time())
 
-    spawntime = 1
-    spawncounter = 0
+    state.spawntime = 1
+    state.spawncounter = 0
 
     state.renderBelow = false
     state.entities = {}
+    state.entitiesToSpawn = {}
 
     -- Constructor
-    player = getPlayer()
+    local player = getPlayer()
     table.insert(state.entities, player)
 
-    ground = getGround()
+    local ground = getGround()
     table.insert(state.entities, ground)
     -- Constructor End
 
     function state:update(dt)
-        if spawncounter > spawntime then
-            randomspawn = {
+        -- Add new entities from collision handlers to state
+        for index, entity in pairs(self.entitiesToSpawn) do
+            print("Adding new " .. entity.name .. " to state")
+            entity:initialize()
+            table.insert(self.entities, entity)
+            table.remove(self.entitiesToSpawn, index)
+        end
+
+        -- Spawn random missiles (lets move this to a seperate file
+        if self.spawncounter > self.spawntime then
+            local randomspawn = {
                 x = math.random() * love.graphics.getWidth(),
                 y = 100
             }
             local new_missile = getMissile(randomspawn.x, randomspawn.y)
             print("spawning missile at ", randomspawn.x, randomspawn.y)
-            table.insert(state.entities, new_missile)
-            spawncounter = 0
+            table.insert(self.entities, new_missile)
+            self.spawncounter = 0
 
-            -- spawning explosion
-            print("spawning explosion")
-            local new_exp = getExplosion(randomspawn.x, randomspawn.y)
-            table.insert(state.entities, new_exp)
         else
-            spawncounter = spawncounter + dt
+            self.spawncounter = self.spawncounter + dt
         end
-        for index, entity in pairs(self.entities) do
-            if entity.update ~= nil then 
-                entity:update(dt)
+
+        -- Call update logic on entities
+        for index, entity in ipairs(self.entities) do
+            -- Remove all destroyed entities
+            if entity.destroyed then
+                print("Destroying " .. entity.name .. " with key " .. index)
+                if entity.body ~= nil then
+                    entity.body:destroy()
+                end
+                table.remove(self.entities, index)
+            else
+                -- Call update on all entities
+                if entity.update ~= nil then 
+                    entity:update(dt)
+                end
             end
         end
     end
@@ -52,6 +72,7 @@ local function getGameState()
         for index, entity in pairs(self.entities) do
             local positionX, positionY = entity.body:getPosition()
             local angle = entity.body:getAngle()
+            -- Draw all debug rectangle entities
             if entity.drawType == 'rectangle' then
                 love.graphics.setColor(255, 0, 0, 1)
                 love.graphics.rectangle('fill',
@@ -60,7 +81,9 @@ local function getGameState()
                     entity.dimension.width,
                     entity.dimension.height
                 )
-            love.graphics.setColor(255, 255, 255)
+                love.graphics.setColor(255, 255, 255)
+
+            -- Draw all entities with images
             elseif entity.drawType == 'image' then
                 love.graphics.draw(
                     entity.image,
@@ -78,6 +101,7 @@ local function getGameState()
 
     function state:shutdown() end
 
+    -- Handle keypresses and send the event to all entities with a keypressed function
     function state:keypressed(key, scancode, isrepeat)
         for index, entity in pairs(self.entities) do
             if entity.keypressed ~= nil then
@@ -91,10 +115,8 @@ local function getGameState()
     function state:mousepressed(x, y, key) end
 
     function state:collide(fixtureA, fixtureB, key)
-        objectA = fixtureA:getUserData()
-        objectB = fixtureB:getUserData()
+        missileGroundCollision(fixtureA, fixtureB, key)
 
-        -- print(objectA.name .. " colliding with " .. objectB.name)
     end
 
     function state:load() end

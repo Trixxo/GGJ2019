@@ -2,6 +2,7 @@ local function getPlayer()
     player = {}
     player.name = 'player'
     player.drawType = 'rectangle'
+    player.destroyed = false
 
     player.dimension = {width = 50, height = 50}
     player.shape = love.physics.newRectangleShape(player.dimension.width, player.dimension.height)

@@ -4,6 +4,7 @@ local function getMissile(x, y)
     local missile = {}
     missile.name = 'missile'
     missile.drawType = 'image'
+    missile.destroyed = false
 
     missile.dimension = {width = 70, height = 20}
     missile.image = resources.images.missile
