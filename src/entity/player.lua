@@ -61,7 +61,7 @@ local function getPlayer()
 
     function player:connectToMissile(missile)
         local joint = love.physics.newDistanceJoint(self.body, missile.body, self.body:getX(), self.body:getY(), missile.body:getX(), missile.body:getY())
-        joint:setLength(5)
+        joint:setLength(50)
         joint:setDampingRatio(2)
         joint:setFrequency(1)
         self.joint = joint

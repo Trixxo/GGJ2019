@@ -10,7 +10,7 @@ local function getMissile(x, y)
     missile.image = resources.images.missile
     missile.shape = love.physics.newRectangleShape(missile.dimension.width, missile.dimension.height)
 
-    missile.body = love.physics.newBody(world, x, y, "dynamic")
+    missile.body = love.physics.newBody(world, x, y, "kinematic")
     missile.body:setAngle(-math.pi/2)
     missile.body:setMass(10000)
     missile.body:setInertia(1000)
@@ -51,12 +51,17 @@ local function getMissile(x, y)
     end
 
     function missile:update(dt)
+        local missileX, missileY = self.body:getPosition()
         self.particleSystem:update(dt)
 
         local angle = missile.body:getAngle()
-        local acceleration = getVector(1000 * dt, 0):rotate(angle)
-        self.body:applyLinearImpulse(acceleration.x, acceleration.y)
-        self.body:applyTorque(700)
+        --local acceleration = getVector(1000 * dt, 0):rotate(angle)
+        --self.body:applyLinearImpulse(acceleration.x, acceleration.y)
+        --self.body:applyTorque(700)
+        --self.body:setPosition(missileX + acceleration.x, missileY)
+        self.body:setLinearVelocity(100, 0)
+        self.body:setAngle(math.pi)
+
     end
 
     return missile
