@@ -1,5 +1,6 @@
 local getPlayer = require("entity/player")
 local getGround = require("entity/ground")
+local camera = require("core/camera")
 
 -- Game logic
 local getMissileSpawner = require("system/missilespawner")
@@ -29,6 +30,7 @@ local function getGameState()
     -- Constructor End
 
     function state:update(dt)
+        local playerX, playerY = player.body:getPosition()
 
         self.missileSpawner:update(dt)
 
@@ -57,6 +59,8 @@ local function getGameState()
                 entity:update(dt)
             end
         end
+
+        camera.x = playerX - 100
     end
 
     function state:draw()
@@ -65,7 +69,7 @@ local function getGameState()
 
         if love.mouse.isDown(1) then
             love.graphics.setColor(0, 255, 0, 1)
-            love.graphics.line(mouseX, mouseY, playerX, playerY)
+            love.graphics.line(mouseX + camera.x, mouseY, playerX, playerY)
         end
 
         for index, entity in pairs(self.entities) do

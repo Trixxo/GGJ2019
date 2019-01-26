@@ -1,4 +1,5 @@
 math.randomseed(os.time())
+local camera = require("core/camera")
 local getResources = require("core/resources")
 local getStackHelper = require("core/statestack")
 local getGameState = require("states/gamestate")
@@ -36,7 +37,10 @@ function love.update(dt)
 end
 
 function love.draw()
+	camera:set()
     stack:current():draw()
+    camera:unset()
+
 end
 
 function love.keypressed(key, scancode, isrepeat)
