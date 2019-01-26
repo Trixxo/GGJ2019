@@ -76,6 +76,7 @@ local function getMissile(x, y)
 
         if self.flightTime <= 0 then
             self.body:setType("dynamic")
+            self.body:applyTorque(0.5)
             self.fixture:setCategory(4)
             self.fixture:setMask(1, 3, 4)
         else
@@ -86,7 +87,10 @@ local function getMissile(x, y)
         --self.body:applyTorque(700)
         --self.body:setPosition(missileX + acceleration.x, missileY)
 
-           self.body:setLinearVelocity(missileVel, 0)
+           self.body:setAngularVelocity(0.06)
+           local angle = self.body:getAngle()
+           local velocity = getVector(missileVel, 0):rotate(angle)
+           self.body:setLinearVelocity(velocity.x, velocity.y)
 
         --self.body:setAngle(math.pi)
         end
