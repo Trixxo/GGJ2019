@@ -117,8 +117,7 @@ local function getGameState()
         local resourceWidth = resource:getPixelWidth()
         local screenLeft, screenRight = camera.x, camera.x + settings.resolution.width
         local parallaxOffset = parallaxScale * screenLeft
-        local numIterations = math.floor((screenLeft - parralaxOffset) / (resourceWidth * scale))
-
+        local numIterations = math.floor((screenLeft - parallaxOffset) / (resourceWidth * scale))
 
         while parallaxOffset + numIterations * resourceWidth * scale < screenRight
         do
@@ -133,7 +132,13 @@ local function getGameState()
         love.graphics.clear()
 
         -- Background
-        self:renderParallaxBackground(resources.images.backgroundCity, 0.9, 0.1, 0)
+        love.graphics.setColor(1.0,0.0,0.0)
+        self:renderParallaxBackground(resources.images.backgroundCity, 0.5, 0.5, 500)
+        love.graphics.setColor(0.0,1.0,0.0)
+        self:renderParallaxBackground(resources.images.backgroundCity, 0.9, 0.9, 0)
+        love.graphics.setColor(0.0,0.0,1.0)
+        self:renderParallaxBackground(resources.images.backgroundCity, 0.9, 0.9, 0)
+        love.graphics.setColor(1.0,1.0,1.0)
 
         local mouseX, mouseY = love.mouse.getPosition()
         mouseX = mouseX + camera.x
