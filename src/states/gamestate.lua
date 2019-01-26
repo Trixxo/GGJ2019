@@ -1,6 +1,8 @@
 local getPlayer = require("entity/player")
-local getMissile = require("entity/missile")
 local getGround = require("entity/ground")
+
+-- Game logic 
+local getMissileSpawner = require("system/missilespawner")
 
 -- Collisions
 local missileGroundCollision = require("collisions/missileground")
@@ -8,46 +10,34 @@ local missileGroundCollision = require("collisions/missileground")
 
 local function getGameState()
     local state = {}
-
-    math.randomseed(os.time())
-
-    state.spawntime = 1
-    state.spawncounter = 0
+    -- Constructor
 
     state.renderBelow = false
-    state.entities = {}
-    state.entitiesToSpawn = {}
 
-    -- Constructor
+    state.entities = {} -- Contains all entities
+    state.entitiesToSpawn = {} -- Add entities into this list that can't be instantly added (E.g. during collisions)
+
+    -- Create game logic systems
+    state.missileSpawner = getMissileSpawner()
+
+    -- Create new entities
     local player = getPlayer()
     table.insert(state.entities, player)
-
     local ground = getGround()
     table.insert(state.entities, ground)
+
     -- Constructor End
 
     function state:update(dt)
+
+        self.missileSpawner:update(dt)
+
         -- Add new entities from collision handlers to state
         for index, entity in pairs(self.entitiesToSpawn) do
             -- print("Adding new " .. entity.name .. " to state")
             entity:initialize()
             table.insert(self.entities, entity)
             table.remove(self.entitiesToSpawn, index)
-        end
-
-        -- Spawn random missiles (lets move this to a seperate file
-        if self.spawncounter > self.spawntime then
-            local randomspawn = {
-                x = math.random() * love.graphics.getWidth(),
-                y = 100
-            }
-            local new_missile = getMissile(randomspawn.x, randomspawn.y)
-            -- print("Spawning missile at ", randomspawn.x, randomspawn.y)
-            table.insert(self.entities, new_missile)
-            self.spawncounter = 0
-
-        else
-            self.spawncounter = self.spawncounter + dt
         end
 
         -- Call update logic on entities
@@ -59,8 +49,9 @@ local function getGameState()
                     entity.body:destroy()
                 end
                 table.remove(self.entities, index)
+
+            -- Call update on all entities
             else
-                -- Call update on all entities
                 if entity.update ~= nil then 
                     entity:update(dt)
                 end
@@ -72,6 +63,7 @@ local function getGameState()
         for index, entity in pairs(self.entities) do
             local positionX, positionY = entity.body:getPosition()
             local angle = entity.body:getAngle()
+
             -- Draw all debug rectangle entities
             if entity.drawType == 'rectangle' then
                 love.graphics.setColor(255, 0, 0, 1)

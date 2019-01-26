@@ -1,3 +1,4 @@
+math.randomseed(os.time())
 local getResources = require("core/resources")
 local getStackHelper = require("core/statestack")
 local getGameState = require("states/gamestate")
