@@ -41,7 +41,7 @@ function love.update(dt)
 end
 
 function love.draw()
-	camera:set()
+    camera:set()
     stack:current():draw()
     camera:unset()
 

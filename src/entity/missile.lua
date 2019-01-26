@@ -6,6 +6,8 @@ local function getMissile(x, y)
 
     missile.name = 'missile'
     missile.drawType = 'image'
+    missile.categoryTimer = false
+    missile.resetCategory = false
     missile.destroyed = false
     missile.flightTime = math.random(7,10)
 
@@ -21,6 +23,8 @@ local function getMissile(x, y)
 
     missile.fixture = love.physics.newFixture(missile.body, missile.shape, 1)
     missile.fixture:setUserData(missile)
+    missile.fixture:setCategory(3)
+    missile.fixture:setMask(3, 4)
 
     -- Particle emitter settings.
     missile.particleSystem = love.graphics.newParticleSystem(resources.images.exhaust)
@@ -83,6 +87,15 @@ local function getMissile(x, y)
            self.body:setLinearVelocity(missileVel, 0)
 
         --self.body:setAngle(math.pi)
+        end
+
+        if self.resetCategory then
+            self.resetCategoryTimer = self.resetCategoryTimer - dt
+            if self.resetCategoryTimer <= 0 then
+                self.resetCategory = false
+                self.fixture:setCategory(3)
+                missile.fixture:setMask(3, 4)
+            end
         end
     end
 

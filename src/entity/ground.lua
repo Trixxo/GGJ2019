@@ -11,6 +11,7 @@ local function getGround()
 
     ground.fixture = love.physics.newFixture(ground.body, shape, 1)
     ground.fixture:setUserData(ground)
+    ground.fixture:setCategory(2)
 
     return ground
 end

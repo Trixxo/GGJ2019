@@ -46,6 +46,5 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
     for (int i = 0; i < 4; i++) {
         final_coords += get_absolute_distortion(i, screen_coords);
     }
-    vec4 a = get_frag_at_screen_pos(texture, final_coords) * color * 0.0000001;
-    return vec4(screen_coords.x / screen_width, 0.0,0.0,1.0) + 0.0* a;
+    return get_frag_at_screen_pos(texture, final_coords) * color;
 }
