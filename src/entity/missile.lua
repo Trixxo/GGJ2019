@@ -74,7 +74,8 @@ local function getMissile(x, y)
             self.particleSystem:stop()
         end
 
-        if self.flightTime <= 0 then
+        if self.flightTime <= 0 or
+          missileY > settings.resolution.height - (25 * settings.scale) - (50 * settings.scale)  then
             self.body:setType("dynamic")
             self.body:applyTorque(0.5)
             self.fixture:setCategory(4)
