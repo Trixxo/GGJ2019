@@ -7,7 +7,6 @@ local getStackHelper = require("core/statestack")
 local getGameState = require("states/gamestate")
 require("system/music")
 
-world = love.physics.newWorld(0, 981, true)
 resources = getResources()
 stack = getStackHelper()
 
@@ -26,7 +25,6 @@ function love.load()
         resources:addSound("lead" .. i, "data/audio/lead_" .. i .. ".wav")
     end
     resources:load()
-    world:setCallbacks(collide)
 
     local gameState = getGameState()
     stack:push(gameState)
@@ -35,7 +33,6 @@ function love.load()
 end
 
 function love.update(dt)
-    world:update(dt)
     stack:current():update(dt)
     music.update(dt)
 end
