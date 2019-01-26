@@ -60,6 +60,14 @@ local function getGameState()
     end
 
     function state:draw()
+        local mouseX, mouseY = love.mouse.getPosition()
+        local playerX, playerY = player.body:getPosition()
+
+        if love.mouse.isDown(1) then
+            love.graphics.setColor(0, 255, 0, 1)
+            love.graphics.line(mouseX, mouseY, playerX, playerY)
+        end
+
         for index, entity in pairs(self.entities) do
             local positionX, positionY = entity.body:getPosition()
             local angle = entity.body:getAngle()
@@ -73,7 +81,8 @@ local function getGameState()
                     entity.dimension.width,
                     entity.dimension.height
                 )
-                love.graphics.setColor(255, 255, 255)
+            love.graphics.setColor(255, 255, 255)
+
 
             -- Draw all entities with images
             elseif entity.drawType == 'image' then
@@ -108,7 +117,6 @@ local function getGameState()
 
     function state:collide(fixtureA, fixtureB, key)
         missileGroundCollision(fixtureA, fixtureB, key)
-
     end
 
     function state:load() end

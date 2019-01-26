@@ -14,7 +14,28 @@ local function getPlayer()
     player.fixture:setUserData(player)
 
     function player:update(dt)
-        
+        local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
+            local entity = fixture:getUserData()
+            if entity.name == "missile" then
+                player.body:applyLinearImpulse(150, 50)
+                return 0
+            end
+            
+            return 1 -- Continues with ray cast through all shapes.
+        end
+        local playerX, playerY = self.body:getPosition()
+        local mouseX, mouseY = love.mouse.getPosition()
+
+        if love.mouse.isDown(1) then
+            world:rayCast(
+                playerX,
+                playerY,
+                mouseX,
+                mouseY,
+                worldRayCastCallback
+            )
+        end
+
         if love.keyboard.isDown("a") then
             self.body:applyLinearImpulse(-50,0)
         end
