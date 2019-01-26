@@ -4,17 +4,17 @@ local function getPlayer()
     local player = {}
     local camera = require("core/camera")
     player.name = 'player'
-    player.drawType = 'rectangle'
+    player.drawType = 'image'
+    player.image = resources.images.player
     player.destroyed = false
     player.missileToConnect = nil
 
-    player.dimension = {width = 50, height = 50}
-    player.shape = love.physics.newRectangleShape(player.dimension.width, player.dimension.height)
+    player.dimension = {width = 60, height = 60}
+    player.shape = love.physics.newCircleShape(player.dimension.width / 2)
 
     player.body = love.physics.newBody(world, 100, 100, "dynamic")
-    player.body:setMass(11)
 
-    player.fixture = love.physics.newFixture(player.body, player.shape, 1)
+    player.fixture = love.physics.newFixture(player.body, player.shape, 0.6)
     player.fixture:setUserData(player)
     player.fixture:setCategory(1)
     player.fixture:setMask(4)
