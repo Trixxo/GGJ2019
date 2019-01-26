@@ -15,6 +15,8 @@ local function getPlayer()
 
     player.fixture = love.physics.newFixture(player.body, player.shape, 1)
     player.fixture:setUserData(player)
+    player.fixture:setCategory(1)
+    player.fixture:setMask(4)
 
     player.joint = nil
 
@@ -70,14 +72,20 @@ local function getPlayer()
         if self.joint ~= nil then
             if not self.joint:isDestroyed() then
                 self.joint:destroy()
+                self.missile.resetCategoryTimer = 1
+                self.missile.resetCategory = true
             end
         end
+
+        missile.fixture:setCategory(4)
+        missile.fixture:setMask(1, 3, 4)
+
         local joint = love.physics.newDistanceJoint(self.body, missile.body, self.body:getX(), self.body:getY(), missile.body:getX(), missile.body:getY())
         joint:setLength(50)
         joint:setDampingRatio(2)
         joint:setFrequency(1)
         self.joint = joint
-
+        self.missile = missile
     end
 
     function player:mousepressed(x, y, button , istouch, presses)
