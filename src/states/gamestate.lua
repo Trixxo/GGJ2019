@@ -4,6 +4,7 @@ local camera = require("core/camera")
 
 -- Game logic
 local getMissileSpawner = require("system/missilespawner")
+local getBgSpawner = require("system/bgspawner")
 
 -- Collisions
 local missileGroundCollision = require("collisions/missileground")
@@ -20,6 +21,7 @@ local function getGameState()
 
     -- Create game logic systems
     state.missileSpawner = getMissileSpawner()
+    state.bgSpawner = getBgSpawner()
 
     -- Create new entities
     local player = getPlayer()
@@ -33,6 +35,7 @@ local function getGameState()
         local playerX, playerY = player.body:getPosition()
 
         self.missileSpawner:update(dt)
+        self.bgSpawner:update(dt)
 
         -- Add new entities from collision handlers to state
         for index, entity in pairs(self.entitiesToSpawn) do

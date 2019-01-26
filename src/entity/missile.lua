@@ -28,12 +28,11 @@ local function getMissile(x, y)
     missile.particleSystem:setParticleLifetime(0.03, 0.05)
     missile.particleSystem:setEmissionRate(200)
 
-    missile.particleSystem:setAreaSpread('normal', 2, 3)
+    missile.particleSystem:setEmissionArea('normal', 2, 3)
 
     missile.particleSystem:setDirection(math.pi)
     missile.particleSystem:setSpeed(500, 1000)
     missile.particleSystem:setSpread(math.pi / 6)
-
 
     -- missile.particleSystem:setRadialAcceleration(10, 1000)
     -- missile.particleSystem:setRelativeRotation(true)
