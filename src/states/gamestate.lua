@@ -151,7 +151,7 @@ local function getGameState()
             end
 
             if entity.draw ~= nil then
-                player:draw()
+                entity:draw()
             end
         end
 

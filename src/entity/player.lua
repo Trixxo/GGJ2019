@@ -81,9 +81,7 @@ local function getPlayer()
 
     function player:keypressed(key, scancode, isrepeat)
         if scancode == "w" or scancode == "space" then
-            if self.joint ~= nil then
-                self:removeJoint()
-            end
+            self:removeJoint()
 
             self.body:applyLinearImpulse(0,-2000)
             music.queueEvent("jump")
@@ -96,9 +94,7 @@ local function getPlayer()
         if missile.fixture:isDestroyed() then
             return
         end
-        if self.joint ~= nil then
-            self:removeJoint()
-        end
+        self:removeJoint()
 
         missile.fixture:setCategory(4)
         missile.fixture:setMask(1, 3, 4)
@@ -112,11 +108,12 @@ local function getPlayer()
     end
 
     function player:removeJoint()
-        if not self.joint:isDestroyed() then
+        if self.joint and not self.joint:isDestroyed() then
             self.joint:destroy()
             self.joint = nil
             self.missile.resetCategoryTimer = 1
             self.missile.resetCategory = true
+            self.missile = nil
         end
     end
 
