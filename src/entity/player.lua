@@ -1,5 +1,5 @@
 local function getPlayer()
-    player = {}
+    local player = {}
     player.name = 'player'
     player.drawType = 'rectangle'
     player.destroyed = false
