@@ -42,7 +42,6 @@ local function getPlayer()
 
     function player:update(dt)
         self:computeGrapplingHook(dt)
-        print (self.jumpCd)
 
         if self.missileToConnect ~= nil then
             self:connectToMissile(self.missileToConnect)
@@ -59,6 +58,8 @@ local function getPlayer()
         if player.jumpCd > 1 then
             player.jumpCd = player.jumpCd - dt * 0.2
         end
+
+        print (self.jumpCd)
         local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
             local entity = fixture:getUserData()
             if entity.name == "missile" and entity ~= self.missile then
@@ -202,7 +203,7 @@ local function getPlayer()
     function player:keypressed(key, scancode, isrepeat)
         if mode == "normal" then
             if scancode == "w" or scancode == "space" then
-                if self.jumpCd <= 2 then
+                if self.jumpCd <= 1 then
                     xv, yv = self.body:getLinearVelocity()
                     self.body:setLinearVelocity(xv, -600)
                     player.jumpCd = player.jumpCd + 1
