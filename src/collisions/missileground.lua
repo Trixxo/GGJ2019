@@ -20,6 +20,7 @@ local function missileGroundCollision(fixtureA, fixtureB, key)
         -- Spawning explosion
         local explosion = getExplosion(positionX, positionY)
         table.insert(stack:current().entitiesToSpawn, explosion)
+        music.queueEvent("explosion")
     end
 end
 

@@ -15,6 +15,7 @@ function love.load()
 
     resources:addSound("kick", "data/audio/fantomenkick.wav")
     resources:addSound("hihat", "data/audio/hihat.wav")
+    resources:addSound("cymbalCrash", "data/audio/cymbal_crash.wav")
 
     leadSamples = 6
     for i = 1, leadSamples, 1 do
