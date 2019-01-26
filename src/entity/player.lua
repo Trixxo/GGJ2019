@@ -102,7 +102,7 @@ local function getPlayer()
     ----- GrapplingHook -----
 
     function player:computeGrapplingHook(dt)
-        self.grapplingCooldown = self.grapplingCooldown - dt
+        self.grapplingCooldown = math.max(0, self.grapplingCooldown - dt)
 
         if love.mouse.isDown(1) and not self.isGrappling and self.grapplingCooldown <= 0 then
             local targetX, targetY 
