@@ -14,7 +14,6 @@ local function getGameState()
 
     state.renderBelow = false
 
-    
     state.entities = {} -- Contains all entities
     state.entitiesToSpawn = {} -- Add entities into this list that can't be instantly added (E.g. during collisions)
 
@@ -50,8 +49,9 @@ local function getGameState()
                     entity.body:destroy()
                 end
                 table.remove(self.entities, index)
+
+            -- Call update on all entities
             else
-                -- Call update on all entities
                 if entity.update ~= nil then 
                     entity:update(dt)
                 end
