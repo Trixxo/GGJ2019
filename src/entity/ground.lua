@@ -1,5 +1,5 @@
 local function getGround()
-    ground = {}
+    local ground = {}
 
     ground.name = 'ground'
     ground.drawType = 'rectangle'
