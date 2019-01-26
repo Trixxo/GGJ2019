@@ -88,7 +88,8 @@ local function getGameState()
             entity:update(dt)
         end
 
-        camera.x = playerX - 200
+        local previousX = camera.x
+        camera.x = math.max(playerX - 500, previousX)
     end
 
     function state:draw()
