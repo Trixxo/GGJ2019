@@ -9,15 +9,17 @@ local function getPlayer()
     player.destroyed = false
     player.missileToConnect = nil
 
-    player.dimension = {width = 60, height = 60}
+    player.dimension = {width = 50, height = 60}
     player.shape = love.physics.newCircleShape(player.dimension.width / 2)
 
     player.body = love.physics.newBody(world, 100, 100, "dynamic")
 
-    player.fixture = love.physics.newFixture(player.body, player.shape, 0.6)
+    player.fixture = love.physics.newFixture(player.body, player.shape, 1)
     player.fixture:setUserData(player)
     player.fixture:setCategory(1)
     player.fixture:setMask(4)
+
+    player.body:setMass(2)
 
     player.joint = nil
 
