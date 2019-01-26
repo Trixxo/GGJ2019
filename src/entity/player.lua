@@ -184,6 +184,7 @@ local function getPlayer()
             self.missile.resetCategoryTimer = 1
             self.missile.resetCategory = true
             self.missile = nil
+            self.grapplingToMissile = false
         end
     end
 

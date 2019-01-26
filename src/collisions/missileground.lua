@@ -14,6 +14,8 @@ local function missileGroundCollision(fixtureA, fixtureB, key)
             missile = objectB
         end
         missile.destroyed = true
+        state.missileSpawner.missile_count = state.missileSpawner.missile_count - 1
+        print(state.missileSpawner.missile_count)
 
         local positionX, positionY = missile.body:getPosition()
 
