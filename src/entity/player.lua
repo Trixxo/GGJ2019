@@ -149,7 +149,9 @@ local function getPlayer()
             local playerX, playerY = self.body:getPosition()
             if not self.missile.body:isDestroyed() then
                 local missileX, missileY = self.missile.body:getPosition()
+                love.graphics.setColor(1, 0.5, 0.2, 1)
                 love.graphics.line(playerX, playerY, missileX, missileY)
+                love.graphics.setColor(1, 1, 1, 1)
             end
         end
     end
