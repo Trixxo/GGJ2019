@@ -67,13 +67,13 @@ local function getPlayer()
         local maxSpeed = 500
         if lvx > -maxSpeed then
             if love.keyboard.isDown("a") then
-                self.body:applyLinearImpulse(-50,0)
+                self.body:applyLinearImpulse(-100, 0)
             end
         end
 
         if lvx < maxSpeed then
             if love.keyboard.isDown("d") then
-                self.body:applyLinearImpulse(50,0)
+                self.body:applyLinearImpulse(100, 0)
             end
         end
 
@@ -83,7 +83,8 @@ local function getPlayer()
         if scancode == "w" or scancode == "space" then
             self:removeJoint()
 
-            self.body:applyLinearImpulse(0,-2000)
+            xv, yv = self.body:getLinearVelocity()
+            self.body:setLinearVelocity(xv, -600)
             music.queueEvent("jump")
         elseif scancode == "s" then
             self.body:applyLinearImpulse(0,2000)
