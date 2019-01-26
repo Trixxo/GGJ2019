@@ -105,7 +105,7 @@ local function getGameState()
         end
         if isTargetSet and percent < 1 then
             percent = percent + dt * 5
-            print (percent)
+            -- print (percent)
         end
         if percent > 1 then
             percent = 0
@@ -131,7 +131,7 @@ local function getGameState()
             love.graphics.setLineWidth(3)
             local distX , distY = targetX - playerX, targetY - playerY
             love.graphics.line(playerX, playerY, playerX + percent * distX , playerY + percent * distY) 
-            print (playerX, playerY, playerX + percent * distX , playerY + percent * distY) 
+            -- print (playerX, playerY, playerX + percent * distX , playerY + percent * distY) 
             love.graphics.setColor(1, 1, 1, 1)
         end
 
