@@ -1,5 +1,7 @@
 startTime = os.clock()
 math.randomseed(startTime)
+
+camera = require("core/camera")
 local getResources = require("core/resources")
 local getStackHelper = require("core/statestack")
 local getGameState = require("states/gamestate")
@@ -13,9 +15,11 @@ function love.load()
     resources:addImage("missile", "data/missile.png")
     resources:addImage("exhaust", "data/FIRE.png")
     resources:addImage("explosion", "data/explosion.png")
+    resources:addImage("softCircle", "data/soft_circle.png")
 
     resources:addSound("kick", "data/audio/fantomenkick.wav")
     resources:addSound("hihat", "data/audio/hihat.wav")
+    resources:addSound("cymbalCrash", "data/audio/cymbal_crash.wav")
 
     leadSamples = 6
     for i = 1, leadSamples, 1 do
@@ -37,7 +41,10 @@ function love.update(dt)
 end
 
 function love.draw()
+	camera:set()
     stack:current():draw()
+    camera:unset()
+
 end
 
 function love.keypressed(key, scancode, isrepeat)
@@ -50,4 +57,8 @@ end
 
 function collide(fixtureA, fixtureB, collision)
     stack:current():collide(fixtureA, fixtureB, collision)
+end
+
+function love.mousepressed(x, y, button, istouch, presses)
+    stack:current():mousepressed(x, y, button, istouch, presses)
 end

@@ -4,7 +4,7 @@ local function missileGroundCollision(fixtureA, fixtureB, key)
     local objectA = fixtureA:getUserData()
     local objectB = fixtureB:getUserData()
 
-    print(objectA.name .. " colliding with " .. objectB.name)
+    -- print(objectA.name .. " colliding with " .. objectB.name)
     if objectA.name == "missile" and objectB.name == "ground" or
         objectB.name == "missile" and objectA.name == "ground" then
         local missile
@@ -22,6 +22,7 @@ local function missileGroundCollision(fixtureA, fixtureB, key)
         table.insert(stack:current().entitiesToSpawn, explosion)
 
         stack:current():add_explosion_distortion(positionX, positionY)
+        music.queueEvent("explosion")
     end
 end
 

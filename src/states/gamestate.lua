@@ -1,8 +1,10 @@
 local getPlayer = require("entity/player")
 local getGround = require("entity/ground")
+local camera = require("core/camera")
 
 -- Game logic
 local getMissileSpawner = require("system/missilespawner")
+local getBgSpawner = require("system/bgspawner")
 
 -- Collisions
 local missileGroundCollision = require("collisions/missileground")
@@ -31,6 +33,7 @@ local function getGameState()
 
     -- Create game logic systems
     state.missileSpawner = getMissileSpawner()
+    state.bgSpawner = getBgSpawner()
 
     -- Create new entities
     local player = getPlayer()
@@ -41,8 +44,10 @@ local function getGameState()
     -- Constructor End
 
     function state:update(dt)
+        local playerX, playerY = player.body:getPosition()
 
         self.missileSpawner:update(dt)
+        self.bgSpawner:update(dt)
 
         -- Add new entities from collision handlers to state
         for index, entity in pairs(self.entitiesToSpawn) do
@@ -69,6 +74,8 @@ local function getGameState()
                 entity:update(dt)
             end
         end
+
+        camera.x = playerX - 200
     end
 
     function state:draw()
@@ -77,6 +84,7 @@ local function getGameState()
         love.graphics.clear()
 
         local mouseX, mouseY = love.mouse.getPosition()
+        mouseX = mouseX + camera.x
         local playerX, playerY = player.body:getPosition()
 
         if love.mouse.isDown(1) then
@@ -158,7 +166,13 @@ local function getGameState()
 
     function state:keyreleased(key, scancode) end
 
-    function state:mousepressed(x, y, key) end
+    function state:mousepressed(x, y, button, istouch, presses) 
+        for index, entity in pairs(self.entities) do
+            if entity.mousepressed ~= nil then
+                entity:mousepressed(x, y, button, istouch, presses)
+            end
+        end
+    end
 
     function state:collide(fixtureA, fixtureB, key)
         missileGroundCollision(fixtureA, fixtureB, key)

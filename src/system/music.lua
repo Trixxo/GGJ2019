@@ -28,6 +28,10 @@ function music.load()
                 count = 6
             },
             beatFrequency = 1 / 4
+        },
+        explosion = {
+            soundData = love.sound.newSoundData("data/audio/cymbal_crash.wav"),
+            beatFrequency = 1
         }
     }
 
@@ -62,9 +66,11 @@ end
 local function sourceForSound(sound)
     if sound.source then
         return sound.source
-    else
+    elseif sound.sources then
         local i = math.random(1, sound.sources.count)
         return resources.sounds[sound.sources.base .. i]
+    elseif sound.soundData then
+        return love.audio.newSource(sound.soundData)
     end
 end
 

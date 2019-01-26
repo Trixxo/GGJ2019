@@ -2,18 +2,20 @@ local getVector = require("core/vector")
 
 local function getMissile(x, y)
     local missile = {}
+    local missileVel = math.random(200, 500)
+
     missile.name = 'missile'
     missile.drawType = 'image'
     missile.destroyed = false
+    missile.flightTime = math.random(7,10)
 
     missile.dimension = {width = 70, height = 20}
     missile.image = resources.images.missile
     missile.shape = love.physics.newRectangleShape(missile.dimension.width, missile.dimension.height)
 
-    missile.body = love.physics.newBody(world, x, y, "dynamic")
-    missile.body:setAngle(-math.pi/2)
+    missile.body = love.physics.newBody(world, x, y, "kinematic")
     missile.body:setMass(10000)
-    missile.body:setInertia(1000)
+    --missile.body:setInertia(1000)
     missile.body:setLinearDamping(0.3)
 
 
@@ -22,16 +24,17 @@ local function getMissile(x, y)
 
     -- Particle emitter settings.
     missile.particleSystem = love.graphics.newParticleSystem(resources.images.exhaust)
-    missile.particleSystem:setSizes(0.04, 0.04, 0.03, 0.03, 0.03, 0.02, 0.01, 0.01)
+    missile.particleSystem:setSizes(0.04, 0.04, 0.03, 0.03, 0.03, 0.02)
     missile.particleSystem:setRotation(math.pi / 2)
+    missile.particleSystem:setColors(1, 1, 1, 1, 1, 1, 1, 0)
 
-    missile.particleSystem:setParticleLifetime(0.03, 0.05)
-    missile.particleSystem:setEmissionRate(200)
+    missile.particleSystem:setParticleLifetime(0.3, 0.5)
+    missile.particleSystem:setEmissionRate(20)
 
     missile.particleSystem:setEmissionArea('normal', 2, 3)
 
     missile.particleSystem:setDirection(math.pi)
-    missile.particleSystem:setSpeed(500, 1000)
+    missile.particleSystem:setSpeed(50, 100)
     missile.particleSystem:setSpread(math.pi / 6)
 
     -- missile.particleSystem:setRadialAcceleration(10, 1000)
@@ -50,12 +53,23 @@ local function getMissile(x, y)
     end
 
     function missile:update(dt)
+        local missileX, missileY = self.body:getPosition()
         self.particleSystem:update(dt)
+        self.flightTime = self.flightTime - dt
+        if self.flightTime <= 0 then
+            self.body:setType("dynamic")
+        else
 
-        local angle = missile.body:getAngle()
-        local acceleration = getVector(1000 * dt, 0):rotate(angle)
-        self.body:applyLinearImpulse(acceleration.x, acceleration.y)
-        self.body:applyTorque(700)
+        --local angle = missile.body:getAngle()
+        --local acceleration = getVector(1000 * dt, 0):rotate(angle)
+        --self.body:applyLinearImpulse(acceleration.x, acceleration.y)
+        --self.body:applyTorque(700)
+        --self.body:setPosition(missileX + acceleration.x, missileY)
+
+           self.body:setLinearVelocity(missileVel, 0)
+
+        --self.body:setAngle(math.pi)
+        end
     end
 
     return missile
