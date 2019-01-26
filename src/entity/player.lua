@@ -42,8 +42,10 @@ local function getPlayer()
             )
         end
 
-        if love.keyboard.isDown("a") then
-            self.body:applyLinearImpulse(-50,0)
+        if self.body:getLinearVelocity() < 100 then
+            if love.keyboard.isDown("a") then
+                self.body:applyLinearImpulse(-50,0)
+            end
         end
         if love.keyboard.isDown("d") then
             self.body:applyLinearImpulse(50,0)
