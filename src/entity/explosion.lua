@@ -4,11 +4,11 @@ local function getExplosion(x, y)
     explosion.name = 'explosion'
     explosion.deleted = false
     explosion.particleSystem = love.graphics.newParticleSystem(resources.images.explosion)
-    explosion.particleSystem:setSpeed(20, 150)
-    explosion.particleSystem:setParticleLifetime(1, 4)
+    explosion.particleSystem:setSpeed(70, 150)
+    explosion.particleSystem:setParticleLifetime(1, 2)
 
-    explosion.particleSystem:setSizes(0.2, 0.7, 1.0)
-    explosion.particleSystem:setSizeVariation(0.5)
+    explosion.particleSystem:setSizes(0.3, 0.6, 0.7)
+    explosion.particleSystem:setSizeVariation(0.7)
     explosion.particleSystem:setSpread(math.pi*2)
     explosion.particleSystem:setRotation(0, 2 * math.pi)
     explosion.particleSystem:setEmissionArea("uniform", 1, 1)
