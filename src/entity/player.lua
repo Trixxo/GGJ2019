@@ -22,6 +22,18 @@ local function getPlayer()
     player.body:setMass(2)
 
     player.joint = nil
+    player.joint = nil
+    player.missile = nil
+
+    function player:draw()
+        if self.missile ~= nil then
+            local playerX, playerY = self.body:getPosition()
+            if not self.missile.body:isDestroyed() then
+                local missileX, missileY = self.missile.body:getPosition()
+                love.graphics.line(playerX, playerY, missileX, missileY)
+            end
+        end
+    end
 
     function player:update(dt)
         if self.missileToConnect ~= nil then

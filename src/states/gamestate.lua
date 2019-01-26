@@ -149,11 +149,16 @@ local function getGameState()
                 local emitterX, emitterY = entity:getEmitterPosition()
                 love.graphics.draw(entity.particleSystem, emitterX, emitterY, angle)
             end
+
+            if entity.draw ~= nil then
+                player:draw()
+            end
         end
 
         -- Apply the shader to the canvas.
         love.graphics.setCanvas()
 
+        state.explosionWaveShader:send("display_size", {settings.resolution.width, settings.resolution.height})
         state.explosionWaveShader:send("camera_pos", {camera.x, camera.y})
         state.explosionWaveShader:send("time", os.clock())
         state.explosionWaveShader:send(

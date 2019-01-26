@@ -5,8 +5,13 @@ local function getGround()
     ground.drawType = 'rectangle'
     ground.destroyed = false
 
-    ground.dimension = {width = 100000, height = 50}
-    ground.body = love.physics.newBody(world, 600, 750, "static")
+    ground.dimension = {width = 100000, height = 50 * settings.scale}
+    ground.body = love.physics.newBody(
+        world,
+        settings.resolution.width/2,
+        settings.resolution.height - (50 * settings.scale),
+        "static"
+    )
     local shape = love.physics.newRectangleShape(ground.dimension.width, ground.dimension.height)
 
     ground.fixture = love.physics.newFixture(ground.body, shape, 1)

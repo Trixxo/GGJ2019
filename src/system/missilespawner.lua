@@ -12,7 +12,7 @@ local function getMissileSpawner()
         if self.spawncounter > self.spawntime then
             state = stack:current()
             local randomspawn = {
-                x = camera.x + math.random(200, 1400),
+                x = camera.x + math.random(200, settings.resolution.width),
                 y = math.random(-300, -50)
             }
             local new_missile = getMissile(randomspawn.x, randomspawn.y)
