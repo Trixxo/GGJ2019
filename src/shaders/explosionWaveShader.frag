@@ -1,3 +1,5 @@
+uniform vec2 camera_pos;
+
 uniform float time;
 
 uniform float impact_time[4];
@@ -18,7 +20,7 @@ float get_relative_distortion(float wave_peak_distance, float wave_width, float 
 }
 
 vec2 get_absolute_distortion(int i, vec2 pixel) {
-    vec2 impact = impact_coords[i];
+    vec2 impact = impact_coords[i] - camera_pos;
     float elapsed_time = time - impact_time[i];
     if (elapsed_time < 0.0) {
         return vec2(0.0);
@@ -44,5 +46,6 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
     for (int i = 0; i < 4; i++) {
         final_coords += get_absolute_distortion(i, screen_coords);
     }
-    return get_frag_at_screen_pos(texture, final_coords) * color;
+    vec4 a = get_frag_at_screen_pos(texture, final_coords) * color * 0.0000001;
+    return vec4(screen_coords.x / screen_width, 0.0,0.0,1.0) + 0.0* a;
 }

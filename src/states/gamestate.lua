@@ -80,8 +80,8 @@ local function getGameState()
 
     function state:draw()
         -- Render everything to the canvas.
-        love.graphics.setCanvas(state.canvas)
-        love.graphics.clear()
+        -- love.graphics.setCanvas(state.canvas)
+        -- love.graphics.clear()
 
         local mouseX, mouseY = love.mouse.getPosition()
         mouseX = mouseX + camera.x
@@ -129,21 +129,23 @@ local function getGameState()
         end
 
         -- Apply the shader to the canvas.
-        love.graphics.setCanvas()
-
-        state.explosionWaveShader:send("time", os.clock())
-        state.explosionWaveShader:send(
-            "impact_time", state.impactTime[1], state.impactTime[2],
-            state.impactTime[3], state.impactTime[4]
-        )
-        state.explosionWaveShader:send(
-            "impact_coords", state.impactCoords[1], state.impactCoords[2],
-            state.impactCoords[3], state.impactCoords[4]
-        )
-        love.graphics.setShader(state.explosionWaveShader)
-
-        love.graphics.draw(state.canvas)
-        love.graphics.setShader()
+        -- love.graphics.setCanvas()
+        --
+        -- print(camera.x, camera.y)
+        -- state.explosionWaveShader:send("camera_pos", {camera.x, camera.y})
+        -- state.explosionWaveShader:send("time", os.clock())
+        -- state.explosionWaveShader:send(
+        --     "impact_time", state.impactTime[1], state.impactTime[2],
+        --     state.impactTime[3], state.impactTime[4]
+        -- )
+        -- state.explosionWaveShader:send(
+        --     "impact_coords", state.impactCoords[1], state.impactCoords[2],
+        --     state.impactCoords[3], state.impactCoords[4]
+        -- )
+        -- love.graphics.setShader(state.explosionWaveShader)
+        --
+        -- love.graphics.draw(state.canvas)
+        -- love.graphics.setShader()
     end
 
     function state:add_explosion_distortion(posX, posY)
@@ -166,7 +168,7 @@ local function getGameState()
 
     function state:keyreleased(key, scancode) end
 
-    function state:mousepressed(x, y, button, istouch, presses) 
+    function state:mousepressed(x, y, button, istouch, presses)
         for index, entity in pairs(self.entities) do
             if entity.mousepressed ~= nil then
                 entity:mousepressed(x, y, button, istouch, presses)

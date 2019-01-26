@@ -37,9 +37,6 @@ local function getMissile(x, y)
     missile.particleSystem:setSpeed(50, 100)
     missile.particleSystem:setSpread(math.pi / 6)
 
-    -- missile.particleSystem:setRadialAcceleration(10, 1000)
-    -- missile.particleSystem:setRelativeRotation(true)
-    -- missile.particleSystem:setTangentialAcceleration(10, 1000)
     missile.particleSystem:start()
 
     function missile:getEmitterPosition()
