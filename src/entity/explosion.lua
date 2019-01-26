@@ -1,5 +1,5 @@
 local function getExplosion(x,y)
-    local explosion = {} 
+    local explosion = {}
 
     explosion.dimension = {width = 100, height = 100}
     explosion.image = resources.images.explosion
@@ -10,23 +10,22 @@ local function getExplosion(x,y)
     function explosion:update(dt)
         if self.lifetime < 0 then
             print("destroying explosion")
-            self:destroy() 
+            self:destroy()
         else
             self.lifetime = self.lifetime - dt
         end
-    
+
     end
 
-    function explosion:destroy() 
-        for k, v in ipairs(state.entities) do 
-            print("sasd")
-            if v == self then 
+    function explosion:destroy()
+        for k, v in ipairs(state.entities) do
+            if v == self then
                 print("destroying explosion forreal")
-                table.remove(state.entities, k) 
-                self = nil 
-                return 
-            end 
-        end 
+                table.remove(state.entities, k)
+                self = nil
+                return
+            end
+        end
     end
 
    return explosion
