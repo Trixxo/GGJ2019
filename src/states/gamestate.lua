@@ -104,7 +104,7 @@ local function getGameState()
         local playerX, playerY = player.body:getPosition()
 
         if love.mouse.isDown(1) then
-            love.graphics.setColor(0, 1, 0, 1)
+            love.graphics.setColor(0.9, 0.3, 0.1, 1)
             love.graphics.setLineWidth(3)
             love.graphics.line(mouseX, mouseY, playerX, playerY)
             love.graphics.setColor(1, 1, 1, 1)
