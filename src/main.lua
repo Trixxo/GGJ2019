@@ -2,6 +2,7 @@ math.randomseed(os.time())
 local getResources = require("core/resources")
 local getStackHelper = require("core/statestack")
 local getGameState = require("states/gamestate")
+require("system/music")
 
 world = love.physics.newWorld(0, 981, true)
 resources = getResources()
@@ -10,16 +11,22 @@ stack = getStackHelper()
 function love.load()
     resources:addImage("missile", "data/missile.png")
     resources:addImage("explosion", "data/explosion.png")
+
+    resources:addSound("kick", "data/audio/fantomenkick.wav")
+    resources:addSound("hihat", "data/audio/hihat.wav")
     resources:load()
     world:setCallbacks(collide)
 
     local gameState = getGameState()
     stack:push(gameState)
+
+    music.load()
 end
 
 function love.update(dt)
     world:update(dt)
     stack:current():update(dt)
+    music.update(dt)
 end
 
 function love.draw()
