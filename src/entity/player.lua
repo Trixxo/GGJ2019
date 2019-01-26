@@ -11,7 +11,7 @@ local function getPlayer()
     player.missileToConnect = nil
     player.grapplingCooldown = 0
     player.grapplingTimeout = 2
-    player.grapp_ui_size = {x = 200, y = 10}
+    player.grappUiSize = {x = 200, y = 10}
 
     player.dimension = {width = 50, height = 60}
     player.shape = love.physics.newCircleShape(player.dimension.width / 2)
@@ -35,7 +35,6 @@ local function getPlayer()
 
     function player:draw()
         self:drawGrapplingHook()
-
         self:drawGrapplingUI()
     end
 
@@ -105,9 +104,9 @@ local function getPlayer()
 
         if love.mouse.isDown(1) and not self.isGrappling and self.grapplingCooldown <= 0 then
             if self.grapplingToMissile and self.missile ~= nil then
-                self.grapplingTarget = self.missile.body:getPosition()
+                self.grapplingTarget = getVector(self.missile.body:getPosition())
             else
-                self.grapplingTarget = love.mouse.getPosition():add(camera)
+                self.grapplingTarget = getVector(love.mouse.getPosition()):add(camera)
             end
             self.isGrappling = true
         end
@@ -118,7 +117,6 @@ local function getPlayer()
             end
 
             self.grapplingPercent = self.grapplingPercent + dt * 5
-            -- print (self.grapplingPercent)
         end
         if self.grapplingPercent > 1 then
             self.grapplingPercent = 0
@@ -131,9 +129,9 @@ local function getPlayer()
         if self.isGrappling then
             love.graphics.setColor(0.9, 0.3, 0.1, 1)
             love.graphics.setLineWidth(3)
-            local playerPos = self.body:getPosition()
+            local playerPos = getVector(self.body:getPosition())
             local dist = self.grapplingTarget:subtract(playerPos)
-            local ropeEnd = player:add(dist:multiply(self.grapplingPercent))
+            local ropeEnd = playerPos:add(dist:multiply(self.grapplingPercent))
             love.graphics.line(playerPos.x, playerPos.y, ropeEnd.x, ropeEnd.y)
             love.graphics.setColor(1, 1, 1, 1)
         end
@@ -151,11 +149,11 @@ local function getPlayer()
 
     function player:drawGrapplingUI()
         love.graphics.rectangle("line", camera.x+100, camera.y+100,
-            self.grapp_ui_size.x, self.grapp_ui_size.y)
+            self.grappUiSize.x, self.grappUiSize.y)
         love.graphics.print("grappling hook", camera.x+100, camera.y+80)
         love.graphics.rectangle("fill", camera.x+100, camera.y+100,
-            self.grapp_ui_size.x*(1 - self.grapplingCooldown/self.grapplingTimeout),
-            self.grapp_ui_size.y)
+            self.grappUiSize.x*(1 - self.grapplingCooldown/self.grapplingTimeout),
+            self.grappUiSize.y)
     end
 
     ----- Missiles and Joints-----
