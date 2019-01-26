@@ -107,6 +107,10 @@ local function getMissile(x, y)
         end
     end
 
+    function missile:draw()
+        local x, y = self.body:getPosition()
+        love.graphics.print("Hurensohn", x - self.dimension.width / 2, y - self.dimension.height)
+    end
     return missile
 end
 
