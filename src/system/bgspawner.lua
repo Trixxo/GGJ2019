@@ -6,7 +6,7 @@ local function getBgSpawner()
     bgSpawner.lastMovedIndex = 0
     bgSpawner.lastMovedX = 0
 
-    local spawnerCount = 6
+    local spawnerCount = math.floor(settings.resolution.width/400) + 2
 
     function bgSpawner:load()
         for i = 0, spawnerCount - 1, 1 do

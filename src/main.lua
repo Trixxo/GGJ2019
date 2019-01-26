@@ -3,8 +3,8 @@ math.randomseed(startTime)
 
 settings = {
     resolution = {
-        width = 1600,
-        height = 900,
+        width = love.graphics.getWidth(),
+        height = love.graphics.getHeight(),
     },
     scale = 1,
 }

@@ -1,0 +1,4 @@
+function love.conf(t)
+    t.window.width = 2560 
+    t.window.height = 1440
+end
