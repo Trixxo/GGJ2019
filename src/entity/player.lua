@@ -9,7 +9,7 @@ local function getPlayer()
     player.destroyed = false
     player.missileToConnect = nil
 
-    player.dimension = {width = 70, height = 70}
+    player.dimension = {width = 60, height = 60}
     player.shape = love.physics.newCircleShape(player.dimension.width / 2)
 
     player.body = love.physics.newBody(world, 100, 100, "dynamic")
