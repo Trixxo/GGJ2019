@@ -113,13 +113,27 @@ local function getGameState()
         end
     end
 
+    function state:renderParallaxBackground(resource, scale, parallaxScale, posY)
+        local resourceWidth = resource:getPixelWidth()
+        local screenLeft, screenRight = camera.x, camera.x + settings.resolution.width
+        local parallaxOffset = parallaxScale * screenLeft
+        local numIterations = math.floor((screenLeft - parralaxOffset) / (resourceWidth * scale))
+
+
+        while parallaxOffset + numIterations * resourceWidth * scale < screenRight
+        do
+            love.graphics.draw(resources.images.backgroundCity, parallaxOffset + numIterations * resourceWidth * scale, posY, 0, scale, scale)
+            numIterations = numIterations + 1
+        end
+    end
+
     function state:draw()
         -- Render everything to the canvas.
         love.graphics.setCanvas(state.canvas)
         love.graphics.clear()
 
         -- Background
-        love.graphics.draw(resources.images.backgroundCity)
+        self:renderParallaxBackground(resources.images.backgroundCity, 0.9, 0.1, 0)
 
         local mouseX, mouseY = love.mouse.getPosition()
         mouseX = mouseX + camera.x
@@ -130,8 +144,7 @@ local function getGameState()
             love.graphics.setColor(0.9, 0.3, 0.1, 1)
             love.graphics.setLineWidth(3)
             local distX , distY = targetX - playerX, targetY - playerY
-            love.graphics.line(playerX, playerY, playerX + percent * distX , playerY + percent * distY) 
-            print (playerX, playerY, playerX + percent * distX , playerY + percent * distY) 
+            love.graphics.line(playerX, playerY, playerX + percent * distX , playerY + percent * distY)
             love.graphics.setColor(1, 1, 1, 1)
         end
 
