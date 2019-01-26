@@ -24,6 +24,7 @@ local function getPlayer()
     function player:update(dt)
         if self.missileToConnect ~= nil then
             self:connectToMissile(self.missileToConnect)
+            self.missileToConnect = nil
         end
         local playerX, playerY = self.body:getPosition()
         local mouseX, mouseY = love.mouse.getPosition()
@@ -31,7 +32,7 @@ local function getPlayer()
         mouseX = mouseX + camera.x
         local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
             local entity = fixture:getUserData()
-            if entity.name == "missile" then
+            if entity.name == "missile" and entity ~= self.missile then
                 self:connectToMissile(entity)
                 return 0
             end
@@ -67,8 +68,7 @@ local function getPlayer()
         elseif scancode == "s" then
             self.body:applyLinearImpulse(0,2000)
         elseif scancode == "space" and self.joint ~= nil then
-            self.joint:destroy()
-            self.joint = nil
+            self:removeJoint()
         end
     end
 
@@ -77,11 +77,7 @@ local function getPlayer()
             return
         end
         if self.joint ~= nil then
-            if not self.joint:isDestroyed() then
-                self.joint:destroy()
-                self.missile.resetCategoryTimer = 1
-                self.missile.resetCategory = true
-            end
+            self:removeJoint()
         end
 
         missile.fixture:setCategory(4)
@@ -89,10 +85,19 @@ local function getPlayer()
 
         local joint = love.physics.newDistanceJoint(self.body, missile.body, self.body:getX(), self.body:getY(), missile.body:getX(), missile.body:getY())
         joint:setLength(50)
-        joint:setDampingRatio(2)
+        joint:setDampingRatio(5)
         joint:setFrequency(1)
         self.joint = joint
         self.missile = missile
+    end
+
+    function player:removeJoint()
+        if not self.joint:isDestroyed() then
+            self.joint:destroy()
+            self.joint = nil
+            self.missile.resetCategoryTimer = 1
+            self.missile.resetCategory = true
+        end
     end
 
     function player:mousepressed(x, y, button , istouch, presses)

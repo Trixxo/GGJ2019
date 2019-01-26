@@ -16,7 +16,6 @@ local function missilePlayerCollision(fixtureA, fixtureB, key)
         end
 
         player.missileToConnect = missile
-
     end
 end
 
