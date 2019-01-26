@@ -1,17 +1,30 @@
-local function getExplosion(x,y)
-    local explosion = {} 
-    explosion.lifetime = 1
+local function getExplosion(x, y)
+    local explosion = {}
+    explosion.lifetime = 10
     explosion.name = 'explosion'
-    explosion.drawType = 'image'
     explosion.deleted = false
+    explosion.particleSystem = love.graphics.newParticleSystem(resources.images.explosion)
+    explosion.particleSystem:setSpeed(20, 150)
+    explosion.particleSystem:setParticleLifetime(1, 4)
+
+    explosion.particleSystem:setSizes(0.2, 0.7, 1.0)
+    explosion.particleSystem:setSizeVariation(0.5)
+    explosion.particleSystem:setSpread(math.pi*2)
+    explosion.particleSystem:setEmissionArea("uniform", 1, 1)
+
+    explosion.particleSystem:setColors(1, 0.8, 0.45, 0.0,
+                                   1, 0.5, 0.2, 0.6,
+                                   1, 0.3, 0.1, 0)
+
+    explosion.particleSystem:emit(10)
 
     function explosion:initialize()
-        explosion.body = love.physics.newBody(world, self.position.x, self.position.y)
+        explosion.body = love.physics.newBody(world, x, y)
     end
 
-    explosion.position = {x = x, y = y}
-    explosion.dimension = {width = 100, height = 100}
-    explosion.image = resources.images.explosion
+    function explosion:getEmitterPosition()
+        return x, y
+    end
 
     function explosion:update(dt)
         if self.lifetime < 0 then
@@ -20,6 +33,7 @@ local function getExplosion(x,y)
             self.lifetime = self.lifetime - dt
         end
 
+        self.particleSystem:update(dt)
     end
 
    return explosion
