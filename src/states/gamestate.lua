@@ -40,21 +40,21 @@ local function getGameState()
             table.remove(self.entitiesToSpawn, index)
         end
 
-        -- Call update logic on entities
-        for index, entity in ipairs(self.entities) do
-            -- Remove all destroyed entities
-            if entity.destroyed then
+        -- Remove all destroyed entities
+        for i = #self.entities, 1, -1 do
+            if self.entities[i].destroyed then
                 -- print("Destroying " .. entity.name .. " with key " .. index)
-                if entity.body ~= nil then
-                    entity.body:destroy()
+                if self.entities[i].body ~= nil then
+                    self.entities[i].body:destroy()
                 end
-                table.remove(self.entities, index)
+                table.remove(self.entities, i)
+            end
+        end
 
-            -- Call update on all entities
-            else
-                if entity.update ~= nil then 
-                    entity:update(dt)
-                end
+        -- Call update on all entities
+        for index, entity in ipairs(self.entities) do
+            if entity.update ~= nil then 
+                entity:update(dt)
             end
         end
     end
@@ -108,7 +108,6 @@ local function getGameState()
 
     function state:collide(fixtureA, fixtureB, key)
         missileGroundCollision(fixtureA, fixtureB, key)
-
     end
 
     function state:load() end
