@@ -68,6 +68,9 @@ local function getPlayer()
                     mouseY,
                     worldRayCastCallback
                 )
+                if self.grapplingCooldown <= 0 then
+                    self.grapplingCooldown = 0.5
+                end
             end
         end
 

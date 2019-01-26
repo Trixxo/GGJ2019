@@ -7,7 +7,7 @@ local function getExplosion(x, y)
     explosion.particleSystem:setSpeed(70, 150)
     explosion.particleSystem:setParticleLifetime(1, 2)
 
-    explosion.particleSystem:setSizes(0.3, 0.6, 0.7)
+    explosion.particleSystem:setSizes(0.3, 0.7, 0.9)
     explosion.particleSystem:setSizeVariation(0.7)
     explosion.particleSystem:setSpread(math.pi*2)
     explosion.particleSystem:setRotation(0, 2 * math.pi)
@@ -17,7 +17,7 @@ local function getExplosion(x, y)
                                    1, 0.5, 0.2, 0.6,
                                    1, 0.3, 0.1, 0)
 
-    explosion.particleSystem:emit(10)
+    explosion.particleSystem:emit(5)
 
     function explosion:initialize()
         explosion.body = love.physics.newBody(world, x, y)

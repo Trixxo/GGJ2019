@@ -2,12 +2,12 @@ local function getBgParticle(x)
     local smoke = {}
     smoke.x = x
     smoke.particleSystem = love.graphics.newParticleSystem(resources.images.softCircle)
-    smoke.particleSystem:setEmissionRate(4)
+    smoke.particleSystem:setEmissionRate(2)
     smoke.particleSystem:setDirection(-math.pi/2)
-    smoke.particleSystem:setSpeed(20, 150)
-    smoke.particleSystem:setParticleLifetime(3, 10)
+    smoke.particleSystem:setSpeed(40, 180)
+    smoke.particleSystem:setParticleLifetime(3, 8)
 
-    smoke.particleSystem:setSizes(1.0, 2.0)
+    smoke.particleSystem:setSizes(1.4, 3.0)
     smoke.particleSystem:setSizeVariation(0.5)
     smoke.particleSystem:setEmissionArea("uniform", 200, 0)
 
