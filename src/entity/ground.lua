@@ -9,7 +9,7 @@ local function getGround()
     ground.body = love.physics.newBody(
         world,
         settings.resolution.width/2,
-        settings.resolution.height - (50 * settings.scale),
+        settings.resolution.height - (25 * settings.scale),
         "static"
     )
     local shape = love.physics.newRectangleShape(ground.dimension.width, ground.dimension.height)
