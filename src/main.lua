@@ -1,4 +1,6 @@
-math.randomseed(os.time())
+startTime = os.clock()
+math.randomseed(startTime)
+
 camera = require("core/camera")
 local getResources = require("core/resources")
 local getStackHelper = require("core/statestack")

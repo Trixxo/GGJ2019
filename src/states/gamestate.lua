@@ -14,6 +14,18 @@ local function getGameState()
     local state = {}
     -- Constructor
 
+    state.canvas = love.graphics.newCanvas()
+
+    -- This shader renders a shockwave for a max of 4 explosions.
+    state.explosionWaveShader = love.graphics.newShader("shaders/explosionWaveShader.frag")
+    state.impactTime = {} -- `float` array.
+    state.impactCoords = {} -- coordinate tuple array.
+    for i = 0, 4, 1 do
+        table.insert(state.impactTime, -1)
+        table.insert(state.impactCoords, {0.0, 0.0})
+    end
+    state.nextImpactIndex = 1
+
     state.renderBelow = false
 
     state.entities = {} -- Contains all entities
@@ -72,6 +84,10 @@ local function getGameState()
     end
 
     function state:draw()
+        -- Render everything to the canvas.
+        -- love.graphics.setCanvas(state.canvas)
+        -- love.graphics.clear()
+
         local mouseX, mouseY = love.mouse.getPosition()
         mouseX = mouseX + camera.x
         local playerX, playerY = player.body:getPosition()
@@ -121,6 +137,32 @@ local function getGameState()
                 love.graphics.draw(entity.particleSystem, emitterX, emitterY, angle)
             end
         end
+
+        -- Apply the shader to the canvas.
+        -- love.graphics.setCanvas()
+        --
+        -- print(camera.x, camera.y)
+        -- state.explosionWaveShader:send("camera_pos", {camera.x, camera.y})
+        -- state.explosionWaveShader:send("time", os.clock())
+        -- state.explosionWaveShader:send(
+        --     "impact_time", state.impactTime[1], state.impactTime[2],
+        --     state.impactTime[3], state.impactTime[4]
+        -- )
+        -- state.explosionWaveShader:send(
+        --     "impact_coords", state.impactCoords[1], state.impactCoords[2],
+        --     state.impactCoords[3], state.impactCoords[4]
+        -- )
+        -- love.graphics.setShader(state.explosionWaveShader)
+        --
+        -- love.graphics.draw(state.canvas)
+        -- love.graphics.setShader()
+    end
+
+    function state:add_explosion_distortion(posX, posY)
+        print(posX, posY)
+        state.impactTime[state.nextImpactIndex] = os.clock()
+        state.impactCoords[state.nextImpactIndex] = {posX, posY}
+        state.nextImpactIndex = state.nextImpactIndex % 4 + 1
     end
 
     function state:shutdown() end
@@ -136,7 +178,7 @@ local function getGameState()
 
     function state:keyreleased(key, scancode) end
 
-    function state:mousepressed(x, y, button, istouch, presses) 
+    function state:mousepressed(x, y, button, istouch, presses)
         for index, entity in pairs(self.entities) do
             if entity.mousepressed ~= nil then
                 entity:mousepressed(x, y, button, istouch, presses)

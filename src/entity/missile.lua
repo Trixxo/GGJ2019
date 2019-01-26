@@ -37,9 +37,6 @@ local function getMissile(x, y)
     missile.particleSystem:setSpeed(50, 100)
     missile.particleSystem:setSpread(math.pi / 6)
 
-    -- missile.particleSystem:setRadialAcceleration(10, 1000)
-    -- missile.particleSystem:setRelativeRotation(true)
-    -- missile.particleSystem:setTangentialAcceleration(10, 1000)
     missile.particleSystem:start()
 
     function missile:getEmitterPosition()
@@ -56,6 +53,23 @@ local function getMissile(x, y)
         local missileX, missileY = self.body:getPosition()
         self.particleSystem:update(dt)
         self.flightTime = self.flightTime - dt
+
+        if self.flightTime <= 0 then
+            self.particleSystem:stop()
+        elseif self.flightTime <= 0.3 then
+            self.particleSystem:start()
+        elseif self.flightTime <= 0.6 then
+            self.particleSystem:stop()
+        elseif self.flightTime <= 0.8 then
+            self.particleSystem:start()
+        elseif self.flightTime <= 1 then
+            self.particleSystem:stop()
+        elseif self.flightTime <= 1.3 then
+            self.particleSystem:start()
+        elseif self.flightTime <= 1.5 then
+            self.particleSystem:stop()
+        end
+
         if self.flightTime <= 0 then
             self.body:setType("dynamic")
         else
