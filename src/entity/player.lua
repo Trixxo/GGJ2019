@@ -43,7 +43,7 @@ local function getPlayer()
             )
         end
 
-        if math.abs(lvx) < 100 then
+        if lvx < 500 or lvx > 500 then
             if love.keyboard.isDown("a") then
                 self.body:applyLinearImpulse(-50,0)
             end
