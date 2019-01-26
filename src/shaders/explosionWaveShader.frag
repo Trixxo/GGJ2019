@@ -6,8 +6,9 @@ uniform float impact_time[4];
 uniform vec2 impact_coords[4];
 
 const float pi = 3.1415926535;
-const float default_wave_width = 100.0f;
-const float distortion_strength = 10.0f;
+const float default_wave_width = 150.0f;
+const float max_wave_dist = 1000.0f;
+const float distortion_strength = 20.0f;
 
 const float screen_width = 1200.0f;
 const float screen_height = 800.0f;
@@ -29,9 +30,10 @@ vec2 get_absolute_distortion(int i, vec2 pixel) {
 
     vec2 impact_to_pixel = impact - pixel;
     float pixel_dist = length(impact_to_pixel);
+    float radius_strength = 1.0f - clamp(peak_dist / max_wave_dist, 0.0f, 1.0f);
     vec2 direction = impact_to_pixel / pixel_dist;
     float rel_distortion = get_relative_distortion(peak_dist, default_wave_width, pixel_dist);
-    return distortion_strength * rel_distortion * direction;
+    return radius_strength * distortion_strength * rel_distortion * direction;
 }
 
 vec4 get_frag_at_screen_pos(Image screen, vec2 screen_coords) {
