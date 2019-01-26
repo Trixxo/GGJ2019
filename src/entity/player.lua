@@ -17,7 +17,7 @@ local function getPlayer()
         local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
             local entity = fixture:getUserData()
             if entity.name == "missile" then
-                player.body:applyLinearImpulse(150, 50)
+                player.body:applyLinearImpulse(0, -150)
                 return 0
             end
             
