@@ -29,7 +29,7 @@ local function getGameState()
     function state:update(dt)
         -- Add new entities from collision handlers to state
         for index, entity in pairs(self.entitiesToSpawn) do
-            print("Adding new " .. entity.name .. " to state")
+            -- print("Adding new " .. entity.name .. " to state")
             entity:initialize()
             table.insert(self.entities, entity)
             table.remove(self.entitiesToSpawn, index)
@@ -42,7 +42,7 @@ local function getGameState()
                 y = 100
             }
             local new_missile = getMissile(randomspawn.x, randomspawn.y)
-            print("spawning missile at ", randomspawn.x, randomspawn.y)
+            -- print("Spawning missile at ", randomspawn.x, randomspawn.y)
             table.insert(self.entities, new_missile)
             self.spawncounter = 0
 
@@ -54,7 +54,7 @@ local function getGameState()
         for index, entity in ipairs(self.entities) do
             -- Remove all destroyed entities
             if entity.destroyed then
-                print("Destroying " .. entity.name .. " with key " .. index)
+                -- print("Destroying " .. entity.name .. " with key " .. index)
                 if entity.body ~= nil then
                     entity.body:destroy()
                 end

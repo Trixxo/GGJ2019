@@ -17,8 +17,7 @@ local function missileGroundCollision(fixtureA, fixtureB, key)
 
         local positionX, positionY = missile.body:getPosition()
 
-        -- spawning explosion
-        print("Spawning explosion")
+        -- Spawning explosion
         local explosion = getExplosion(positionX, positionY)
         table.insert(stack:current().entitiesToSpawn, explosion)
     end

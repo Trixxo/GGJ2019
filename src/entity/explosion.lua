@@ -19,20 +19,8 @@ local function getExplosion(x,y)
         else
             self.lifetime = self.lifetime - dt
         end
-    
-    end
 
---    function explosion:destroy() 
---        for k, v in ipairs(stack:current().entities) do 
---            print("sasd")
---            if v == self then 
---                print("destroying explosion forreal")
---                table.remove(state.entities, k) 
---                self = nil 
---                return 
---            end 
---        end 
---    end
+    end
 
    return explosion
 
