@@ -62,13 +62,15 @@ local function getPlayer()
     end
 
     function player:keypressed(key, scancode, isrepeat)
-        if scancode == "w" then
+        if scancode == "w" or scancode == "space" then
+            if self.joint ~= nil then
+                self:removeJoint()
+            end
+
             self.body:applyLinearImpulse(0,-2000)
             music.queueEvent("jump")
         elseif scancode == "s" then
             self.body:applyLinearImpulse(0,2000)
-        elseif scancode == "space" and self.joint ~= nil then
-            self:removeJoint()
         end
     end
 
