@@ -149,6 +149,10 @@ local function getGameState()
                 local emitterX, emitterY = entity:getEmitterPosition()
                 love.graphics.draw(entity.particleSystem, emitterX, emitterY, angle)
             end
+
+            if entity.draw ~= nil then
+                player:draw()
+            end
         end
 
         -- Apply the shader to the canvas.
