@@ -6,7 +6,7 @@ local function getBgSpawner()
     bgSpawner.lastMovedIndex = 0
     bgSpawner.lastMovedX = 0
 
-    local spawnerCount = 5
+    local spawnerCount = 6
 
     function bgSpawner:load()
         for i = 0, spawnerCount - 1, 1 do

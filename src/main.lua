@@ -1,6 +1,14 @@
 startTime = os.clock()
 math.randomseed(startTime)
 
+settings = {
+    resolution = {
+        width = 1680,
+        height = 1050,
+    },
+    scale = 1,
+}
+
 camera = require("core/camera")
 local getResources = require("core/resources")
 local getStackHelper = require("core/statestack")
