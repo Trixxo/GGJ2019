@@ -62,11 +62,15 @@ local function getPlayer()
     end
 
     function player:connectToMissile(missile)
+        if self.joint ~= nil then
+            self.joint:destroy()
+        end
         local joint = love.physics.newDistanceJoint(self.body, missile.body, self.body:getX(), self.body:getY(), missile.body:getX(), missile.body:getY())
         joint:setLength(50)
         joint:setDampingRatio(2)
         joint:setFrequency(1)
         self.joint = joint
+
     end
 
     function player:mousepressed(x, y, button , istouch, presses)
