@@ -1,3 +1,4 @@
+uniform vec2 display_size;
 uniform vec2 camera_pos;
 
 uniform float time;
@@ -9,8 +10,6 @@ const float pi = 3.1415926535;
 const float default_wave_width = 100.0f;
 const float distortion_strength = 10.0f;
 
-const float screen_width = 1200.0f;
-const float screen_height = 800.0f;
 
 float get_relative_distortion(float wave_peak_distance, float wave_width, float point_distance) {
     float relative_distane = (point_distance - wave_peak_distance) / wave_width;
@@ -35,8 +34,8 @@ vec2 get_absolute_distortion(int i, vec2 pixel) {
 }
 
 vec4 get_frag_at_screen_pos(Image screen, vec2 screen_coords) {
-    float tex_x = screen_coords.x / screen_width;
-    float tex_y = screen_coords.y / screen_height;
+    float tex_x = screen_coords.x / display_size.x;
+    float tex_y = screen_coords.y / display_size.y;
     return Texel(screen, vec2(tex_x, tex_y));
     /* return vec4(tex_x, 0.0, tex_y, 1.0); */
 }

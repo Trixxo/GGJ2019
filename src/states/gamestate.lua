@@ -141,6 +141,7 @@ local function getGameState()
         -- Apply the shader to the canvas.
         love.graphics.setCanvas()
 
+        state.explosionWaveShader:send("display_size", {1600, 1200})
         state.explosionWaveShader:send("camera_pos", {camera.x, camera.y})
         state.explosionWaveShader:send("time", os.clock())
         state.explosionWaveShader:send(
