@@ -2,7 +2,9 @@ local function getPortal(x, y)
     local portal = {}
 
     portal.drawType = "rectangle"
-    portal.dimension = {width = 100, height = 200}
+    portal.dimension = {width = 1000, height = 2000}
+
+    portal.name = "portal"
 
     portal.shape = love.physics.newRectangleShape(portal.dimension.width, portal.dimension.height)
 
