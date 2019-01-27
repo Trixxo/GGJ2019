@@ -139,7 +139,7 @@ local function getPlayer()
             if totalSpeed > 1200 and self:isConnectedToMissile() then
                 music.enableSound('swoosh')
             end
-            if not self.portalSpawned and (totalSpeed > 2000 and playerX > 0.42000) then
+            if not self.portalSpawned and (totalSpeed > 2000 and playerX > 42000) then
                 -- this is so fast, spacetime cracks and a portal opens
                 print("spawning portal")
                 local portal = getPortal(playerX + 4000, 0)
