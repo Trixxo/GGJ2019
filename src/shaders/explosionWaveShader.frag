@@ -7,9 +7,9 @@ uniform float impact_time[4];
 uniform vec2 impact_coords[4];
 
 const float pi = 3.1415926535;
-const float default_wave_width = 150.0f;
-const float max_wave_dist = 1000.0f;
-const float distortion_strength = 20.0f;
+const float default_wave_width = 180.0f;
+const float max_wave_dist = 2000.0f;
+const float distortion_strength = 50.0f;
 
 
 float get_relative_distortion(float wave_peak_distance, float wave_width, float point_distance) {

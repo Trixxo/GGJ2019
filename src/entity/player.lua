@@ -60,7 +60,7 @@ local function getPlayer()
         print (self.jumpCd)
         local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
             local entity = fixture:getUserData()
-            if entity.name == "missile" and entity ~= self.missile then
+            if (entity.name == "missile" or entity.name == "asteroid") and entity ~= self.missile then
                 self:connectToMissile(entity)
                 return 0
             end

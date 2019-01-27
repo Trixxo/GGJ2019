@@ -9,7 +9,7 @@ local function getMissileSpawner()
     missileSpawner.missile_count = 0
 
     function missileSpawner:update(dt)
-        -- Spawn random missiles (lets move this to a seperate file
+        -- Spawn random missiles.
         if self.spawncounter > self.spawntime then
             state = stack:current()
             local randomspawn = {
