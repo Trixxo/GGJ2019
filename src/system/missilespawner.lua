@@ -24,7 +24,6 @@ local function getMissileSpawner()
                 y = -sh * 0.5
             end
 
-            print(x, y)
             local randomspawn = {
                 x = x,
                 y = y,
