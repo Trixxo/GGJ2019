@@ -55,9 +55,7 @@ local function getPlayer()
             music.disableSound("tick_3")
             music.disableSound("tick_2")
             music.disableSound("swoosh")
-            music.enableSound("death")
             if player.deadcountdown < 0 then
-                music.disableSound("death")
                 local gameoverstate = getGameOverState()
                 stack:push(gameoverstate)
             else

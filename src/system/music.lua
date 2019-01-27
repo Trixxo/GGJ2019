@@ -23,8 +23,8 @@ function music.load()
             source = love.audio.newSource("data/audio/3maze-cinematicswoosh_craft_med_C_001.wav", "static"),
         },
         death = {
-            beatFrequency = 2,
-            soundData = love.sound.newSoundData("data/audio/3maze_long_metal.wav"),
+            beatFrequency = 1/2,
+            soundData = love.sound.newSoundData("data/audio/juhani_junkala_sfx_deathscream_alien4.wav"),
         },
         grapp_ready = {
             beatFrequency = 1/2,

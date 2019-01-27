@@ -19,6 +19,7 @@ local function gameOverCollision(fixtureA, fixtureB, key)
         end
         if player.dead == false then
             player.dead = true
+            music.queueEvent("death")
             player.body:setLinearVelocity(0,10)
             player.body:setAngularVelocity(0,0)
         else 
