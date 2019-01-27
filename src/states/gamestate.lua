@@ -26,6 +26,8 @@ local function getGameState()
     world:setCallbacks(collide)
     camera.x = 0
 
+    state.color = { r = 0, g = 0, b = 0 }
+
     state.canvas = love.graphics.newCanvas()
 
     -- This shader renders a shockwave for a max of 4 explosions.
@@ -110,6 +112,23 @@ local function getGameState()
         camera.x = math.max(playerX - 500, previousX)
         camera.y = math.min(playerY - 400, 0)
 
+        -- update background color
+        vx, vy = player.body:getLinearVelocity()
+        --print(vx, vy)
+        local colorupdate = math.min(2, math.abs((vx + vy) / 3000)) - 1
+        --print("update", colorupdate)
+        if math.sqrt(math.pow(vx + vy,2)) > 1500 then
+            state.color.r = state.color.r + dt
+            print("higher")
+        else
+            state.color.r = state.color.r - dt/2
+            print("lower")
+        end
+        state.color.r = math.min(1, math.max(0, state.color.r))
+        --print(state.color.r)
+
+        state.color.b = math.min(0.25, state.color.b + math.sin(0.5*dt))
+
         world:update(dt)
     end
 
@@ -129,7 +148,8 @@ local function getGameState()
     function state:draw()
         -- Render everything to the canvas.
         love.graphics.setCanvas(state.canvas)
-        love.graphics.clear(0.0,0.0,0.0,1.0)
+        -- love.graphics.clear(0.0,0.0,0.0,1.0)
+        love.graphics.clear(state.color.r,state.color.g,state.color.b,1.0)
 
         -- Background
         local posY, scale
