@@ -1,4 +1,5 @@
 local getVector = require("core/vector")
+local getGameOverState = require("states/gameoverstate")
 
 local function getPlayer()
     local player = {}
@@ -8,6 +9,8 @@ local function getPlayer()
     player.drawType = 'image'
     player.image = resources.images.player
     player.destroyed = false
+    player.dead = false
+    player.deadcountdown = 1.5
     player.missileToConnect = nil
     player.grapplingCooldown = 0
     player.grapplingTimeout = 2
@@ -41,6 +44,18 @@ local function getPlayer()
     end
 
     function player:update(dt)
+
+        -- countdown before going to gameoverscreen 
+        if player.dead == true then
+            if player.deadcountdown < 0 then
+                local gameoverstate = getGameOverState()
+                stack:push(gameoverstate)
+            else
+                player.deadcountdown = player.deadcountdown - dt
+            end
+            return
+        end
+
         self:updateGrapplingAttempt(dt)
 
         if self.missileToConnect ~= nil then
@@ -186,28 +201,30 @@ local function getPlayer()
     ----- Event handlers -----
 
     function player:keypressed(key, scancode, isrepeat)
-        if scancode == "w" or scancode == "space" then
-            self:removeJoint()
-            if self.jumpCd <= 1 then
-                xv, yv = self.body:getLinearVelocity()
-                self.body:setLinearVelocity(xv, math.min(-600, yv))
-                player.jumpCd = player.jumpCd + 1
-            end
-
-            music.queueEvent("jump")
-        elseif scancode == "s" then
-            self.body:applyLinearImpulse(0,2000)
-            self:removeJoint()
-
-            music.queueEvent("jump")
-        elseif scancode == "tab" then
-            -- worms mode.
-            if self.joint and not self.joint:isDestroyed() then
+        if self.dead == false then
+            if scancode == "w" or scancode == "space" then
                 self:removeJoint()
-            else
-                self.isGrappling = true
-                self.grapplingPercent = 0.0
-                self.grapplingTarget = getVector(self.body:getPosition()):add(getVector(1000, -5000))
+                if self.jumpCd <= 1 then
+                    xv, yv = self.body:getLinearVelocity()
+                    self.body:setLinearVelocity(xv, math.min(-600, yv))
+                    player.jumpCd = player.jumpCd + 1
+                end
+
+                music.queueEvent("jump")
+            elseif scancode == "s" then
+                self.body:applyLinearImpulse(0,2000)
+                self:removeJoint()
+
+                music.queueEvent("jump")
+            elseif scancode == "tab" then
+                -- worms mode.
+                if self.joint and not self.joint:isDestroyed() then
+                    self:removeJoint()
+                else
+                    self.isGrappling = true
+                    self.grapplingPercent = 0.0
+                    self.grapplingTarget = getVector(self.body:getPosition()):add(getVector(1000, -5000))
+                end
             end
         end
     end
@@ -217,18 +234,20 @@ local function getPlayer()
     end
 
     function player:mousepressed(x, y, button , istouch, presses)
-        if button == 1 and self:allowedToTryGrapple() then
-            self.grapplingTarget = getVector(x, y):add(camera)
-            self.isGrappling = true
-        end
-        if button == 2 then
-            local mouseVector = getVector(x, y)
-            local playerVector = getVector(self.body:getPosition())
-            local playerToMouseVector = mouseVector:subtract(playerVector)
-            local unitVector = playerToMouseVector:getUnit()
-            local impulseVector = getVector(1000, 1000)
-            impulseVector = unitVector:multiply(impulseVector)
-            self.body:applyLinearImpulse(impulseVector.x, impulseVector.y)
+        if self.dead == false then
+            if button == 1 and self:allowedToTryGrapple() then
+                self.grapplingTarget = getVector(x, y):add(camera)
+                self.isGrappling = true
+            end
+            if button == 2 then
+                local mouseVector = getVector(x, y)
+                local playerVector = getVector(self.body:getPosition())
+                local playerToMouseVector = mouseVector:subtract(playerVector)
+                local unitVector = playerToMouseVector:getUnit()
+                local impulseVector = getVector(1000, 1000)
+                impulseVector = unitVector:multiply(impulseVector)
+                self.body:applyLinearImpulse(impulseVector.x, impulseVector.y)
+            end
         end
     end
 
