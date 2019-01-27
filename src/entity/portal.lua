@@ -10,7 +10,7 @@ local function getPortal(x, y)
 
     portal.body = love.physics.newBody(world, x, y, "kinematic")
     portal.body:setGravityScale(0)
-    portal.body:setAngularVelocity(50)
+    portal.body:setAngularVelocity(5)
 
     portal.fixture = love.physics.newFixture(portal.body, portal.shape, 1)
     portal.fixture:setUserData(portal)

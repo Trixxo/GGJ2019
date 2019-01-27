@@ -322,15 +322,20 @@ local function getGameState()
             player.fixture:setMask(4)
         end
         if key == "0" then
-            vx, vy = player.body:getLinearVelocity()
-            v = { a = vx, b = vy }
-            posx, posy = player.body:getPosition()
-            print("poi", posx, posy)
-            local gameWon = getGameWonState( v,
-                        player.body:getAngularVelocity(), 
-                        player.body:getAngle(),
-                        posx, posy)
-            stack:push(gameWon)
+            local playerX, playerY = player.body:getPosition()
+            local portal = getPortal(playerX + 4000)
+            self.portal = portal
+            player.portalSpawned = true
+            table.insert(self.entities, portal)
+            -- vx, vy = player.body:getLinearVelocity()
+            -- v = { a = vx, b = vy }
+            -- posx, posy = player.body:getPosition()
+            -- print("poi", posx, posy)
+            -- local gameWon = getGameWonState( v,
+            --             player.body:getAngularVelocity(), 
+            --             player.body:getAngle(),
+            --             posx, posy)
+            -- stack:push(gameWon)
         end
     end
 

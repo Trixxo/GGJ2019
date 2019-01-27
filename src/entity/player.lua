@@ -52,7 +52,7 @@ local function getPlayer()
         local lvx, lvy = self.body:getLinearVelocity()
         local totalSpeed = getVector(lvx, lvy):length()
 
-        local levelLength = 20000
+        local levelLength = 15000
         music.energyLevel = playerX / levelLength
 
         --print("self", self.body)
