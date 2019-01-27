@@ -121,10 +121,8 @@ local function getGameState()
         --print("update", colorupdate)
         if math.sqrt(math.pow(vx + vy,2)) > 1500 then
             state.color.r = state.color.r + dt
-            print("higher")
         else
             state.color.r = state.color.r - dt/2
-            print("lower")
         end
         state.color.r = math.min(1, math.max(0, state.color.r))
         --print(state.color.r)
