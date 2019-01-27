@@ -10,7 +10,7 @@ local function getAsteroidSpawner()
 
         if self.asteroid ~= nil then
             x, y = asteroidSpawner.asteroid.body:getPosition()
-            if x > camera.x - 400 then
+            if x > camera.x - 400 and x < camera.x + settings.resolution.width + 400 then
                 return
             end
             self.asteroid.destroyed = true
