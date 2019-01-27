@@ -114,7 +114,7 @@ local function getGameState()
     function state:renderParallaxBackground(resource, scale, parallaxScale, posY)
         local resourceWidth = resource:getPixelWidth()
         local screenLeft, screenRight = camera.x, camera.x + settings.resolution.width
-        local parallaxOffset = parallaxScale * screenLeft + math.sin(parallaxScale) * 100
+        local parallaxOffset = parallaxScale * screenLeft + math.sin(parallaxScale) * 1000
         local numIterations = math.floor((screenLeft - parallaxOffset) / (resourceWidth * scale))
 
         while parallaxOffset + numIterations * resourceWidth * scale < screenRight
@@ -124,55 +124,38 @@ local function getGameState()
         end
     end
 
+    function state:drawBGLayer(resource, scale, parallaxScale, colorR, colorG, colorB, yPos)
+        local resHeight = resource:getPixelHeight()
+        local scrWidth = settings.resolution.width
+        local scrHeight = settings.resolution.height
+
+        love.graphics.setColor(colorR, colorG, colorB)
+        self:renderParallaxBackground(resource, scale, parallaxScale, yPos)
+        love.graphics.rectangle('fill', camera.x, yPos + resHeight * scale, scrWidth, scrHeight)
+    end
+
     function state:draw()
         -- Render everything to the canvas.
         love.graphics.setCanvas(state.canvas)
         love.graphics.clear(0.0,0.0,0.0,1.0)
 
         -- Background
-        local posY, scale
+        local maxY = settings.resolution.height / 2
 
-        local resource = resources.images.backgroundCity
-        local resourceHeight = resource:getPixelHeight()
-        local screenWidth = settings.resolution.width
-        local screenHeight = settings.resolution.height
-        local maxY = screenHeight - resourceHeight - 500
+        local space = resources.images.backgroundSpace
+        local alpha = resources.images.backgroundBlend
+        local city = resources.images.backgroundCity
 
-        scale = 0.2
-        love.graphics.setColor(0.1, 0.1, 0.1)
-        self:renderParallaxBackground(resource, scale, 0.9, maxY)
-        love.graphics.rectangle(
-            'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
+        self:drawBGLayer(space, 1.0, 0.5, 0.0, 0.0, 0.0, maxY - 1500 - 0.5 * space:getPixelHeight())
+        -- self:drawBGLayer(space, 0.5, 0.5, 1.0, 1.0, 1.0, maxY - 1500 - 0.5 * space:getPixelHeight())
+        -- self:drawBGLayer(space, 0.5, 0.5, 1.0, 1.0, 1.0, maxY - 1500)
 
-        scale = 0.3
-        love.graphics.setColor(0.2, 0.2, 0.2)
-        self:renderParallaxBackground(resource, scale, 0.8, maxY)
-        love.graphics.rectangle(
-            'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
-
-        scale = 0.4
-        love.graphics.setColor(0.3, 0.3, 0.3)
-        self:renderParallaxBackground(resource, scale, 0.7, maxY)
-        love.graphics.rectangle(
-            'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
-
-        scale = 0.5
-        love.graphics.setColor(0.4, 0.4, 0.4)
-        self:renderParallaxBackground(resource, scale, 0.6, maxY)
-        love.graphics.rectangle(
-            'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
-
-        scale = 0.6
-        love.graphics.setColor(0.5, 0.5, 0.5)
-        self:renderParallaxBackground(resource, scale, 0.5, maxY)
-        love.graphics.rectangle(
-            'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
-
-        scale = 1.0
-        love.graphics.setColor(0.6, 0.6, 0.6)
-        self:renderParallaxBackground(resource, scale, 0.0, maxY)
-        love.graphics.rectangle(
-            'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
+        self:drawBGLayer(city, 0.2, 0.9, 0.1, 0.1, 0.1, 0)
+        self:drawBGLayer(city, 0.3, 0.8, 0.2, 0.2, 0.2, 0)
+        self:drawBGLayer(city, 0.4, 0.7, 0.3, 0.3, 0.3, 0)
+        self:drawBGLayer(city, 0.5, 0.6, 0.4, 0.4, 0.4, 0)
+        self:drawBGLayer(city, 0.6, 0.5, 0.5, 0.5, 0.5, 0)
+        self:drawBGLayer(city, 1.0, 0.6, 0.6, 0.6, 0.6, 0)
 
         love.graphics.setColor(1.0, 1.0, 1.0, 1.0)
 
