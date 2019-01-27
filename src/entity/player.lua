@@ -47,6 +47,7 @@ local function getPlayer()
 
         -- countdown before going to gameoverscreen 
         if player.dead == true then
+            player.drawType = nil
             music.disableSound("tick_3")
             music.disableSound("tick_2")
             music.disableSound("moveRight")
