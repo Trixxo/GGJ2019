@@ -36,10 +36,10 @@ local function getMissile(x, y, text)
                                      0.5, 0.2, 0.2, 0)
 
     missile.particleSystem:setParticleLifetime(0.4, 0.5)
-    missile.particleSystem:setEmissionRate(15)
+    missile.particleSystem:setEmissionRate(12)
 
     missile.particleSystem:setDirection(math.pi)
-    missile.particleSystem:setSpeed(100, 150)
+    missile.particleSystem:setSpeed(120, 150)
     missile.particleSystem:setSpread(math.pi / 12)
 
     missile.particleSystem:start()
@@ -104,7 +104,7 @@ local function getMissile(x, y, text)
 
         end
 
-        -- Reset category logic to handle new collision mask in 
+        -- Reset category logic to handle new collision mask in
         -- case the missile was just grabbed on by the player
         if self.resetCategory then
             self.resetCategoryTimer = self.resetCategoryTimer - dt
