@@ -29,7 +29,7 @@ local function getSeagullSpawner(player)
                 y = y,
             }
             local new_seagull = getSeagull(randomspawn.x, randomspawn.y, player)
-            print("Spawning seagull at ", randomspawn.x, randomspawn.y)
+            --print("Spawning seagull at ", randomspawn.x, randomspawn.y)
             table.insert(state.entities, new_seagull)
 
             self.spawncounter = math.random(8, 12)
