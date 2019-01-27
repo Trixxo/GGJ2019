@@ -10,13 +10,15 @@ music.beatLength = 60 / music.bpm
 music.tickFraction = 4
 music.timeSinceLastTick = 0
 music.currentTick = 0
+music.energyLevel = 0
 
 function music.load()
     sounds = {
         kick = {
             beatFrequency = 1,
             soundData = love.sound.newSoundData("data/audio/fantomenkick.wav"),
-            enabled = true
+            enabled = true,
+            energyLevel = 0.15
         },
         swoosh = {
             beatFrequency = 1/2,
@@ -34,21 +36,20 @@ function music.load()
             beatFrequency = 2,
             offset = 1/2,
             soundData = love.sound.newSoundData("data/audio/crab_tick_single.wav"),
+            energyLevel = 0.4,
             },
         tick_2 = {
             beatFrequency = 1,
             offset = 1/2,
             soundData = love.sound.newSoundData("data/audio/crab_tick_double.wav"),
+            energyLevel = 0.5,
         },
         tick_3 = {
             beatFrequency = 2,
             offset = 1/2,
             soundData = love.sound.newSoundData("data/audio/crab_tick_double.wav"),
-            enabled = true
-        },
-        tick_triple = {
-            beatFrequency = 1,
-            soundData = love.sound.newSoundData("data/audio/crab_tick_triple.wav"),
+            energyLevel = 0.3,
+            enabled = true,
         },
         grappling = {
             beatFrequency = 1/4,
@@ -57,14 +58,24 @@ function music.load()
         hihat = {
             beatFrequency = 2,
             soundData = love.sound.newSoundData("data/audio/hihat.wav"),
-            enabled = true
+            enabled = true,
+            energyLevel = 0.15
         },
         jump = {
             sources = {
                 base = "lead",
                 count = 6
             },
-            beatFrequency = 1 / 2
+            beatFrequency = 1 / 2,
+            energyLevel = 0.05
+        },
+        second_jump = {
+            sources = {
+                base = "lead",
+                count = 6
+            },
+            beatFrequency = 1 / 2,
+            energyLevel = 0.5
         },
         bass_b = {
             sources = {
@@ -72,6 +83,8 @@ function music.load()
                 count = 3
             },
             beatFrequency = 1/2,
+            enabled = true,
+            energyLevel = 0.8
         },
         explosion = {
             soundData = love.sound.newSoundData("data/audio/cymbal_crash.wav"),
@@ -82,7 +95,8 @@ function music.load()
                 base = "bass",
                 count = 2
             },
-            beatFrequency = 1 / 2
+            beatFrequency = 1 / 2,
+            energyLevel = 0.6
         }
     }
 end
@@ -137,6 +151,15 @@ local function sourceForSound(sound)
     end
 end
 
+local function matchesEnergyLevel(sound, currentLevel)
+    print(sound.energyLevel)
+    if sound.energyLevel then
+        return currentLevel >= sound.energyLevel
+    else
+        return true
+    end
+end
+
 function music.tick()
     local soundsPlayed = {}
     local newSounds = {}
@@ -144,14 +167,18 @@ function music.tick()
     music.currentTick = music.currentTick + 1
 
     for _, sound in pairs(sounds) do
-        if sound.enabled and shouldSoundPlay(music.currentTick, sound.beatFrequency, sound) then
+        if sound.enabled and shouldSoundPlay(music.currentTick, sound.beatFrequency, sound) and
+          matchesEnergyLevel(sound, music.energyLevel) then
             love.audio.play(sourceForSound(sound))
         end
     end
 
     for queueIndex, sound in ipairs(eventQueue) do
         if shouldSoundPlay(music.currentTick, sound.beatFrequency, sound) then
-            love.audio.play(sourceForSound(sound))
+            print(music.energyLevel)
+            if matchesEnergyLevel(sound, music.energyLevel) then
+                love.audio.play(sourceForSound(sound))
+            end
 
             table.insert(soundsPlayed, queueIndex)
         end

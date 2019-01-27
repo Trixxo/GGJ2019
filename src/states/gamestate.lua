@@ -318,6 +318,8 @@ local function getGameState()
         state.textGrapplingSystem:registerMissile(missile)
         table.insert(state.entities, missile)
         player:connectToMissile(missile)
+
+        music.energyLevel = 0
     end
 
     return state

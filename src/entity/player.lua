@@ -52,6 +52,8 @@ local function getPlayer()
         local lvx, lvy = self.body:getLinearVelocity()
         local totalSpeed = getVector(lvx, lvy):length()
 
+        music.energyLevel = playerX / 42000
+
         self.body:setAngularVelocity((self.body:getLinearVelocity() + math.abs(playerY)) * dt)
 
         if self:isConnectedToMissile() then
@@ -132,10 +134,7 @@ local function getPlayer()
         if math.abs(lvx) > 800 or math.abs(lvy) > 800 then
             music.enableSound("tick_3")
             music.enableSound("tick_2")
-
-            if playerX > 10000 then
-                music.enableSound("bass")
-            end
+            music.enableSound("bass")
 
             if totalSpeed > 1200 and self:isConnectedToMissile() then
                 music.enableSound('swoosh')
@@ -155,12 +154,6 @@ local function getPlayer()
 
         if not self:isConnectedToMissile() then
             music.disableSound('swoosh')
-        end
-
-        if playerX > 30000 then
-            music.enableSound('bass_b')
-        else
-            music.disableSound('bass_b')
         end
     end
 
@@ -279,11 +272,9 @@ local function getPlayer()
                     player.jumpCd = player.jumpCd + 1
                 end
 
-                music.queueEvent("jump")
                 local x, y = self.body:getPosition()
-                if x > 20000 then
-                    music.queueEvent("jump")
-                end
+                music.queueEvent("jump")
+                music.queueEvent("second_jump")
             elseif scancode == "s" then
                 self.body:applyLinearImpulse(0,2000)
                 self:removeJoint()
