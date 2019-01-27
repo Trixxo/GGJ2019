@@ -140,6 +140,7 @@ local function getPlayer()
             if not portalSpawned and (totalSpeed > 2000 and playerX > 42000) then
                 -- this is so fast, spacetime cracks and a portal opens
                 local portal = getPortal(playerX + 4000, 0)
+                stack:current().portal = portal
                 self.portalSpawned = true
                 table.insert(stack:current().entities, portal)
             end

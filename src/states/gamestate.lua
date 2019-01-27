@@ -72,6 +72,8 @@ local function getGameState()
     local targetX, targetY = nil, nil
     local percent = 0
 
+    state.portal = nil
+
     -- Constructor End
 
     function state:update(dt)
@@ -243,7 +245,11 @@ local function getGameState()
         love.graphics.origin()
 
         -- Apply the shader to the canvas.
-        love.graphics.setCanvas(state.canvas2)
+        if state.portal ~= nil then
+            love.graphics.setCanvas(state.canvas2)
+        else
+            love.graphics.setCanvas()
+        end
 
         love.graphics.setShader(state.explosionWaveShader)
         state.explosionWaveShader:send("display_size", {settings.resolution.width, settings.resolution.height})
@@ -259,18 +265,21 @@ local function getGameState()
         )
 
         love.graphics.draw(state.canvas)
-
+        love.graphics.setShader()
         love.graphics.setCanvas()
 
-        love.graphics.setShader(state.portalShader)
-        state.portalShader:send("display_size", {settings.resolution.width, settings.resolution.height})
-        state.portalShader:send("camera_pos", {camera.x, camera.y})
-        state.portalShader:send("portal_pos", {camera.x + 500, camera.y + 500})
-        state.portalShader:send("time", os.clock())
+        if state.portal ~= nil then
+            love.graphics.setShader(state.portalShader)
+            state.portalShader:send("display_size", {settings.resolution.width, settings.resolution.height})
+            state.portalShader:send("camera_pos", {camera.x, camera.y})
+            pX, pY = state.portal.body:getPosition()
+            state.portalShader:send("portal_pos", {pX, pY})
+            state.portalShader:send("time", os.clock())
 
-        love.graphics.draw(state.canvas2)
+            love.graphics.draw(state.canvas2)
+            love.graphics.setShader()
+        end
 
-        love.graphics.setShader()
         love.graphics.pop()
     end
 
