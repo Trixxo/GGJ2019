@@ -124,8 +124,8 @@ local function getMissile(x, y, text)
 
     function missile:isOnScreen()
         local x, y = self.body:getPosition()
-        return x > camera.x and x < camera.x + settings.resolution.width and
-            y > camera.y and y < camera.y + settings.resolution.height
+        return x > camera.x - 200 and x < camera.x + settings.resolution.width + 200 and
+            y > camera.y - 200 and y < camera.y + settings.resolution.height + 200
     end
 
     return missile
