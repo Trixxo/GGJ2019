@@ -6,11 +6,12 @@ local function getBgSpawner()
     bgSpawner.lastMovedIndex = 0
     bgSpawner.lastMovedX = 0
 
-    local spawnerCount = math.floor(settings.resolution.width/400) + 3
+    local spawnerWidth = settings.resolution.width
+    local spawnerCount = 3
 
     function bgSpawner:load()
         for i = 0, spawnerCount - 1, 1 do
-            local entity = getBgParticle(i * 400)
+            local entity = getBgParticle(i * spawnerWidth, spawnerWidth)
 
             table.insert(stack:current().bgEntities, entity)
         end
@@ -21,9 +22,9 @@ local function getBgSpawner()
             self.lastMovedIndex = (self.lastMovedIndex % #stack:current().bgEntities) + 1
 
             local particle = stack:current().bgEntities[self.lastMovedIndex]
-            particle.x = particle.x + (spawnerCount * 400)
+            particle.x = particle.x + (spawnerCount * spawnerWidth)
 
-            self.lastMovedX = self.lastMovedX + 400
+            self.lastMovedX = self.lastMovedX + spawnerWidth
         end
     end
 

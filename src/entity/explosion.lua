@@ -17,7 +17,7 @@ local function getExplosion(x, y)
                                    1, 0.5, 0.2, 0.6,
                                    1, 0.3, 0.1, 0)
 
-    explosion.particleSystem:emit(5)
+    explosion.particleSystem:emit(3)
 
     function explosion:initialize()
         explosion.body = love.physics.newBody(world, x, y)

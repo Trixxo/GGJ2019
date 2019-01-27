@@ -36,7 +36,7 @@ local function getMissile(x, y, explosive)
                                      0.5, 0.2, 0.2, 0)
 
     missile.particleSystem:setParticleLifetime(0.4, 0.5)
-    missile.particleSystem:setEmissionRate(15)
+    missile.particleSystem:setEmissionRate(10)
 
     missile.particleSystem:setDirection(math.pi)
     missile.particleSystem:setSpeed(100, 150)
