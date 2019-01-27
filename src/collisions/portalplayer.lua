@@ -21,12 +21,12 @@ local function portalPlayerCollision(fixtureA, fixtureB, key)
         player.missileToConnect = missile
         vx, vy = player.body:getLinearVelocity()
         v = { a = vx, b = vy }
+        posx, posy = player.body:getPosition()
         local gameWonState = getGameWonState( v,
                     player.body:getAngularVelocity(), 
-                    player.body:getAngle())
-        print("before", stack:current())
+                    player.body:getAngle(),
+                    posx, posy)
         stack:push(gameWonState)
-        print("after", stack:current())
 
     end
 end

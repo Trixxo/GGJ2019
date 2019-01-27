@@ -1,12 +1,15 @@
 local getExplosion = require("entity/explosion")
 local getPlayer = require("entity/player")
+local getGround = require("entity/ground")
 
-local function getGameWonState(playerlv,playerav,playerr)
+local function getGameWonState(playerlv,playerav,playerr,posx, posy)
     local state = {}
     -- Constructor
     state.playerlv = playerlv
     state.playerav = playerav 
     state.playerr = playerr
+    state.playerposx = posx
+    state.playerposy = posy
 
     state.entities = {}
     state.player = {}
@@ -18,10 +21,6 @@ local function getGameWonState(playerlv,playerav,playerr)
 
 
     function state:update(dt)
-
-        print("stea", state)
-        --print(state.player)
-        --print(state.player.body)
         local playerX, playerY = state.player.body:getPosition()
         local mouseX, mouseY = love.mouse:getPosition()
 
@@ -56,7 +55,10 @@ local function getGameWonState(playerlv,playerav,playerr)
         --for index, explosion in pairs(self.explosions) do
             --explosion:update(dt)
         --end
+        --
+        world:update(dt)
     end
+
 
     function state:draw()
         --love.graphics.setCanvas(state.canvas)
@@ -75,6 +77,8 @@ local function getGameWonState(playerlv,playerav,playerr)
 
         for index, entity in pairs(self.entities) do
             local positionX, positionY = entity.body:getPosition()
+            print("bod", positionX, positionY)
+            print(camera.x,camera.y)
             local angle = entity.body:getAngle()
 
             if entity.particleSystem then
@@ -146,14 +150,18 @@ local function getGameWonState(playerlv,playerav,playerr)
     function state:load()
         --camera.x = 0
         --camera.y = 0
+        world = love.physics.newWorld(0, 981, true)
+
+        local ground = getGround()
+        table.insert(state.entities, ground)
+
         print(player)
-        print("AAAAAAAAAAAAA")
         state.player = getPlayer()
         self.player.body:setLinearVelocity(state.playerlv.a, state.playerlv.b)
         self.player.body:setAngularVelocity(state.playerav)
         self.player.body:setAngle(state.playerr)
+        self.player.body:setPosition(state.playerposx,state.playerposy)
 
-        world = love.physics.newWorld(0, 981, true)
 
         table.insert(self.entities, self.player)
 

@@ -54,6 +54,9 @@ local function getPlayer()
 
         music.energyLevel = playerX / 42000
 
+        --print("self", self.body)
+        --print("self", self.body:isDestroyed())
+        --print("self", self.destroyed)
         self.body:setAngularVelocity((self.body:getLinearVelocity() + math.abs(playerY)) * dt)
 
         if self:isConnectedToMissile() then
