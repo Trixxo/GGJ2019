@@ -39,8 +39,10 @@ local function getTextGrapplingSystem()
 
     function system:keypressed(key, player)
         local missile = self.missiles[key]
-        if missile and missile:isOnScreen() then
-            player:connectToMissile(self.missiles[key])
+        if player:allowedToTryGrapple() then
+            if missile and missile:isOnScreen() then
+                player:connectToMissile(self.missiles[key])
+            end
         end
     end
 
