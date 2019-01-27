@@ -10,7 +10,7 @@ local function getSeagull(x, y, player)
 
     seagull.seagullVel = math.random(100, 200)
 
-    seagull.dimension = {width = 40, height = 40}
+    seagull.dimension = {width = 70, height = 70}
     seagull.image = resources.images.seagull
     seagull.shape = love.physics.newRectangleShape(seagull.dimension.width, seagull.dimension.height)
 
