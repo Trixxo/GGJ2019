@@ -7,7 +7,6 @@ local function getTextGrapplingSystem()
         "k",
         "l",
         "u",
-        "i",
         "o",
         "p",
         "n",
@@ -27,7 +26,7 @@ local function getTextGrapplingSystem()
             if self.missiles[key] == nil then
                 self.missiles[key] = missile
                 missile.text = key
-                break
+                return
             end
         end
         print("ERROR: no empty key available for new missile")
@@ -39,8 +38,10 @@ local function getTextGrapplingSystem()
 
     function system:keypressed(key, player)
         local missile = self.missiles[key]
-        if missile and missile:isOnScreen() then
-            player:connectToMissile(self.missiles[key])
+        if player:allowedToTryGrapple() then
+            if missile and missile:isOnScreen() then
+                player:connectToMissile(self.missiles[key])
+            end
         end
     end
 

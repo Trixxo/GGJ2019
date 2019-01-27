@@ -38,8 +38,8 @@ function love.load()
         resources:addSound("lead" .. i, "data/audio/lead_" .. i .. ".wav")
     end
 
-    leadSamples = 2
-    for i = 1, leadSamples, 1 do
+    bassSamples = 2
+    for i = 1, bassSamples, 1 do
       resources:addSound("bass" .. i, "data/audio/bass_" .. i .. ".wav")
     end
     resources:load()
@@ -51,7 +51,7 @@ function love.load()
 end
 
 function love.update(dt)
-    stack:current():update(dt)
+    stack:update(dt)
     music.update(dt)
 end
 
@@ -74,7 +74,9 @@ function love.keyreleased(key, scancode)
 end
 
 function collide(fixtureA, fixtureB, collision)
-    stack:current():collide(fixtureA, fixtureB, collision)
+    if stack:current().collide then
+        stack:current():collide(fixtureA, fixtureB, collision)
+    end
 end
 
 function love.mousepressed(x, y, button, istouch, presses)

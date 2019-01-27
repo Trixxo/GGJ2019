@@ -1,4 +1,5 @@
 local getVector = require("core/vector")
+local getGameOverState = require("states/gameoverstate")
 
 local function getPlayer()
     local player = {}
@@ -8,6 +9,8 @@ local function getPlayer()
     player.drawType = 'image'
     player.image = resources.images.player
     player.destroyed = false
+    player.dead = false
+    player.deadcountdown = 1.5
     player.missileToConnect = nil
     player.grapplingCooldown = 0
     player.grapplingTimeout = 2
@@ -41,6 +44,26 @@ local function getPlayer()
     end
 
     function player:update(dt)
+
+        -- countdown before going to gameoverscreen
+        if player.dead == true then
+            if self.joint ~= nil then
+                self:removeJoint()
+            end
+            player.drawType = nil
+            music.disableSound("tick_3")
+            music.disableSound("tick_2")
+            music.disableSound("swoosh")
+
+            if player.deadcountdown < 0 then
+                local gameoverstate = getGameOverState()
+                stack:push(gameoverstate)
+            else
+                player.deadcountdown = player.deadcountdown - dt
+            end
+            return
+        end
+
         self:updateGrapplingAttempt(dt)
 
         if self.missileToConnect ~= nil then
@@ -50,6 +73,8 @@ local function getPlayer()
 
         local playerX, playerY = self.body:getPosition()
         local lvx, lvy = self.body:getLinearVelocity()
+        local totalSpeed = getVector(lvx, lvy):length()
+
         if player.jumpCd <= 0 then
             player.jumpCd = 0
         end
@@ -57,7 +82,6 @@ local function getPlayer()
             player.jumpCd = player.jumpCd - dt * 0.2
         end
 
-        -- print (self.jumpCd)
         local function worldRayCastCallback(fixture, x, y, xn, yn, fraction)
             local entity = fixture:getUserData()
             if (entity.name == "missile" or entity.name == "asteroid") and entity ~= self.missile then
@@ -82,19 +106,32 @@ local function getPlayer()
         if lvx > -maxSpeed then
             if love.keyboard.isDown("a") then
                 self.body:applyLinearImpulse(-100, 0)
-                music.enableSound("moveLeft")
-            else
-                music.disableSound("moveLeft")
             end
         end
 
         if lvx < maxSpeed then
             if love.keyboard.isDown("d") then
                 self.body:applyLinearImpulse(100, 0)
-                music.enableSound("moveRight")
-            else
-                music.disableSound("moveRight")
             end
+        end
+
+        if math.abs(lvx) > 800 or math.abs(lvy) > 800 then
+            music.enableSound("tick_3")
+            music.enableSound("tick_2")
+            music.enableSound("bass")
+
+            if totalSpeed > 1200 and self:isConnectedToMissile() then
+                music.enableSound('swoosh')
+            end
+        else
+            music.disableSound("tick_3")
+            music.disableSound("tick_2")
+            music.disableSound("bass")
+            music.disableSound('swoosh')
+        end
+
+        if not self:isConnectedToMissile() then
+            music.disableSound('swoosh')
         end
 
     end
@@ -132,6 +169,7 @@ local function getPlayer()
             local playerX, playerY = self.body:getPosition()
             local missileX, missileY = self.missile.body:getPosition()
             love.graphics.setColor(1, 0.5, 0.2, 1)
+            love.graphics.setLineWidth(3)
             love.graphics.line(playerX, playerY, missileX, missileY)
             love.graphics.setColor(1, 1, 1, 1)
         end
@@ -157,7 +195,7 @@ local function getPlayer()
         missile.fixture:setCategory(4)
         missile.fixture:setMask(1, 3, 4)
 
-        music.queueEvent("jump")
+        music.queueEvent("grappling")
 
         local joint = love.physics.newDistanceJoint(self.body, missile.body, self.body:getX(), self.body:getY(), missile.body:getX(), missile.body:getY())
         joint:setLength(50)
@@ -179,6 +217,7 @@ local function getPlayer()
             self.missile.resetCategoryTimer = 1
             self.missile.resetCategory = true
             self.missile = nil
+            self.isGrappling = false
             self.grapplingToMissile = false
         end
     end
@@ -186,28 +225,30 @@ local function getPlayer()
     ----- Event handlers -----
 
     function player:keypressed(key, scancode, isrepeat)
-        if scancode == "w" or scancode == "space" then
-            self:removeJoint()
-            if self.jumpCd <= 1 then
-                xv, yv = self.body:getLinearVelocity()
-                self.body:setLinearVelocity(xv, math.min(-600, yv))
-                player.jumpCd = player.jumpCd + 1
-            end
-
-            music.queueEvent("jump")
-        elseif scancode == "s" then
-            self.body:applyLinearImpulse(0,2000)
-            self:removeJoint()
-
-            music.queueEvent("jump")
-        elseif scancode == "tab" then
-            -- worms mode.
-            if self.joint and not self.joint:isDestroyed() then
+        if self.dead == false then
+            if scancode == "w" or scancode == "space" then
                 self:removeJoint()
-            else
-                self.isGrappling = true
-                self.grapplingPercent = 0.0
-                self.grapplingTarget = getVector(self.body:getPosition()):add(getVector(1000, -5000))
+                if self.jumpCd <= 1 then
+                    xv, yv = self.body:getLinearVelocity()
+                    self.body:setLinearVelocity(xv, math.min(-600, yv))
+                    player.jumpCd = player.jumpCd + 1
+                end
+
+                music.queueEvent("jump")
+            elseif scancode == "s" then
+                self.body:applyLinearImpulse(0,2000)
+                self:removeJoint()
+
+                music.queueEvent("jump")
+            elseif scancode == "tab" then
+                -- worms mode.
+                if self.joint and not self.joint:isDestroyed() then
+                    self:removeJoint()
+                else
+                    self.isGrappling = true
+                    self.grapplingPercent = 0.0
+                    self.grapplingTarget = getVector(self.body:getPosition()):add(getVector(1000, -5000))
+                end
             end
         end
     end
@@ -217,18 +258,20 @@ local function getPlayer()
     end
 
     function player:mousepressed(x, y, button , istouch, presses)
-        if button == 1 and self:allowedToTryGrapple() then
-            self.grapplingTarget = getVector(x, y):add(camera)
-            self.isGrappling = true
-        end
-        if button == 2 then
-            local mouseVector = getVector(x, y)
-            local playerVector = getVector(self.body:getPosition())
-            local playerToMouseVector = mouseVector:subtract(playerVector)
-            local unitVector = playerToMouseVector:getUnit()
-            local impulseVector = getVector(1000, 1000)
-            impulseVector = unitVector:multiply(impulseVector)
-            self.body:applyLinearImpulse(impulseVector.x, impulseVector.y)
+        if self.dead == false then
+            if button == 1 and self:allowedToTryGrapple() then
+                self.grapplingTarget = getVector(x, y):add(camera)
+                self.isGrappling = true
+            end
+            if button == 2 then
+                local mouseVector = getVector(x, y)
+                local playerVector = getVector(self.body:getPosition())
+                local playerToMouseVector = mouseVector:subtract(playerVector)
+                local unitVector = playerToMouseVector:getUnit()
+                local impulseVector = getVector(1000, 1000)
+                impulseVector = unitVector:multiply(impulseVector)
+                self.body:applyLinearImpulse(impulseVector.x, impulseVector.y)
+            end
         end
     end
 
