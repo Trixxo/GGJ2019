@@ -64,7 +64,14 @@ function music.load()
                 base = "lead",
                 count = 6
             },
-            beatFrequency = 1 / 4
+            beatFrequency = 1 / 2
+        },
+        bass_b = {
+            sources = {
+                base = "bass_b",
+                count = 3
+            },
+            beatFrequency = 1/2,
         },
         explosion = {
             soundData = love.sound.newSoundData("data/audio/cymbal_crash.wav"),

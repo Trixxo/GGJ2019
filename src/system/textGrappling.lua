@@ -4,7 +4,6 @@ local function getTextGrapplingSystem()
     local availableKeys = {
         "h",
         "k",
-        "l",
         "u",
         "o",
         "p",

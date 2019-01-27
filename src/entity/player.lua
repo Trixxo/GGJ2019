@@ -124,7 +124,7 @@ local function getPlayer()
             if totalSpeed > 1200 and self:isConnectedToMissile() then
                 music.enableSound('swoosh')
             end
-            if not portalSpawned and (totalSpeed > 2000 and playerX > 20000) then
+            if not portalSpawned and (totalSpeed > 2000 and playerX > 42000) then
                 -- this is so fast, spacetime cracks and a portal opens
                 local portal = getPortal(playerX + 4000, 0)
                 self.portalSpawned = true
@@ -141,6 +141,11 @@ local function getPlayer()
             music.disableSound('swoosh')
         end
 
+        if playerX > 20000 then
+            music.enableSound('bass_b')
+        else
+            music.disableSound('bass_b')
+        end
     end
 
     function player:isConnectedToMissile()
@@ -257,6 +262,10 @@ local function getPlayer()
                 end
 
                 music.queueEvent("jump")
+                local x, y = self.body:getPosition()
+                if x > 10000 then
+                    music.queueEvent("jump")
+                end
             elseif scancode == "s" then
                 self.body:applyLinearImpulse(0,2000)
                 self:removeJoint()
