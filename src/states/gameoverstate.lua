@@ -37,7 +37,6 @@ local function getGameOverState()
     end
 
     function state:draw()
-        camera:setPosition(0, 0)
         local font = resources.fonts.swanky
         local text = love.graphics.newText(font, "You play like crab!")
         local x = settings.resolution.width/2 - text:getWidth()/2
@@ -69,6 +68,7 @@ local function getGameOverState()
     function state:mousepressed(x, y, button, istouch, presses) end
 
     function state:load()
+        camera.x = 0
     end
 
     return state

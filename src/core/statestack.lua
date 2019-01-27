@@ -6,7 +6,7 @@ local function getStateStack()
     stateStack.backCounter = 0
 
     function stateStack:current()
-        if self.states == 0 then
+        if #self.states == 0 then
             return nil
         elseif #self.states > 0 then
             return self.states[#self.states]
