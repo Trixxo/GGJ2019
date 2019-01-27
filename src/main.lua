@@ -51,7 +51,7 @@ function love.load()
 end
 
 function love.update(dt)
-    stack:current():update(dt)
+    stack:update(dt)
     music.update(dt)
 end
 

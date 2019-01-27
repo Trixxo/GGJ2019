@@ -122,7 +122,6 @@ local function getPlayer()
         else
             music.disableSound("tick_3")
             music.disableSound("tick_2")
-            print("OFF")
         end
 
     end
