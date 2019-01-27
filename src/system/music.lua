@@ -22,6 +22,14 @@ function music.load()
             beatFrequency = 1/2,
             source = love.audio.newSource("data/audio/3maze-cinematicswoosh_craft_med_C_001.wav", "static"),
         },
+        death = {
+            beatFrequency = 2,
+            soundData = love.sound.newSoundData("data/audio/3maze_long_metal.wav"),
+        },
+        grapp_ready = {
+            beatFrequency = 1/2,
+            soundData = love.sound.newSoundData("data/audio/juhani_junkala_sfx_sounds_powerup6.wav"),
+        },
         tick_1 = {
             beatFrequency = 2,
             offset = 1/2,
