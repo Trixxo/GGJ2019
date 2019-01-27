@@ -14,7 +14,7 @@ local function getPlayer()
     player.deadcountdown = 1.5
     player.missileToConnect = nil
     player.grapplingCooldown = 0
-    player.grapplingTimeout = 2
+    player.grapplingTimeout = 1.5
     player.grappUiSize = {x = 200, y = 10}
 
     player.dimension = {width = 50, height = 60}
@@ -269,7 +269,7 @@ local function getPlayer()
                 else
                     self.isGrappling = true
                     self.grapplingPercent = 0.0
-                    self.grapplingTarget = getVector(self.body:getPosition()):add(getVector(1000, -5000))
+                    self.grapplingTarget = getVector(self.body:getPosition()):add(getVector(2000, -5000))
                 end
             end
         end

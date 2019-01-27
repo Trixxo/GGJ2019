@@ -135,12 +135,12 @@ local function getGameState()
     function state:renderParallaxBackground(resource, scale, parallaxScale, posY)
         local resourceWidth = resource:getPixelWidth()
         local screenLeft, screenRight = camera.x, camera.x + settings.resolution.width
-        local parallaxOffset = parallaxScale * screenLeft + math.sin(parallaxScale) * 1000
+        local parallaxOffset = parallaxScale * screenLeft + math.sin(resourceWidth) * 1000
         local numIterations = math.floor((screenLeft - parallaxOffset) / (resourceWidth * scale))
 
         while parallaxOffset + numIterations * resourceWidth * scale < screenRight
         do
-            love.graphics.draw(resources.images.backgroundCity, parallaxOffset + numIterations * resourceWidth * scale, posY, 0, scale, scale)
+            love.graphics.draw(resource, parallaxOffset + numIterations * resourceWidth * scale, posY, 0, scale, scale)
             numIterations = numIterations + 1
         end
     end
@@ -158,8 +158,7 @@ local function getGameState()
     function state:draw()
         -- Render everything to the canvas.
         love.graphics.setCanvas(state.canvas)
-        -- love.graphics.clear(0.0,0.0,0.0,1.0)
-        love.graphics.clear(state.color.r,state.color.g,state.color.b,1.0)
+        love.graphics.clear(0.0,0.0,0.0,1.0)
 
         -- Background
         local maxY = settings.resolution.height / 2
@@ -168,7 +167,8 @@ local function getGameState()
         local alpha = resources.images.backgroundBlend
         local city = resources.images.backgroundCity
 
-        self:drawBGLayer(space, 1.0, 0.5, 0.0, 0.0, 0.0, maxY - 1500 - 0.5 * space:getPixelHeight())
+        self:drawBGLayer(space, 1.0, 0.5, state.color.r, state.color.g, state.color.b,
+            maxY - 1500 - 0.5 * space:getPixelHeight())
         -- self:drawBGLayer(space, 0.5, 0.5, 1.0, 1.0, 1.0, maxY - 1500 - 0.5 * space:getPixelHeight())
         -- self:drawBGLayer(space, 0.5, 0.5, 1.0, 1.0, 1.0, maxY - 1500)
 
@@ -280,6 +280,10 @@ local function getGameState()
             stack:push(pauseState)
         end
 
+        if key == "lshift" or key == "rshift" then
+            player.fixture:setMask(3,4)
+        end
+
         for index, entity in pairs(self.entities) do
             if entity.keypressed ~= nil then
                 entity:keypressed(key, scancode, isrepeat)
@@ -292,6 +296,9 @@ local function getGameState()
     function state:keyreleased(key, scancode)
         if key == "escape" then
             self.pausedOnCurrentPress = false
+        end
+        if key == "lshift" or key == "rshift" then
+            player.fixture:setMask(4)
         end
     end
 
