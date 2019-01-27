@@ -142,6 +142,7 @@ local function getPlayer()
                 -- this is so fast, spacetime cracks and a portal opens
                 print("spawning portal")
                 local portal = getPortal(playerX + 4000, 0)
+                stack:current().portal = portal
                 self.portalSpawned = true
                 table.insert(stack:current().entities, portal)
             end

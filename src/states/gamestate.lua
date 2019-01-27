@@ -31,6 +31,7 @@ local function getGameState()
     state.color = { r = 0, g = 0, b = 0 }
 
     state.canvas = love.graphics.newCanvas()
+    state.canvas2 = love.graphics.newCanvas()
 
     -- This shader renders a shockwave for a max of 4 explosions.
     state.explosionWaveShader = love.graphics.newShader("shaders/explosionWaveShader.frag")
@@ -41,6 +42,8 @@ local function getGameState()
         table.insert(state.impactCoords, {0.0, 0.0})
     end
     state.nextImpactIndex = 1
+
+    state.portalShader = love.graphics.newShader("shaders/portalshader.frag")
 
     state.renderBelow = false
 
@@ -69,6 +72,8 @@ local function getGameState()
     local dist = 0
     local targetX, targetY = nil, nil
     local percent = 0
+
+    state.portal = nil
 
     -- Constructor End
 
@@ -237,9 +242,17 @@ local function getGameState()
             end
         end
 
-        -- Apply the shader to the canvas.
-        love.graphics.setCanvas()
+        love.graphics.push()
+        love.graphics.origin()
 
+        -- Apply the shader to the canvas.
+        if state.portal ~= nil then
+            love.graphics.setCanvas(state.canvas2)
+        else
+            love.graphics.setCanvas()
+        end
+
+        love.graphics.setShader(state.explosionWaveShader)
         state.explosionWaveShader:send("display_size", {settings.resolution.width, settings.resolution.height})
         state.explosionWaveShader:send("camera_pos", {camera.x, camera.y})
         state.explosionWaveShader:send("time", os.clock())
@@ -251,12 +264,23 @@ local function getGameState()
             "impact_coords", state.impactCoords[1], state.impactCoords[2],
             state.impactCoords[3], state.impactCoords[4]
         )
-        love.graphics.setShader(state.explosionWaveShader)
 
-        love.graphics.push()
-        love.graphics.origin()
         love.graphics.draw(state.canvas)
         love.graphics.setShader()
+        love.graphics.setCanvas()
+
+        if state.portal ~= nil then
+            love.graphics.setShader(state.portalShader)
+            state.portalShader:send("display_size", {settings.resolution.width, settings.resolution.height})
+            state.portalShader:send("camera_pos", {camera.x, camera.y})
+            pX, pY = state.portal.body:getPosition()
+            state.portalShader:send("portal_pos", {pX, pY})
+            state.portalShader:send("time", os.clock())
+
+            love.graphics.draw(state.canvas2)
+            love.graphics.setShader()
+        end
+
         love.graphics.pop()
     end
 

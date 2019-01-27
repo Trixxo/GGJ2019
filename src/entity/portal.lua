@@ -1,15 +1,16 @@
 local function getPortal(x, y)
     local portal = {}
 
-    portal.drawType = "rectangle"
-    portal.dimension = {width = 1000, height = 2000}
-
+    portal.drawType = "image"
+    portal.image = resources.images.portal
+    portal.dimension = {width = 600, height = 600}
     portal.name = "portal"
 
-    portal.shape = love.physics.newRectangleShape(portal.dimension.width, portal.dimension.height)
+    portal.shape = love.physics.newCircleShape(portal.dimension.width / 2)
 
     portal.body = love.physics.newBody(world, x, y, "kinematic")
     portal.body:setGravityScale(0)
+    portal.body:setAngularVelocity(50)
 
     portal.fixture = love.physics.newFixture(portal.body, portal.shape, 1)
     portal.fixture:setUserData(portal)
