@@ -44,6 +44,8 @@ local function getMissile(x, y, text)
 
     missile.particleSystem:start()
 
+    missile.startTimer = 0.25
+
     function missile:getEmitterPosition()
         local positionX, positionY = self.body:getPosition()
         local offset = getVector(self.dimension.width * 0.7, -1)
@@ -57,6 +59,11 @@ local function getMissile(x, y, text)
     function missile:update(dt)
         local missileX, missileY = self.body:getPosition()
 
+        self.startTimer = self.startTimer - dt
+        if self.startTimer <= 0 then
+            self.startTimer = 0.25
+        end
+        print(self.startTimer)
         -- Particlesystem logic
         self.particleSystem:update(dt)
         if self.flightTime <= 0 then
@@ -119,8 +126,23 @@ local function getMissile(x, y, text)
 
     function missile:draw()
         local x, y = self.body:getPosition()
-        y = y - self.dimension.height * 1.5
-        love.graphics.print(self.text, x, y, 0, 1.5, 1.5)
+        local offset = getVector((self.dimension.width / 2) - 10, 0):rotate(self.body:getAngle())
+        print (offset.y)
+        love.graphics.print(self.text,
+                            x,
+                            y - self.dimension.height * 1.5,
+                            0,
+                            1.5,
+                            1.5
+        )
+        if self.startTimer <= 0.125 then
+           love.graphics.setColor(255, 0, 0, 0.4)
+           love.graphics.circle("fill", x - offset.x, y - offset.y, 7)
+        elseif self.startTimer >= 0.125 then
+           love.graphics.setColor(1, 1, 1, 0)
+           love.graphics.circle("fill", x - offset.x, y - offset.y, 7)
+        end
+        love.graphics.setColor(255, 255, 255)
     end
 
     function missile:isOnScreen()
@@ -131,5 +153,4 @@ local function getMissile(x, y, text)
 
     return missile
 end
-
 return getMissile
