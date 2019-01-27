@@ -1,4 +1,5 @@
 local getVector = require("core/vector")
+local getExplosion = require("entity/explosion")
 
 local function getMissile(x, y, explosive)
     local missile = {}
@@ -155,6 +156,23 @@ local function getMissile(x, y, explosive)
             y > camera.y - 200 and y < camera.y + settings.resolution.height + 200
     end
 
+    function missile:explode()
+        self.destroyed = true
+        stack:current().textGrapplingSystem:removeMissile(self)
+        state.missileSpawner.missile_count = state.missileSpawner.missile_count - 1
+
+        local positionX, positionY = missile.body:getPosition()
+
+        -- Spawning explosion
+        local explosion = getExplosion(positionX, positionY)
+        table.insert(stack:current().entitiesToSpawn, explosion)
+
+        stack:current():addExplosionDistortion(positionX, positionY)
+        if positionX > camera.x - 100 and
+            positionX < camera.x + settings.resolution.width + 100 then
+            music.queueEvent("explosion")
+        end
+    end
     return missile
 end
 return getMissile

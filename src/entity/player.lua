@@ -39,6 +39,7 @@ local function getPlayer()
     player.missile = nil
     player.grapplingToMissile = false -- New missile we just connected to. Needed for drawing the grappling hook
     player.jumpCd = 0
+    player.missileCd = 0
 
     function player:draw()
         self:drawGrapplingHook()
@@ -46,6 +47,16 @@ local function getPlayer()
     end
 
     function player:update(dt)
+
+        if self:isConnectedToMissile() then
+            if self.missile.explosive == 3 then
+                self.missileCd = self.missileCd - dt
+                if self.missileCd <= 0 then
+                    self.missile:explode()
+                    self.missileCd = 0
+                end
+            end
+        end
 
         -- countdown before going to gameoverscreen
         if player.dead == true then
@@ -194,6 +205,7 @@ local function getPlayer()
             love.graphics.setLineWidth(3)
             love.graphics.line(playerX, playerY, missileX, missileY)
             love.graphics.setColor(1, 1, 1, 1)
+
         end
     end
 
@@ -226,6 +238,7 @@ local function getPlayer()
         self.joint = joint
         self.missile = missile
         self.jumpCd = 0
+
 
         self.grapplingToMissile = true
         self.isGrappling = false
