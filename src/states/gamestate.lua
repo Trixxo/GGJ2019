@@ -7,6 +7,7 @@ camera = require("core/camera")
 -- Game logic
 local getMissileSpawner = require("system/missilespawner")
 local getAsteroidSpawner = require("system/asteroidspawner")
+local getSeagullSpawner = require("system/seagullspawner")
 local getBgSpawner = require("system/bgspawner")
 local getTextGrapplingSystem = require("system/textGrappling")
 
@@ -43,20 +44,20 @@ local function getGameState()
     state.bgEntities = {}
     state.entitiesToSpawn = {} -- Add entities into this list that can't be instantly added (E.g. during collisions)
 
-    -- Create game logic systems
-    state.missileSpawner = getMissileSpawner()
-    state.asteroidSpawner = getAsteroidSpawner()
-    state.bgSpawner = getBgSpawner()
-    state.textGrapplingSystem = getTextGrapplingSystem()
-
     -- Create new entities
     local player = getPlayer()
     table.insert(state.entities, player)
     local ground = getGround()
     table.insert(state.entities, ground)
-
     local missile = getMissile()
     missile.falling = false
+
+    -- Create game logic systems
+    state.missileSpawner = getMissileSpawner()
+    state.asteroidSpawner = getAsteroidSpawner()
+    state.seagullSpawner = getSeagullSpawner(player)
+    state.bgSpawner = getBgSpawner()
+    state.textGrapplingSystem = getTextGrapplingSystem()
 
     state.pausedOnCurrentPress = false
     local distX, distY = player.body:getPosition()
@@ -73,6 +74,7 @@ local function getGameState()
         self.missileSpawner:update(dt)
         self.asteroidSpawner:update(dt)
         self.bgSpawner:update(dt)
+        self.seagullSpawner:update(dt)
 
         -- Add new entities from collision handlers to state
         for index, entity in pairs(self.entitiesToSpawn) do

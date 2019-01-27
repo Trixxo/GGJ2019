@@ -8,6 +8,8 @@ local function gameOverCollision(fixtureA, fixtureB, key)
     --print(objectA.name .. " colliding with " .. objectB.name)
     if objectA.name == "ground" and objectB.name == "player" or
         objectB.name == "ground" and objectA.name == "player" or
+        objectA.name == "seagull" and objectB.name == "player" or
+        objectB.name == "seagull" and objectA.name == "player" or
         objectA.name == "asteroid" and objectB.name == "player" or
         objectB.name == "asteroid" and objectA.name == "player" then
 

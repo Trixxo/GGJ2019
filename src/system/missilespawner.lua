@@ -16,12 +16,15 @@ local function getMissileSpawner()
             local sh = settings.resolution.height
 
             local relativeHeight = math.random(camera.y - 200, camera.y - 50)
+
+            -- Spawn missiles above camera in the middle of the x-axis if we aren't too high up in the sky
             if (relativeHeight < 0 and relativeHeight >= -sh * 0.5) or relativeHeight >= 0 then
                 y = relativeHeight
                 x = camera.x + sw/2 + math.random(sw * 0.1, sw * 0.3)
+            -- Spawn missiles below between 1/2 of the screen and 1+1/3 of the screen, if we are too high up in the sky
             else
-                x = camera.x + sw + math.random(sw * 0.1, sw * 0.3)
-                y = -sh * 0.5
+                x = camera.x + math.random(sw * 0.5, sw * 1.3)
+                y = math.max(-sw*0.5, camera.y + sh)
             end
 
             local randomspawn = {
