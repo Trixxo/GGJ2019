@@ -252,7 +252,7 @@ local function getPlayer()
                 self:removeJoint()
                 if self.jumpCd <= 1 then
                     xv, yv = self.body:getLinearVelocity()
-                    self.body:setLinearVelocity(xv, math.min(-600, yv))
+                    self.body:setLinearVelocity(xv, math.min(-1000, yv))
                     player.jumpCd = player.jumpCd + 1
                 end
 
