@@ -15,7 +15,9 @@ local function missilePlayerCollision(fixtureA, fixtureB, key)
             player = objectA
         end
 
-        player.missileToConnect = missile
+        if love.keyboard.isDown("lshift") == "false" and love.keyboard.isDown("rshift") == "false" then
+            player.missileToConnect = missile
+        end
     end
 end
 

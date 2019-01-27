@@ -31,7 +31,7 @@ local function getMissileSpawner()
                 x = x,
                 y = y,
             }
-            local new_missile = getMissile(randomspawn.x, randomspawn.y)
+            local new_missile = getMissile(randomspawn.x, randomspawn.y, math.random(5))
             -- print("Spawning missile at ", randomspawn.x, randomspawn.y)
             state.textGrapplingSystem:registerMissile(new_missile)
             table.insert(state.entities, new_missile)
