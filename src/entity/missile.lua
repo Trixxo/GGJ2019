@@ -18,7 +18,6 @@ local function getMissile(x, y, text)
 
     missile.body = love.physics.newBody(world, x, y, "kinematic")
     missile.body:setMass(10000)
-    --missile.body:setInertia(1000)
     missile.body:setLinearDamping(0.3)
 
 
@@ -56,9 +55,9 @@ local function getMissile(x, y, text)
 
     function missile:update(dt)
         local missileX, missileY = self.body:getPosition()
-        self.particleSystem:update(dt)
-        self.flightTime = self.flightTime - dt
 
+        -- Particlesystem logic
+        self.particleSystem:update(dt)
         if self.flightTime <= 0 then
             self.particleSystem:stop()
         elseif self.flightTime <= 0.3 then
@@ -75,31 +74,36 @@ local function getMissile(x, y, text)
             self.particleSystem:stop()
         end
 
+        -- Flight time logic
+        self.flightTime = self.flightTime - dt
         if self.flightTime <= 0 or
-          missileY > settings.resolution.height - (25 * settings.scale) - (50 * settings.scale)  then
+            missileY > settings.resolution.height - (25 * settings.scale) - (50 * settings.scale)  then
             self.body:setType("dynamic")
             self.body:applyTorque(0.5)
             self.fixture:setCategory(4)
             self.fixture:setMask(1, 3, 4)
         else
 
-        --local angle = missile.body:getAngle()
-        --local acceleration = getVector(1000 * dt, 0):rotate(angle)
-        --self.body:applyLinearImpulse(acceleration.x, acceleration.y)
-        --self.body:applyTorque(700)
-        --self.body:setPosition(missileX + acceleration.x, missileY)
+            -- local angle = missile.body:getAngle()
+            -- local acceleration = getVector(1000 * dt, 0):rotate(angle)
+            -- self.body:applyLinearImpulse(acceleration.x, acceleration.y)
+            -- self.body:applyTorque(700)
+            -- self.body:setPosition(missileX + acceleration.x, missileY)
 
-           self.body:setAngularVelocity(0.06)
-           local angle = self.body:getAngle()
-           local velocity = getVector(missile.missileVel, 0):rotate(angle)
-           if not self:isOnScreen() then
-               velocity = velocity:multiply(1.5)
-           end
-           self.body:setLinearVelocity(velocity.x, velocity.y)
+            -- Movement logic
+            self.body:setAngularVelocity(0.06)
+            local angle = self.body:getAngle()
+            local velocity = getVector(missile.missileVel, 0):rotate(angle)
+            if not self:isOnScreen() then
+                velocity = velocity:multiply(1.5)
+            end
+            self.body:setLinearVelocity(velocity.x, velocity.y)
+            --self.body:setAngle(math.pi)
 
-        --self.body:setAngle(math.pi)
         end
 
+        -- Reset category logic to handle new collision mask in 
+        -- case the missile was just grabbed on by the player
         if self.resetCategory then
             self.resetCategoryTimer = self.resetCategoryTimer - dt
             if self.resetCategoryTimer <= 0 then
