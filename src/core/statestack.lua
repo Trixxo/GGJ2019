@@ -40,12 +40,10 @@ local function getStateStack()
 
     function stateStack:update(dt)
         if self.stateChanged then
-            print("load")
             self:current():load()
             self.stateChanged = false
         end
 
-        print("update", #self.states)
         if self:current() then self:current():update(dt) end
     end
 
