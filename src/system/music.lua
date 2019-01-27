@@ -20,6 +20,7 @@ function music.load()
         },
         tick_1 = {
             beatFrequency = 2,
+            offset = 1/2,
             soundData = love.sound.newSoundData("data/audio/crab_tick_single.wav"),
             },
         tick_2 = {
@@ -28,7 +29,7 @@ function music.load()
             soundData = love.sound.newSoundData("data/audio/crab_tick_double.wav"),
         },
         tick_3 = {
-            beatFrequency = 4,
+            beatFrequency = 2,
             offset = 1/2,
             soundData = love.sound.newSoundData("data/audio/crab_tick_double.wav"),
             enabled = true

@@ -47,6 +47,9 @@ local function getPlayer()
 
         -- countdown before going to gameoverscreen 
         if player.dead == true then
+            music.disableSound("tick_3")
+            music.disableSound("tick_2")
+            music.disableSound("moveRight")
             if player.deadcountdown < 0 then
                 local gameoverstate = getGameOverState()
                 stack:push(gameoverstate)
@@ -110,6 +113,16 @@ local function getPlayer()
             else
                 music.disableSound("moveRight")
             end
+        end
+
+        if math.abs(lvx) > 800 or math.abs(lvy) > 800 then
+            music.enableSound("tick_3")
+            music.enableSound("tick_2")
+            music.enableSound("moveRight")
+        else
+            music.disableSound("tick_3")
+            music.disableSound("tick_2")
+            print("OFF")
         end
 
     end
