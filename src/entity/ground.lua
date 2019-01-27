@@ -1,8 +1,9 @@
 local function getGround()
     local ground = {}
 
-    ground.name = 'ground'
     ground.drawType = 'rectangle'
+
+    ground.name = 'ground'
     ground.destroyed = false
 
     ground.dimension = {width = 500000, height = 50 * settings.scale}

@@ -52,7 +52,8 @@ local function getPlayer()
         local lvx, lvy = self.body:getLinearVelocity()
         local totalSpeed = getVector(lvx, lvy):length()
 
-        music.energyLevel = playerX / 42000
+        local levelLength = 20000
+        music.energyLevel = playerX / levelLength
 
         --print("self", self.body)
         --print("self", self.body:isDestroyed())
@@ -141,7 +142,7 @@ local function getPlayer()
             if totalSpeed > 1200 and self:isConnectedToMissile() then
                 music.enableSound('swoosh')
             end
-            if not self.portalSpawned and (totalSpeed > 2000 and playerX > 42000) then
+            if not self.portalSpawned and (totalSpeed > 2000 and playerX > levelLength) then
                 -- this is so fast, spacetime cracks and a portal opens
                 print("spawning portal")
                 local portal = getPortal(playerX + 4000, 0)

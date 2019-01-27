@@ -18,8 +18,6 @@ local function getGameWonState(playerlv,playerav,playerr,posx, posy)
 
     state.canvas = love.graphics.newCanvas()
 
-
-
     function state:update(dt)
         local playerX, playerY = state.player.body:getPosition()
         local mouseX, mouseY = love.mouse:getPosition()
@@ -31,7 +29,7 @@ local function getGameWonState(playerlv,playerav,playerr,posx, posy)
         end
 
         local previousX = camera.x
-        camera.x = math.max(playerX - 500, previousX)
+        -- camera.x = math.max(playerX - 500, previousX)
         camera.y = math.min(playerY - 400, 0)
         -- Create explosions
         --self.explosionTimer = self.explosionTimer - dt
@@ -69,6 +67,8 @@ local function getGameWonState(playerlv,playerav,playerr,posx, posy)
         local y = camera.y + settings.resolution.height/2 - text:getHeight()/2
         love.graphics.draw(text, x, y)
 
+        love.graphics.draw(resources.images.beach, camera.x, 0)
+
         -- Draw explosions
         --for index, explosion in pairs(self.explosions) do
             --local emitterX, emitterY = explosion:getEmitterPosition()
@@ -77,8 +77,6 @@ local function getGameWonState(playerlv,playerav,playerr,posx, posy)
 
         for index, entity in pairs(self.entities) do
             local positionX, positionY = entity.body:getPosition()
-            print("bod", positionX, positionY)
-            print(camera.x,camera.y)
             local angle = entity.body:getAngle()
 
             if entity.particleSystem then
@@ -92,7 +90,7 @@ local function getGameWonState(playerlv,playerav,playerr,posx, posy)
 
             -- Draw all debug rectangle entities
             if entity.drawType == 'rectangle' then
-                love.graphics.setColor(255, 0, 0, 1)
+                love.graphics.setColor(255, 0, 0, 0)
                 love.graphics.rectangle('fill',
                     positionX-entity.dimension.width/2,
                     positionY-entity.dimension.height/2,
@@ -152,7 +150,7 @@ local function getGameWonState(playerlv,playerav,playerr,posx, posy)
         --camera.y = 0
         world = love.physics.newWorld(0, 981, true)
 
-        local ground = getGround()
+        local ground = getGround(resources.images.beach)
         table.insert(state.entities, ground)
 
         print(player)
