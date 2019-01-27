@@ -18,6 +18,10 @@ function music.load()
             soundData = love.sound.newSoundData("data/audio/fantomenkick.wav"),
             enabled = true
         },
+        swoosh = {
+            beatFrequency = 1/2,
+            soundData = love.sound.newSoundData("data/audio/3maze-cinematicswoosh_craft_med_C_001.wav"),
+        },
         tick_1 = {
             beatFrequency = 2,
             offset = 1/2,

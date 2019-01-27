@@ -7,7 +7,6 @@ local function getTextGrapplingSystem()
         "k",
         "l",
         "u",
-        "i",
         "o",
         "p",
         "n",

@@ -120,6 +120,10 @@ local function getPlayer()
             music.enableSound("tick_3")
             music.enableSound("tick_2")
             music.enableSound("moveRight")
+            if self:isConnectedToMissile() then
+                music.queueEvent('swoosh')
+            end
+
         else
             music.disableSound("tick_3")
             music.disableSound("tick_2")
