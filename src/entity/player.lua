@@ -48,6 +48,12 @@ local function getPlayer()
 
     function player:update(dt)
 
+        local playerX, playerY = self.body:getPosition()
+        local lvx, lvy = self.body:getLinearVelocity()
+        local totalSpeed = getVector(lvx, lvy):length()
+
+        self.body:setAngularVelocity((self.body:getLinearVelocity() + math.abs(playerY)) * dt)
+
         if self:isConnectedToMissile() then
             if self.missile.explosive == 3 then
                 self.missileCd = self.missileCd - dt
@@ -82,10 +88,6 @@ local function getPlayer()
             self:connectToMissile(self.missileToConnect)
             self.missileToConnect = nil
         end
-
-        local playerX, playerY = self.body:getPosition()
-        local lvx, lvy = self.body:getLinearVelocity()
-        local totalSpeed = getVector(lvx, lvy):length()
 
         if player.jumpCd <= 0 then
             player.jumpCd = 0
