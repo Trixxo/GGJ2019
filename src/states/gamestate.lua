@@ -14,7 +14,7 @@ local getTextGrapplingSystem = require("system/textGrappling")
 local missileGroundCollision = require("collisions/missileground")
 local missileAsteroidCollision = require("collisions/missileasteroid")
 local missilePlayerCollision = require("collisions/missileplayer")
-local playerGroundCollision = require("collisions/playerground")
+local gameOverCollision = require("collisions/gameover")
 
 world = nil
 
@@ -292,7 +292,7 @@ local function getGameState()
         missileAsteroidCollision(fixtureA, fixtureB, key)
         missileGroundCollision(fixtureA, fixtureB, key)
         missilePlayerCollision(fixtureA, fixtureB, key)
-        playerGroundCollision(fixtureA, fixtureB, key)
+        gameOverCollision(fixtureA, fixtureB, key)
     end
 
     function state:load()

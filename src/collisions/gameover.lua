@@ -1,13 +1,15 @@
 local getGameOverState = require("states/gameoverstate")
 local getExplosion = require("entity/explosion")
 
-local function playerGroundCollision(fixtureA, fixtureB, key)
+local function gameOverCollision(fixtureA, fixtureB, key)
     local objectA = fixtureA:getUserData()
     local objectB = fixtureB:getUserData()
 
     --print(objectA.name .. " colliding with " .. objectB.name)
     if objectA.name == "ground" and objectB.name == "player" or
-        objectB.name == "ground" and objectA.name == "player" then
+        objectB.name == "ground" and objectA.name == "player" or
+        objectA.name == "asteroid" and objectB.name == "player" or
+        objectB.name == "asteroid" and objectA.name == "player" then
 
         local player
         if objectA.name == "player" then
@@ -38,4 +40,4 @@ local function playerGroundCollision(fixtureA, fixtureB, key)
     end
 end
 
-return playerGroundCollision
+return gameOverCollision
