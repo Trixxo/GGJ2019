@@ -158,7 +158,7 @@ local function getGameState()
     function state:draw()
         -- Render everything to the canvas.
         love.graphics.setCanvas(state.canvas)
-        love.graphics.clear(0.0,0.0,0.0,1.0)
+        love.graphics.clear(state.color.r, state.color.g, state.color.b,1.0)
 
         -- Background
         local maxY = settings.resolution.height / 2
@@ -166,11 +166,6 @@ local function getGameState()
         local space = resources.images.backgroundSpace
         local alpha = resources.images.backgroundBlend
         local city = resources.images.backgroundCity
-
-        self:drawBGLayer(space, 1.0, 0.5, state.color.r, state.color.g, state.color.b,
-            maxY - 1500 - 0.5 * space:getPixelHeight())
-        -- self:drawBGLayer(space, 0.5, 0.5, 1.0, 1.0, 1.0, maxY - 1500 - 0.5 * space:getPixelHeight())
-        -- self:drawBGLayer(space, 0.5, 0.5, 1.0, 1.0, 1.0, maxY - 1500)
 
         self:drawBGLayer(city, 0.2, 0.9, 0.1, 0.1, 0.1, 0)
         self:drawBGLayer(city, 0.3, 0.8, 0.2, 0.2, 0.2, 0)
