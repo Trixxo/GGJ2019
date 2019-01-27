@@ -190,6 +190,15 @@ local function getGameState()
             local positionX, positionY = entity.body:getPosition()
             local angle = entity.body:getAngle()
 
+            if entity.particleSystem then
+                local emitterX, emitterY = entity:getEmitterPosition()
+                if entity.syncParticleAngle == false then
+                    love.graphics.draw(entity.particleSystem, emitterX, emitterY)
+                else
+                    love.graphics.draw(entity.particleSystem, emitterX, emitterY, angle)
+                end
+            end
+
             -- Draw all debug rectangle entities
             if entity.drawType == 'rectangle' then
                 love.graphics.setColor(255, 0, 0, 1)
@@ -199,11 +208,15 @@ local function getGameState()
                     entity.dimension.width,
                     entity.dimension.height
                 )
-            love.graphics.setColor(255, 255, 255)
+                love.graphics.setColor(255, 255, 255)
 
 
             -- Draw all entities with images
             elseif entity.drawType == 'image' then
+                if entity.color then
+                    love.graphics.setColor(entity.color.r, entity.color.g, entity.color.b, entity.color.a)
+                end
+
                 love.graphics.draw(
                     entity.image,
                     positionX,
@@ -214,11 +227,8 @@ local function getGameState()
                     entity.image:getWidth() / 2,
                     entity.image:getHeight() / 2
                 )
-            end
 
-            if entity.particleSystem then
-                local emitterX, emitterY = entity:getEmitterPosition()
-                love.graphics.draw(entity.particleSystem, emitterX, emitterY, angle)
+                love.graphics.setColor(1, 1, 1, 1)
             end
 
             if entity.draw ~= nil then

@@ -24,20 +24,22 @@ local function getAsteroid(x, y, text)
     asteroid.body:setMass(1000)
 
     asteroid.particleSystem = love.graphics.newParticleSystem(resources.images.softCircle)
-    asteroid.particleSystem:setEmissionRate(2)
-    asteroid.particleSystem:setDirection(-math.pi/2)
-    asteroid.particleSystem:setSpeed(100, 180)
-    asteroid.particleSystem:setParticleLifetime(3, 4)
+    asteroid.particleSystem:setEmissionRate(4)
+    asteroid.particleSystem:setEmissionArea("normal", 10, 10)
+    asteroid.particleSystem:setParticleLifetime(0.5, 2)
 
-    asteroid.particleSystem:setSizes(1.4, 3.0)
+    asteroid.particleSystem:setSizes(2.0, 1.5)
+    asteroid.particleSystem:setRadialAcceleration(10)
     asteroid.particleSystem:setSizeVariation(0.5)
 
-    asteroid.particleSystem:setColors(1, 0.8, 0.25, 0,
-                                      1, 0.5, 0.1, 0.8,
-                                      1, 0.3, 0.1, 0)
+    asteroid.particleSystem:setColors(1, 0.5, 0.25, 0,
+                                      1, 0.3, 0.1, 0.9,
+                                      1, 0.1, 0.1, 0)
     asteroid.particleSystem:start()
 
-    asteroid.color = {r = 1, g = 1, b = 1, a = 1}
+    asteroid.syncParticleAngle = false
+
+    asteroid.color = {r = 1, g = 0.3, b = 0.2, a = 1}
 
     function asteroid:getEmitterPosition()
         local x, y = self.body:getPosition()
@@ -45,7 +47,13 @@ local function getAsteroid(x, y, text)
     end
 
     function asteroid:update(dt)
+        local xv, yv = self.body:getLinearVelocity()
+        local speedVec = getVector(xv, yv)
+        self.particleSystem:setDirection(speedVec:rotate(math.pi):getRadian())
+        self.particleSystem:setSpeed(speedVec:length() * 0.5)
         self.particleSystem:update(dt)
+        self.color.r = 0.8 + math.sin(love.timer.getTime() * 5) * 0.2
+        self.color.g = 0.3 + math.sin(love.timer.getTime() * 2) * 0.1
     end
 
     return asteroid
