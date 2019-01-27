@@ -149,7 +149,6 @@ local function getPlayer()
         else
             music.disableSound("tick_3")
             music.disableSound("tick_2")
-            music.disableSound("bass")
             music.disableSound('swoosh')
         end
 

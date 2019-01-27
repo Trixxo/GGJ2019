@@ -5,7 +5,7 @@ local function getGround()
     ground.drawType = 'rectangle'
     ground.destroyed = false
 
-    ground.dimension = {width = 100000, height = 50 * settings.scale}
+    ground.dimension = {width = 500000, height = 50 * settings.scale}
     ground.body = love.physics.newBody(
         world,
         settings.resolution.width/2,

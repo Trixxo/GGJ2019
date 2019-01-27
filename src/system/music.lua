@@ -74,6 +74,7 @@ function music.load()
                 base = "lead",
                 count = 6
             },
+            offset = 1 / 2,
             beatFrequency = 1 / 2,
             energyLevel = 0.5
         },
