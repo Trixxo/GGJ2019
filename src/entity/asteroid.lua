@@ -11,14 +11,18 @@ local function getAsteroid(x, y, text)
 
     asteroid.dimension = {width = 200, height = 200}
     asteroid.image = resources.images.asteroid
-    asteroid.shape = love.physics.newRectangleShape(asteroid.dimension.width, asteroid.dimension.height)
+    asteroid.shape = love.physics.newCircleShape(asteroid.dimension.width/2)
 
-    asteroid.body = love.physics.newBody(world, x, y)
+    asteroid.body = love.physics.newBody(world, x, y, "dynamic")
+    asteroid.body:setGravityScale(0.01)
+    asteroid.body:setAngularVelocity(math.random(-1,1))
 
     asteroid.fixture = love.physics.newFixture(asteroid.body, asteroid.shape, 1)
     asteroid.fixture:setUserData(asteroid)
-    asteroid.fixture:setCategory(3)
-    asteroid.fixture:setMask(3, 4)
+    asteroid.fixture:setCategory(5)
+    --asteroid.fixture:setMask(1)
+
+    asteroid.body:setMass(1000)
 
     return asteroid
 end
