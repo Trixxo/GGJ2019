@@ -1,6 +1,6 @@
 local getVector = require("core/vector")
 
-local function getMissile(x, y, text)
+local function getMissile(x, y, explosive)
     local missile = {}
     missile.missileVel = math.random(200, 500)
 
@@ -10,8 +10,8 @@ local function getMissile(x, y, text)
     missile.resetCategory = false
     missile.destroyed = false
     missile.flightTime = math.random(7, 10)
-    missile.text = text
     missile.falling = true
+    missile.explosive = explosive
 
     missile.dimension = {width = 70, height = 24}
     missile.image = resources.images.missile
@@ -135,12 +135,14 @@ local function getMissile(x, y, text)
                             1.5,
                             1.5
         )
-        if self.startTimer <= 0.125 then
-           love.graphics.setColor(255, 0, 0, 0.4)
-           love.graphics.circle("fill", x - offset.x, y - offset.y, 7)
-        elseif self.startTimer >= 0.125 then
-           love.graphics.setColor(1, 1, 1, 0)
-           love.graphics.circle("fill", x - offset.x, y - offset.y, 7)
+        if missile.explosive == 3 then
+            if self.startTimer <= 0.125 then
+               love.graphics.setColor(255, 0, 0, 0.8)
+               love.graphics.circle("fill", x - offset.x, y - offset.y, 7)
+            elseif self.startTimer >= 0.125 then
+               love.graphics.setColor(1, 1, 1, 0)
+               love.graphics.circle("fill", x - offset.x, y - offset.y, 7)
+            end
         end
         love.graphics.setColor(255, 255, 255)
     end
