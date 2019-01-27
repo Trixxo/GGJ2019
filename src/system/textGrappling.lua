@@ -27,7 +27,7 @@ local function getTextGrapplingSystem()
             if self.missiles[key] == nil then
                 self.missiles[key] = missile
                 missile.text = key
-                break
+                return
             end
         end
         print("ERROR: no empty key available for new missile")

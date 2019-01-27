@@ -56,9 +56,6 @@ local function getGameState()
     table.insert(state.entities, ground)
 
     local missile = getMissile()
-    state.textGrapplingSystem:registerMissile(missile)
-    table.insert(state.entities, missile)
-    player:connectToMissile(missile)
 
     state.pausedOnCurrentPress = false
     local distX, distY = player.body:getPosition()
@@ -299,6 +296,10 @@ local function getGameState()
 
     function state:load()
         self.bgSpawner:load()
+
+        state.textGrapplingSystem:registerMissile(missile)
+        table.insert(state.entities, missile)
+        player:connectToMissile(missile)
     end
 
     return state
