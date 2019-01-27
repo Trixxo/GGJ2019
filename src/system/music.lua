@@ -22,6 +22,14 @@ function music.load()
             beatFrequency = 1/2,
             source = love.audio.newSource("data/audio/3maze-cinematicswoosh_craft_med_C_001.wav", "static"),
         },
+        death = {
+            beatFrequency = 1/2,
+            soundData = love.sound.newSoundData("data/audio/juhani_junkala_sfx_deathscream_alien4.wav"),
+        },
+        grapp_ready = {
+            beatFrequency = 1/2,
+            soundData = love.sound.newSoundData("data/audio/juhani_junkala_sfx_sounds_powerup6.wav"),
+        },
         tick_1 = {
             beatFrequency = 2,
             offset = 1/2,
@@ -97,7 +105,6 @@ function music.disableSound(name)
 end
 
 function music.update(dt)
-    --print("current bpm ", music.bpm)
     music.beatLength = 60 / music.bpm
     music.timeSinceLastTick = music.timeSinceLastTick + dt
     if music.timeSinceLastTick >= music.beatLength / music.tickFraction then
