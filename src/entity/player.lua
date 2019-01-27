@@ -233,6 +233,7 @@ local function getPlayer()
         missile.fixture:setMask(1, 3, 4)
 
         music.queueEvent("grappling")
+        music.queueEvent("second_grappling")
 
         local joint = love.physics.newDistanceJoint(self.body, missile.body, self.body:getX(), self.body:getY(), missile.body:getX(), missile.body:getY())
         joint:setLength(50)

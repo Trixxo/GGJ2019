@@ -14,23 +14,40 @@ music.energyLevel = 0
 
 function music.load()
     sounds = {
+        hihat = {
+            beatFrequency = 2,
+            soundData = love.sound.newSoundData("data/audio/hihat.wav"),
+            enabled = true,
+            energyLevel = 0
+        },
+        second_grappling = {
+            sources = {
+                base = "lead",
+                count = 6
+            },
+            beatFrequency = 1 / 2,
+            energyLevel = 0.2
+        },
+        jump = {
+            sources = {
+                base = "lead",
+                count = 6
+            },
+            beatFrequency = 1 / 2,
+            energyLevel = 0
+        },
         kick = {
             beatFrequency = 1,
             soundData = love.sound.newSoundData("data/audio/fantomenkick.wav"),
             enabled = true,
             energyLevel = 0.15
         },
-        swoosh = {
-            beatFrequency = 1/2,
-            source = love.audio.newSource("data/audio/3maze-cinematicswoosh_craft_med_C_001.wav", "static"),
-        },
-        death = {
-            beatFrequency = 1/2,
-            soundData = love.sound.newSoundData("data/audio/juhani_junkala_sfx_deathscream_alien4.wav"),
-        },
-        grapp_ready = {
-            beatFrequency = 1/2,
-            soundData = love.sound.newSoundData("data/audio/juhani_junkala_sfx_sounds_powerup6.wav"),
+        tick_3 = {
+            beatFrequency = 2,
+            offset = 1/2,
+            soundData = love.sound.newSoundData("data/audio/crab_tick_double.wav"),
+            energyLevel = 0.3,
+            enabled = true,
         },
         tick_1 = {
             beatFrequency = 2,
@@ -44,37 +61,20 @@ function music.load()
             soundData = love.sound.newSoundData("data/audio/crab_tick_double.wav"),
             energyLevel = 0.5,
         },
-        tick_3 = {
-            beatFrequency = 2,
-            offset = 1/2,
-            soundData = love.sound.newSoundData("data/audio/crab_tick_double.wav"),
-            energyLevel = 0.3,
-            enabled = true,
-        },
-        grappling = {
-            beatFrequency = 1/4,
-            soundData = love.sound.newSoundData("data/audio/grappling_sound.wav"),
-        },
-        hihat = {
-            beatFrequency = 2,
-            soundData = love.sound.newSoundData("data/audio/hihat.wav"),
-            enabled = true,
-            energyLevel = 0
-        },
-        jump = {
+        bass = {
             sources = {
-                base = "lead",
-                count = 6
+                base = "bass",
+                count = 2
             },
+            enabled = true,
             beatFrequency = 1 / 2,
-            energyLevel = 0.05
+            energyLevel = 0.4
         },
         second_jump = {
             sources = {
                 base = "lead",
                 count = 6
             },
-            offset = 1 / 2,
             beatFrequency = 1 / 2,
             energyLevel = 0.5
         },
@@ -87,19 +87,28 @@ function music.load()
             enabled = true,
             energyLevel = 0.8
         },
+
+        -- always on effects
         explosion = {
             soundData = love.sound.newSoundData("data/audio/cymbal_crash.wav"),
             beatFrequency = 1
         },
-        bass = {
-            sources = {
-                base = "bass",
-                count = 2
-            },
-            enabled = true,
-            beatFrequency = 1 / 2,
-            energyLevel = 0.4
-        }
+        swoosh = {
+            beatFrequency = 1/2,
+            source = love.audio.newSource("data/audio/3maze-cinematicswoosh_craft_med_C_001.wav", "static"),
+        },
+        death = {
+            beatFrequency = 1/2,
+            soundData = love.sound.newSoundData("data/audio/juhani_junkala_sfx_deathscream_alien4.wav"),
+        },
+        grapp_ready = {
+            beatFrequency = 1/2,
+            soundData = love.sound.newSoundData("data/audio/juhani_junkala_sfx_sounds_powerup6.wav"),
+        },
+        grappling = {
+            beatFrequency = 1/4,
+            soundData = love.sound.newSoundData("data/audio/grappling_sound.wav"),
+        },
     }
 end
 
@@ -162,8 +171,7 @@ local function matchesEnergyLevel(sound, currentLevel)
 end
 
 function music.tick()
-    local soundsPlayed = {}
-    local newSounds = {}
+    local newQueue = {}
 
     music.currentTick = music.currentTick + 1
 
@@ -174,20 +182,25 @@ function music.tick()
         end
     end
 
+    local alreadyPlayed = {}
+
     for queueIndex, sound in ipairs(eventQueue) do
-        if shouldSoundPlay(music.currentTick, sound.beatFrequency, sound) then
-            print(music.energyLevel)
+        if shouldSoundPlay(music.currentTick, sound.beatFrequency, sound) and
+        not (sound.sources and alreadyPlayed[sound.sources.base]) then
+            -- this is the correct tick to play the sound
             if matchesEnergyLevel(sound, music.energyLevel) then
                 love.audio.play(sourceForSound(sound))
+                if sound.sources then
+                    alreadyPlayed[sound.sources.base] = true
+                end
             end
-
-            table.insert(soundsPlayed, queueIndex)
+        else
+            -- play this sound later
+            table.insert(newQueue, sound)
         end
     end
 
-    for _, queueIndex in ipairs(soundsPlayed) do
-        table.remove(eventQueue, queueIndex)
-    end
+    eventQueue = newQueue
 end
 
 return music
