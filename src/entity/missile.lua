@@ -11,6 +11,7 @@ local function getMissile(x, y, text)
     missile.destroyed = false
     missile.flightTime = math.random(7, 10)
     missile.text = text
+    missile.falling = true
 
     missile.dimension = {width = 70, height = 24}
     missile.image = resources.images.missile
@@ -83,15 +84,16 @@ local function getMissile(x, y, text)
             self.fixture:setCategory(4)
             self.fixture:setMask(1, 3, 4)
         else
-
             -- local angle = missile.body:getAngle()
             -- local acceleration = getVector(1000 * dt, 0):rotate(angle)
             -- self.body:applyLinearImpulse(acceleration.x, acceleration.y)
             -- self.body:applyTorque(700)
             -- self.body:setPosition(missileX + acceleration.x, missileY)
+            if missile.falling then
+                -- Movement logic
+                self.body:setAngularVelocity(0.06)
+            end
 
-            -- Movement logic
-            self.body:setAngularVelocity(0.06)
             local angle = self.body:getAngle()
             local velocity = getVector(missile.missileVel, 0):rotate(angle)
             if not self:isOnScreen() then

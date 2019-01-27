@@ -56,6 +56,7 @@ local function getGameState()
     table.insert(state.entities, ground)
 
     local missile = getMissile()
+    missile.falling = false
 
     state.pausedOnCurrentPress = false
     local distX, distY = player.body:getPosition()
