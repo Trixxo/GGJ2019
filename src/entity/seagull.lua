@@ -20,7 +20,7 @@ local function getSeagull(x, y, player)
 
     seagull.fixture = love.physics.newFixture(seagull.body, seagull.shape, 1)
     seagull.fixture:setUserData(seagull)
-    seagull.fixture:setCategory(3)
+    seagull.fixture:setCategory(15)
     seagull.fixture:setMask(3, 4)
 
     function seagull:update(dt)
