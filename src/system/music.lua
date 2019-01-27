@@ -20,7 +20,7 @@ function music.load()
         },
         swoosh = {
             beatFrequency = 1/2,
-            soundData = love.sound.newSoundData("data/audio/3maze-cinematicswoosh_craft_med_C_001.wav"),
+            source = love.audio.newSource("data/audio/3maze-cinematicswoosh_craft_med_C_001.wav", "static"),
         },
         tick_1 = {
             beatFrequency = 2,
@@ -62,12 +62,11 @@ function music.load()
             soundData = love.sound.newSoundData("data/audio/cymbal_crash.wav"),
             beatFrequency = 1
         },
-        moveLeft = {
-            soundData = love.sound.newSoundData("data/audio/bass_1.wav"),
-            beatFrequency = 1 / 2
-        },
-        moveRight = {
-            soundData = love.sound.newSoundData("data/audio/bass_2.wav"),
+        bass = {
+            sources = {
+                base = "bass",
+                count = 2
+            },
             beatFrequency = 1 / 2
         }
     }

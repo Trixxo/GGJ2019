@@ -50,7 +50,8 @@ local function getPlayer()
             player.drawType = nil
             music.disableSound("tick_3")
             music.disableSound("tick_2")
-            music.disableSound("moveRight")
+            music.disableSound("swoosh")
+
             if player.deadcountdown < 0 then
                 local gameoverstate = getGameOverState()
                 stack:push(gameoverstate)
@@ -69,6 +70,8 @@ local function getPlayer()
 
         local playerX, playerY = self.body:getPosition()
         local lvx, lvy = self.body:getLinearVelocity()
+        local totalSpeed = getVector(lvx, lvy):length()
+
         if player.jumpCd <= 0 then
             player.jumpCd = 0
         end
@@ -101,32 +104,32 @@ local function getPlayer()
         if lvx > -maxSpeed then
             if love.keyboard.isDown("a") then
                 self.body:applyLinearImpulse(-100, 0)
-                music.enableSound("moveLeft")
-            else
-                music.disableSound("moveLeft")
             end
         end
 
         if lvx < maxSpeed then
             if love.keyboard.isDown("d") then
                 self.body:applyLinearImpulse(100, 0)
-                music.enableSound("moveRight")
-            else
-                music.disableSound("moveRight")
             end
         end
 
         if math.abs(lvx) > 800 or math.abs(lvy) > 800 then
             music.enableSound("tick_3")
             music.enableSound("tick_2")
-            music.enableSound("moveRight")
-            if self:isConnectedToMissile() then
-                music.queueEvent('swoosh')
-            end
+            music.enableSound("bass")
 
+            if totalSpeed > 1200 and self:isConnectedToMissile() then
+                music.enableSound('swoosh')
+            end
         else
             music.disableSound("tick_3")
             music.disableSound("tick_2")
+            music.disableSound("bass")
+            music.disableSound('swoosh')
+        end
+
+        if not self:isConnectedToMissile() then
+            music.disableSound('swoosh')
         end
 
     end
@@ -164,6 +167,7 @@ local function getPlayer()
             local playerX, playerY = self.body:getPosition()
             local missileX, missileY = self.missile.body:getPosition()
             love.graphics.setColor(1, 0.5, 0.2, 1)
+            love.graphics.setLineWidth(3)
             love.graphics.line(playerX, playerY, missileX, missileY)
             love.graphics.setColor(1, 1, 1, 1)
         end
