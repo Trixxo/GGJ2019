@@ -30,6 +30,7 @@ local function getPlayer()
     player.body:setAngularVelocity(math.random(-10, 10))
 
     player.isGrappling = false
+    player.grapp_gotready = false
     player.grapplingPercent = 0
     player.grapplingTarget = nil
 
@@ -54,7 +55,6 @@ local function getPlayer()
             music.disableSound("tick_3")
             music.disableSound("tick_2")
             music.disableSound("swoosh")
-
             if player.deadcountdown < 0 then
                 local gameoverstate = getGameOverState()
                 stack:push(gameoverstate)
@@ -142,7 +142,22 @@ local function getPlayer()
 
     ----- GrapplingHook -----
     function player:updateGrapplingAttempt(dt)
+        local ready = true
+
+        if self.grapplingCooldown > 0 then
+           ready = false
+        end
+
         self.grapplingCooldown = math.max(0, self.grapplingCooldown - dt)
+
+        if self.grapplingCooldown == 0 and ready == false then
+            self.grapp_gotready = true
+        end
+
+        if self.grapp_gotready == true then
+            music.queueEvent('grapp_ready')
+            self.grapp_gotready = false
+        end
 
         if self.isGrappling then
             self.grapplingPercent = self.grapplingPercent + dt * 5

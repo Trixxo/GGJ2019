@@ -119,13 +119,8 @@ local function getMissile(x, y, text)
 
     function missile:draw()
         local x, y = self.body:getPosition()
-        love.graphics.print(self.text,
-                            x,
-                            y - self.dimension.height * 1.5,
-                            0,
-                            1.5,
-                            1.5
-        )
+        y = y - self.dimension.height * 1.5
+        love.graphics.print(self.text, x, y, 0, 1.5, 1.5)
     end
 
     function missile:isOnScreen()

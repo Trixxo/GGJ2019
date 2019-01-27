@@ -6,7 +6,6 @@ local function missileAsteroidCollision(fixtureA, fixtureB, key)
 
     if objectA.name == "missile" and objectB.name == "asteroid" or
         objectB.name == "missile" and objectA.name == "asteroid" then
-        print("Collision")
         local missile
         if objectA.name == 'missile' then
             missile = objectA

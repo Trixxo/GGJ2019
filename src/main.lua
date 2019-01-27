@@ -28,6 +28,7 @@ function love.load()
     resources:addImage("asteroid", "data/asteroid.png")
     resources:addImage("backgroundSpace", "data/spaaaaaaaaace.png")
     resources:addImage("backgroundBlend", "data/alphablend.png")
+    resources:addImage("seagull", "data/seagull.png")
 
     resources:addSound("kick", "data/audio/fantomenkick.wav")
     resources:addSound("hihat", "data/audio/hihat.wav")
