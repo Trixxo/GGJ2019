@@ -47,6 +47,9 @@ local function getPlayer()
 
         -- countdown before going to gameoverscreen 
         if player.dead == true then
+            if self.joint ~= nil then
+                self:removeJoint()
+            end
             player.drawType = nil
             music.disableSound("tick_3")
             music.disableSound("tick_2")
@@ -215,6 +218,7 @@ local function getPlayer()
             self.missile.resetCategoryTimer = 1
             self.missile.resetCategory = true
             self.missile = nil
+            self.isGrappling = false
             self.grapplingToMissile = false
         end
     end
