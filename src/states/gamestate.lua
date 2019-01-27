@@ -280,6 +280,10 @@ local function getGameState()
             stack:push(pauseState)
         end
 
+        if key == "lshift" or key == "rshift" then
+            player.fixture:setMask(3,4)
+        end
+
         for index, entity in pairs(self.entities) do
             if entity.keypressed ~= nil then
                 entity:keypressed(key, scancode, isrepeat)
@@ -292,6 +296,9 @@ local function getGameState()
     function state:keyreleased(key, scancode)
         if key == "escape" then
             self.pausedOnCurrentPress = false
+        end
+        if key == "lshift" or key == "rshift" then
+            player.fixture:setMask(4)
         end
     end
 
