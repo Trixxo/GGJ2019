@@ -93,7 +93,7 @@ function music.disableSound(name)
 end
 
 function music.update(dt)
-    print("current bpm ", music.bpm)
+    --print("current bpm ", music.bpm)
     music.beatLength = 60 / music.bpm
     music.timeSinceLastTick = music.timeSinceLastTick + dt
     if music.timeSinceLastTick >= music.beatLength / music.tickFraction then
