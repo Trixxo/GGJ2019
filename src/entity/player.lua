@@ -39,6 +39,7 @@ local function getPlayer()
     player.missile = nil
     player.grapplingToMissile = false -- New missile we just connected to. Needed for drawing the grappling hook
     player.jumpCd = 0
+    player.missileCd = 0
 
     function player:draw()
         self:drawGrapplingHook()
@@ -46,6 +47,22 @@ local function getPlayer()
     end
 
     function player:update(dt)
+
+        local playerX, playerY = self.body:getPosition()
+        local lvx, lvy = self.body:getLinearVelocity()
+        local totalSpeed = getVector(lvx, lvy):length()
+
+        self.body:setAngularVelocity((self.body:getLinearVelocity() + math.abs(playerY)) * dt)
+
+        if self:isConnectedToMissile() then
+            if self.missile.explosive == 3 then
+                self.missileCd = self.missileCd - dt
+                if self.missileCd <= 0 then
+                    self.missile:explode()
+                    self.missileCd = 0
+                end
+            end
+        end
 
         -- countdown before going to gameoverscreen
         if player.dead == true then
@@ -71,10 +88,6 @@ local function getPlayer()
             self:connectToMissile(self.missileToConnect)
             self.missileToConnect = nil
         end
-
-        local playerX, playerY = self.body:getPosition()
-        local lvx, lvy = self.body:getLinearVelocity()
-        local totalSpeed = getVector(lvx, lvy):length()
 
         if player.jumpCd <= 0 then
             player.jumpCd = 0
@@ -124,7 +137,7 @@ local function getPlayer()
             if totalSpeed > 1200 and self:isConnectedToMissile() then
                 music.enableSound('swoosh')
             end
-            if not portalSpawned and (totalSpeed > 2000 and playerX > 20000) then
+            if not portalSpawned and (totalSpeed > 2000 and playerX > 42000) then
                 -- this is so fast, spacetime cracks and a portal opens
                 local portal = getPortal(playerX + 4000, 0)
                 self.portalSpawned = true
@@ -141,6 +154,11 @@ local function getPlayer()
             music.disableSound('swoosh')
         end
 
+        if playerX > 20000 then
+            music.enableSound('bass_b')
+        else
+            music.disableSound('bass_b')
+        end
     end
 
     function player:isConnectedToMissile()
@@ -194,6 +212,7 @@ local function getPlayer()
             love.graphics.setLineWidth(3)
             love.graphics.line(playerX, playerY, missileX, missileY)
             love.graphics.setColor(1, 1, 1, 1)
+
         end
     end
 
@@ -227,6 +246,7 @@ local function getPlayer()
         self.missile = missile
         self.jumpCd = 0
 
+
         self.grapplingToMissile = true
         self.isGrappling = false
         self.grapplingCooldown = self.grapplingTimeout
@@ -257,6 +277,10 @@ local function getPlayer()
                 end
 
                 music.queueEvent("jump")
+                local x, y = self.body:getPosition()
+                if x > 10000 then
+                    music.queueEvent("jump")
+                end
             elseif scancode == "s" then
                 self.body:applyLinearImpulse(0,2000)
                 self:removeJoint()

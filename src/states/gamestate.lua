@@ -204,15 +204,15 @@ local function getGameState()
 
             -- Draw all debug rectangle entities
             if entity.drawType == 'rectangle' then
-                love.graphics.setColor(255, 0, 0, 1)
+                love.graphics.setColor(0.435, 0.431, 0.388)
                 love.graphics.rectangle('fill',
                     positionX-entity.dimension.width/2,
                     positionY-entity.dimension.height/2,
                     entity.dimension.width,
                     entity.dimension.height
                 )
-                love.graphics.setColor(255, 255, 255)
 
+                love.graphics.setColor(255, 255, 255)
 
             -- Draw all entities with images
             elseif entity.drawType == 'image' then
