@@ -63,7 +63,7 @@ local function getMissile(x, y, explosive)
         if self.startTimer <= 0 then
             self.startTimer = 0.25
         end
-        print(self.startTimer)
+        --print(self.startTimer)
         -- Particlesystem logic
         self.particleSystem:update(dt)
         if self.flightTime <= 0 then
@@ -127,7 +127,7 @@ local function getMissile(x, y, explosive)
     function missile:draw()
         local x, y = self.body:getPosition()
         local offset = getVector((self.dimension.width / 2) - 10, 0):rotate(self.body:getAngle())
-        print (offset.y)
+        --print (offset.y)
         love.graphics.print(self.text,
                             x,
                             y - self.dimension.height * 1.5,
