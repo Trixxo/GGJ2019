@@ -63,6 +63,7 @@ function love.draw()
     stack:current():draw()
     camera:unset()
 
+    love.graphics.print(love.timer.getFPS() .. " fps", 20, 20)
 end
 
 function love.keypressed(key, scancode, isrepeat)
