@@ -128,16 +128,13 @@ local function getMissile(x, y, explosive)
     function missile:draw()
         local x, y = self.body:getPosition()
         local offset = getVector((self.dimension.width / 2) - 10, 0):rotate(self.body:getAngle())
-        --print (offset.y)
+
+        -- Draw the missile vim mode text
         if self.text then
-            love.graphics.print(self.text,
-                                x,
-                                y - self.dimension.height * 1.5,
-                                0,
-                                1.5,
-                                1.5
-            )
+            local drawY = y - self.dimension.height * 1.5
+            love.graphics.print(self.text, x, drawY, 0, 1.5, 1.5)
         end
+
         if missile.explosive == 3 then
             if self.startTimer <= 0.125 then
                love.graphics.setColor(255, 0, 0, 0.8)
