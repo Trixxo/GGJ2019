@@ -25,6 +25,7 @@ function love.load()
     resources:addImage("softCircle", "data/soft_circle.png")
     resources:addImage("backgroundCity", "data/city_background_clean.png")
     resources:addImage("player", "data/player.png")
+    resources:addImage("asteroid", "data/asteroid.png")
 
     resources:addSound("kick", "data/audio/fantomenkick.wav")
     resources:addSound("hihat", "data/audio/hihat.wav")

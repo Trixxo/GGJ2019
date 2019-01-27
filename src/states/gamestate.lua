@@ -6,11 +6,13 @@ camera = require("core/camera")
 
 -- Game logic
 local getMissileSpawner = require("system/missilespawner")
+local getAsteroidSpawner = require("system/asteroidspawner")
 local getBgSpawner = require("system/bgspawner")
 local getTextGrapplingSystem = require("system/textGrappling")
 
 -- Collisions
 local missileGroundCollision = require("collisions/missileground")
+local missileAsteroidCollision = require("collisions/missileasteroid")
 local missilePlayerCollision = require("collisions/missileplayer")
 local playerGroundCollision = require("collisions/playerground")
 
@@ -43,6 +45,7 @@ local function getGameState()
 
     -- Create game logic systems
     state.missileSpawner = getMissileSpawner()
+    state.asteroidSpawner = getAsteroidSpawner()
     state.bgSpawner = getBgSpawner()
     state.textGrapplingSystem = getTextGrapplingSystem()
 
@@ -70,6 +73,7 @@ local function getGameState()
         local mouseX, mouseY = love.mouse:getPosition()
 
         self.missileSpawner:update(dt)
+        self.asteroidSpawner:update(dt)
         self.bgSpawner:update(dt)
 
         -- Add new entities from collision handlers to state
@@ -112,7 +116,7 @@ local function getGameState()
     function state:renderParallaxBackground(resource, scale, parallaxScale, posY)
         local resourceWidth = resource:getPixelWidth()
         local screenLeft, screenRight = camera.x, camera.x + settings.resolution.width
-        local parallaxOffset = parallaxScale * screenLeft
+        local parallaxOffset = parallaxScale * screenLeft + math.sin(parallaxScale) * 100
         local numIterations = math.floor((screenLeft - parallaxOffset) / (resourceWidth * scale))
 
         while parallaxOffset + numIterations * resourceWidth * scale < screenRight
@@ -134,22 +138,40 @@ local function getGameState()
         local resourceHeight = resource:getPixelHeight()
         local screenWidth = settings.resolution.width
         local screenHeight = settings.resolution.height
-        local maxY = screenHeight - resourceHeight
+        local maxY = screenHeight - resourceHeight - 500
 
-        scale = 0.4
+        scale = 0.2
         love.graphics.setColor(0.1, 0.1, 0.1)
+        self:renderParallaxBackground(resource, scale, 0.9, maxY)
+        love.graphics.rectangle(
+            'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
+
+        scale = 0.3
+        love.graphics.setColor(0.2, 0.2, 0.2)
         self:renderParallaxBackground(resource, scale, 0.8, maxY)
         love.graphics.rectangle(
             'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
 
-        scale = 0.65
+        scale = 0.4
         love.graphics.setColor(0.3, 0.3, 0.3)
-        self:renderParallaxBackground(resource, scale, 0.4, maxY)
+        self:renderParallaxBackground(resource, scale, 0.7, maxY)
+        love.graphics.rectangle(
+            'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
+
+        scale = 0.5
+        love.graphics.setColor(0.4, 0.4, 0.4)
+        self:renderParallaxBackground(resource, scale, 0.6, maxY)
+        love.graphics.rectangle(
+            'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
+
+        scale = 0.6
+        love.graphics.setColor(0.5, 0.5, 0.5)
+        self:renderParallaxBackground(resource, scale, 0.5, maxY)
         love.graphics.rectangle(
             'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
 
         scale = 1.0
-        love.graphics.setColor(0.5, 0.5, 0.5)
+        love.graphics.setColor(0.6, 0.6, 0.6)
         self:renderParallaxBackground(resource, scale, 0.0, maxY)
         love.graphics.rectangle(
             'fill', camera.x, maxY + resourceHeight * scale, screenWidth, screenHeight)
@@ -269,6 +291,7 @@ local function getGameState()
     end
 
     function state:collide(fixtureA, fixtureB, key)
+        missileAsteroidCollision(fixtureA, fixtureB, key)
         missileGroundCollision(fixtureA, fixtureB, key)
         missilePlayerCollision(fixtureA, fixtureB, key)
         playerGroundCollision(fixtureA, fixtureB, key)
