@@ -2,6 +2,7 @@ local getPauseState = require("states/pausestate")
 local getPlayer = require("entity/player")
 local getGround = require("entity/ground")
 local getMissile = require("entity/missile")
+local getPortal = require("entity/portal")
 camera = require("core/camera")
 
 -- Game logic
@@ -51,6 +52,7 @@ local function getGameState()
     table.insert(state.entities, player)
     local ground = getGround()
     table.insert(state.entities, ground)
+
     local missile = getMissile()
     missile.falling = false
 
@@ -119,10 +121,8 @@ local function getGameState()
         --print("update", colorupdate)
         if math.sqrt(math.pow(vx + vy,2)) > 1500 then
             state.color.r = state.color.r + dt
-            print("higher")
         else
             state.color.r = state.color.r - dt/2
-            print("lower")
         end
         state.color.r = math.min(1, math.max(0, state.color.r))
         --print(state.color.r)

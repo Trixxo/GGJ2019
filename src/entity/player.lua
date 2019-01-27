@@ -1,5 +1,6 @@
 local getVector = require("core/vector")
 local getGameOverState = require("states/gameoverstate")
+local getPortal = require("entity/portal")
 
 local function getPlayer()
     local player = {}
@@ -122,6 +123,11 @@ local function getPlayer()
 
             if totalSpeed > 1200 and self:isConnectedToMissile() then
                 music.enableSound('swoosh')
+            end
+            if totalSpeed > 2000 and playerX > 20000 then
+                -- this is so fast, spacetime cracks and a portal opens
+                local portal = getPortal(playerX + 4000, 0)
+                table.insert(stack:current().entities, portal)
             end
         else
             music.disableSound("tick_3")
