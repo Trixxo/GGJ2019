@@ -4,9 +4,9 @@ local function missileAsteroidCollision(fixtureA, fixtureB, key)
     local objectA = fixtureA:getUserData()
     local objectB = fixtureB:getUserData()
 
-    --print(objectA.name .. " colliding with " .. objectB.name)
     if objectA.name == "missile" and objectB.name == "asteroid" or
         objectB.name == "missile" and objectA.name == "asteroid" then
+        print("Collision")
         local missile
         if objectA.name == 'missile' then
             missile = objectA
