@@ -132,7 +132,10 @@ local function getPlayer()
         if math.abs(lvx) > 800 or math.abs(lvy) > 800 then
             music.enableSound("tick_3")
             music.enableSound("tick_2")
-            music.enableSound("bass")
+
+            if playerX > 10000 then
+                music.enableSound("bass")
+            end
 
             if totalSpeed > 1200 and self:isConnectedToMissile() then
                 music.enableSound('swoosh')
@@ -154,7 +157,7 @@ local function getPlayer()
             music.disableSound('swoosh')
         end
 
-        if playerX > 20000 then
+        if playerX > 30000 then
             music.enableSound('bass_b')
         else
             music.disableSound('bass_b')
@@ -278,7 +281,7 @@ local function getPlayer()
 
                 music.queueEvent("jump")
                 local x, y = self.body:getPosition()
-                if x > 10000 then
+                if x > 20000 then
                     music.queueEvent("jump")
                 end
             elseif scancode == "s" then
