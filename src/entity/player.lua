@@ -134,7 +134,6 @@ local function getPlayer()
         if math.abs(lvx) > 800 or math.abs(lvy) > 800 then
             music.enableSound("tick_3")
             music.enableSound("tick_2")
-            music.enableSound("bass")
 
             if totalSpeed > 1200 and self:isConnectedToMissile() then
                 music.enableSound('swoosh')

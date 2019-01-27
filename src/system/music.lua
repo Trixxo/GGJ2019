@@ -59,7 +59,7 @@ function music.load()
             beatFrequency = 2,
             soundData = love.sound.newSoundData("data/audio/hihat.wav"),
             enabled = true,
-            energyLevel = 0.15
+            energyLevel = 0
         },
         jump = {
             sources = {
@@ -95,8 +95,9 @@ function music.load()
                 base = "bass",
                 count = 2
             },
+            enabled = true,
             beatFrequency = 1 / 2,
-            energyLevel = 0.6
+            energyLevel = 0.4
         }
     }
 end
@@ -152,7 +153,6 @@ local function sourceForSound(sound)
 end
 
 local function matchesEnergyLevel(sound, currentLevel)
-    print(sound.energyLevel)
     if sound.energyLevel then
         return currentLevel >= sound.energyLevel
     else
