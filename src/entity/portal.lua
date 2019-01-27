@@ -4,6 +4,7 @@ local function getPortal(x, y)
     portal.drawType = "image"
     portal.image = resources.images.portal
     portal.dimension = {width = 600, height = 600}
+    portal.name = "portal"
 
     portal.shape = love.physics.newCircleShape(portal.dimension.width / 2)
 
