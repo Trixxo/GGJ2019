@@ -1,4 +1,5 @@
 local getPauseState = require("states/pausestate")
+local getGameWonState = require("states/gamewonstate")
 local getPlayer = require("entity/player")
 local getGround = require("entity/ground")
 local getMissile = require("entity/missile")
@@ -319,6 +320,14 @@ local function getGameState()
         end
         if key == "lshift" or key == "rshift" then
             player.fixture:setMask(4)
+        end
+        if key == "0" then
+            vx, vy = player.body:getLinearVelocity()
+            v = { a = vx, b = vy }
+            local gameWon = getGameWonState( v,
+                        player.body:getAngularVelocity(), 
+                        player.body:getAngle())
+            stack:push(gameWon)
         end
     end
 

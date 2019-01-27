@@ -11,6 +11,10 @@ local function getGameWonState(playerlv,playerav,playerr)
     state.entities = {}
     state.player = {}
 
+    state.color = { r = 0, g = 0, b = 0 }
+
+    state.canvas = love.graphics.newCanvas()
+
 
 
     function state:update(dt)
@@ -55,6 +59,8 @@ local function getGameWonState(playerlv,playerav,playerr)
     end
 
     function state:draw()
+        --love.graphics.setCanvas(state.canvas)
+        love.graphics.clear(state.color.r, state.color.g, state.color.b,1.0)
         local font = resources.fonts.swanky
         local text = love.graphics.newText(font, "You WIN")
         local x = camera.x + settings.resolution.width/2 - text:getWidth()/2
